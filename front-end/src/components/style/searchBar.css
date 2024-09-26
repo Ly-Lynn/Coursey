@@ -1,0 +1,41 @@
+.inputContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: #9d9c9c solid 1px;
+    border-width: 1px;
+    border-radius: 40px;
+    border-color: #9d9c9c;
+    /* padding: 1% 1%; */
+    background-color: #ffffff;
+  }
+  .icon-container {
+    border: #1AA1AE solid 1px;
+    border-radius: 400px;
+    background-color: #1AA1AE;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+  }
+  .icon-style {
+    color: #ffffff;
+    font-weight: 200;
+    padding: 5px;
+    font-size: 50px;
+  }
+
+  .input {
+    padding-left: 2%;
+    padding-right: 2%;
+    flex: 1;
+    font-size: 25px;
+    font-weight: lighter;
+    color: #000000;
+    border: none;
+    outline: none;
+    width: 100%;
+  }
+  
