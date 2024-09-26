@@ -27,12 +27,12 @@ const CourseCard = ({
   courseName= "Fundamentals AI for Beginner",
   courseDescription= "Course Description",
   // coursePrice,
-  courseRating=3.5,    // Renamed this to courseRate for consistency
+  courseRating=3.5,   
+  courseLecturer="John Doe",
   courseOrganizer="Cornell University",  
   // courseImage      
 }) => {
   
-  // Function to render the stars based on the courseRate value
   const renderStars = (courseRate) => {
       const stars = [];
       for (let i = 1; i <= 5; i++) {
@@ -60,6 +60,10 @@ const CourseCard = ({
               {/* Course Name */}
               <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                   {courseName}
+              </Typography>
+
+              <Typography variant="body2" sx={{ fontWeight:'bold', color: 'text.secondary', marginBottom: 1 }}>
+                  {courseLecturer}
               </Typography>
 
               {/* Course Description */}
