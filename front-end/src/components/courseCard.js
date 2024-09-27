@@ -24,28 +24,31 @@ import courseImage from "../assests/images/course_img1.png";
 import cornell_logo from "../assests/images/cornell.jpg";
 
 const CourseCard = ({
-  courseName= "Fundamentals AI for Beginner",
-  courseDescription= "Course Description",
-  // coursePrice,
-  courseRating=3.5,   
-  courseLecturer="John Doe",
-  courseOrganizer="Cornell University",  
+
+    // Fetch from database 
+    courseName= "Fundamentals AI for Beginner",
+    courseDescription= "Course Description",
+    // coursePrice,
+    courseRating=3.5,   
+    courseLecturer="John Doe",
+    courseOrganizer="Cornell University",  
   // courseImage      
 }) => {
   
   const renderStars = (courseRate) => {
-      const stars = [];
-      for (let i = 1; i <= 5; i++) {
-          if (i <= courseRate) {
-              stars.push(<StarIcon key={i} sx={{ color: '#fbc02d' }} />); 
-          } else if (i - 0.5 <= courseRate) {
-              stars.push(<StarHalfIcon key={i} sx={{ color: '#fbc02d' }} />);
-          } else {
-              stars.push(<StarBorderIcon key={i} sx={{ color: '#fbc02d' }} />); 
-          }
-      }
-      return stars;
-  }
+    // Input: courseRate from database
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+        if (i <= courseRate) {
+            stars.push(<StarIcon key={i} sx={{ color: '#fbc02d' }} />); 
+        } else if (i - 0.5 <= courseRate) {
+            stars.push(<StarHalfIcon key={i} sx={{ color: '#fbc02d' }} />);
+        } else {
+            stars.push(<StarBorderIcon key={i} sx={{ color: '#fbc02d' }} />); 
+        }
+    }
+    return stars;
+    }
 
   return (
       <Card sx={{ maxWidth: 345 }}>
