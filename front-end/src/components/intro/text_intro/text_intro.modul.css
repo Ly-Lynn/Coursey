@@ -1,0 +1,22 @@
+
+
+.left {
+
+    color: #1aa1ae;
+    padding-left: 50px;
+
+}
+
+.btn {
+    font-size: 15px;
+    font-weight: bold;
+    color: #1aa1ae;
+    font-weight: bold;
+    border-color: #1aa1ae;
+    width: 120px;
+    border: 1px solid #1aa1ae;
+    margin-top: 13px;
+    padding: 10px; 
+    border-radius: 5px;
+    margin-left: 300px;
+}
