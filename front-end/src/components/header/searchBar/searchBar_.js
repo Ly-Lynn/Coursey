@@ -1,5 +1,5 @@
 import React from "react";
-import './style/searchBar.css';
+import './searchBar.modul.css';
 import SearchIcon from '@mui/icons-material/Search'
 
 const SearchBar = ({ onFocus, onChangeText }) => {

@@ -1,15 +1,16 @@
-import react, { Component } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import react from 'react';
+// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
+import Header from "../../components/header/header/header_"
 // import { fetchPosts } from '../../actions/postActions';
 
 const MainPage = () => {
     return (
         <div>
-        <h1>Main Page</h1>
+            <Header />
         </div>
-    );
+    )
 }
 
 export default MainPage;

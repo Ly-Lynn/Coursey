@@ -1,20 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import MainPage from './screens/Home/homeScreen';
-import SearchBar from './components/searchBar';
-import Navbar from './components/navbar';
+// import Header from './components/header/header/header_';
 
 const App = () => {
 
   return (
     <>
-      <div className='header'>
-        <img className='logo' alt='logo' src="/logo.png"/>
-        <SearchBar />
-        <Navbar />
-      </div>
-      <div>
-      </div>
+      {/* <Header/> */}
+      <MainPage/>
     </>
   );
 };
