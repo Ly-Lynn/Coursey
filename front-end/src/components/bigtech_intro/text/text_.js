@@ -3,9 +3,14 @@ import './text.modul.css';
 
 const Text_ = () => {
     return (
-        <div class="Text_BigTech">
-            Courses from <span>big techs</span> <br/>
-            all over the world
+        <div className="Text_BigTech">
+            <div class="Left_BigTech">
+                Courses from <span style={{ fontSize: '60px'}}>big techs</span>
+            </div>
+            <div class="Right_BigTech">
+                all over the world                
+            </div>
+ 
         </div>
     )
    

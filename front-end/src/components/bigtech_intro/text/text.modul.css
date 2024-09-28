@@ -1,6 +1,31 @@
 .Text_BigTech {
-    padding: 20px;
-    color: #000000;
-    background-color: #1aa1ae;
-    width: 50%;
+    /* padding: 20px; */
+    color: #ffffff;
+    background-color: #1aa2ae79;
+    width: 100%;
+    font-weight: bold;
+    font-size: 40px;
+    display: grid;
+    grid-template-columns: auto auto;
+    place-items: center;
+    gap:10px;
+    text-align: center;
+    padding-bottom: 20px;
+    
 }
+
+/* .Text_BigTech div {
+    text-align: center;
+} */
+
+.Right_BigTech {
+    padding-top: 70px;
+    justify-self: start;
+    
+}
+.Left_BigTech {
+    justify-self: end;
+}
+
+
+

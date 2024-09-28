@@ -1,11 +1,16 @@
 .BigtechLogo img {
-    width: 75px;
-    height: 75px;
-    margin: 0 20px;
+    width: 80px;
+    height: 80px;
+    /* margin: 0 40px; */
+    padding: 0 30px;
+    /* width: 50%; */
 }
 .BigtechLogo {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    place-items: center;
+    
+    gap: 30px;
+    /* align-items: center; */
+    /* justify-content: space-between; */
 }
