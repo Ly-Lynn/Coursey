@@ -1,0 +1,11 @@
+.BigtechLogo img {
+    width: 75px;
+    height: 75px;
+    margin: 0 20px;
+}
+.BigtechLogo {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}

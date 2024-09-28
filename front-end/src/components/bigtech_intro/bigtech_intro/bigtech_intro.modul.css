@@ -1,0 +1,7 @@
+.BigtechIntro {
+    padding: 30px;
+    padding-left: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
