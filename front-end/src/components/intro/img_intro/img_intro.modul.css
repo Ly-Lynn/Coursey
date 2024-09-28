@@ -1,2 +1,31 @@
-.Image {
+.Right {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+
+.text {
+    font-size: 30px;
+    font-weight: bold;
+    color: #1aa1ae;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    display: flex;     
+    margin-left: 20px;
+    text-align: center;
+
+}
+.text_ {
+    text-align: center;
+}
+
+img {
+    height: 450px;
+}
+
+@media screen and (max-width: 1000px) {
+    .Right {
+        display: none;
+    }
 }

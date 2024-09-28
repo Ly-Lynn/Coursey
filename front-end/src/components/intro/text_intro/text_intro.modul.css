@@ -4,7 +4,8 @@
 
     color: #1aa1ae;
     padding-left: 50px;
-
+    padding-left: 100px;
+    
 }
 
 .btn {
@@ -19,4 +20,5 @@
     padding: 10px; 
     border-radius: 5px;
     margin-left: 300px;
+    
 }

@@ -1,5 +1,8 @@
 .Intro {
     margin-top: 50px;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: auto auto;
+    place-items: center;
+    width: 100%;
+    gap: 50px;
 }
