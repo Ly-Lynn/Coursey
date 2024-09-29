@@ -20,5 +20,15 @@
     background-color: #1AA1AE;
     color: white;
     font-weight: bold;
-
+}
+#join-us:hover {
+    background-color: #ffffff;
+    color: #1AA1AE;
+    border: #1AA1AE solid 2px;
+}
+#login_nav:hover {
+    color: #fff;
+    background-color: #1AA1AE;
+    font-weight: bold;
+    border-radius: 10px;
 }

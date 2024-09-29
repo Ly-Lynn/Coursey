@@ -1,4 +1,4 @@
-import SearchBar from './searchBar';
+import SearchBar from './searchBar_';
 
 const meta = {
   component: SearchBar,

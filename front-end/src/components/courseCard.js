@@ -19,8 +19,7 @@ import courseImage from "../assests/images/course_img1.png";
 import cornell_logo from "../assests/images/cornell.jpg";
 
 const CourseCard = ({
-
-    // Fetch from database 
+    courseID,
     courseName= "Fundamentals AI for Beginner",
     courseDescription= "Course Description",
     // coursePrice,
@@ -44,6 +43,11 @@ const CourseCard = ({
     }
     return stars;
     }
+
+  const onCourseClick = () => {
+    // Redirect to course detail page
+    console.log("Course ID: ", courseID);
+  }
 
   return (
       <Card key={courseID} sx={{ maxWidth: 345 }} onClick={onCourseClick}>

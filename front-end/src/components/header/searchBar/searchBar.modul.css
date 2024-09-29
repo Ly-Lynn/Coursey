@@ -14,6 +14,13 @@
   min-width: 120px;
   height: 50px;
  }
+
+ .inputContainer:focus-within {
+  border: 2px solid #1AA1AE;
+  box-shadow: 0 0 8px #1aa2aea4
+}
+
+
 .icon-container {
   border: #1aa1ae solid 1px;
   border-radius: 400px;
@@ -39,11 +46,12 @@
   flex: 1;
   font-size: 17px;
   font-weight: lighter;
-  color: #000000;
+  color: #1AA1AE;
   border: none;
   outline: none;
   width: 100%;
 }
+
 
 @media screen and (max-width: 1000px) {
     .inputContainer {

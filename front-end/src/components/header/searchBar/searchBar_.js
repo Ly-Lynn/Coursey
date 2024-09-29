@@ -10,15 +10,14 @@ const SearchBar = ({ onFocus, onChangeText }) => {
   return (
     <div className="inputContainer">
         <div className="icon-container">
-            <SearchIcon className="icon-style"></SearchIcon>
+            <SearchIcon className="icon-style" />
         </div>
         
         <input
             className="input"
-            placeholder="Search "
-            onChange={()=>handleTextChange}
+            placeholder="Search"
+            onChange={handleTextChange} 
             onFocus={onFocus}
-            placeholderTextColor="#7f7f7f"
         />
     </div>
   );
