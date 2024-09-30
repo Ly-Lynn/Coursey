@@ -1,7 +1,7 @@
-import AuthModal from './AuthModal';
+import ForgotPass from './ForgotPass';
 
 const meta = {
-  component: AuthModal,
+  component: ForgotPass,
 };
 
 export default meta;

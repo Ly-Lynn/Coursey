@@ -8,7 +8,7 @@ import { GitHub, Google } from '@mui/icons-material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { colors } from '../../assests/colors';
 
-function SignIn() {
+function SignIn({ onSwitchToSignUp, onSwitchToForgotPass }) {
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -99,7 +99,16 @@ function SignIn() {
                       textTransform: 'none', 
                       textDecorationLine: 'underline' }}
                     className='mb-4'
+                    onClick={onSwitchToSignUp}
                   >Don't have an account? Sign up</Button>
+                  <Button 
+                    style={{ 
+                      color: `${colors.primary.green_100}`, 
+                      textTransform: 'none', 
+                      textDecorationLine: 'underline' }}
+                    className='mb-4'
+                    onClick={onSwitchToForgotPass}
+                  >Forgot your password?</Button>
                 </div>
               </Form>
             </Col>
