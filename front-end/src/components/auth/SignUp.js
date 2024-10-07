@@ -3,14 +3,14 @@ import { Container, Row, Col, Card, Form, Carousel } from 'react-bootstrap';
 import { Button, ButtonGroup } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faLock, faKey } from '@fortawesome/free-solid-svg-icons';
-import { Visibility, VisibilityOff, Error } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Error, Close } from '@mui/icons-material';
 import { GitHub, Google } from '@mui/icons-material'; 
-import { Toaster, toast, useToaster } from 'react-hot-toast';
+import { Toaster, toast} from 'react-hot-toast';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { colors } from '../../assests/colors';
-
-function SignUp({ onSwitchToSignIn  }) {
+import './auth.modul.css';
+function SignUp({ onClose, onSwitchToSignIn }) {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -150,6 +150,9 @@ function SignUp({ onSwitchToSignIn  }) {
         className='text-black' 
         style={{ borderRadius: '10px', width: '100%', maxWidth: '630px', padding: '15px', overflow: 'auto' }}
       >
+        <div className='d-flex justify-content-end close-btn'>
+          <Close  onClick={onClose} />
+        </div>
         <Card.Body>
           <Row>
             <Col className='order-2 order-lg-1 d-flex flex-column align-items-center'>

@@ -3,12 +3,12 @@ import { Container, Row, Col, Card, Form } from 'react-bootstrap';
 import { Button, ButtonGroup } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Close } from '@mui/icons-material';
 import { GitHub, Google } from '@mui/icons-material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { colors } from '../../assests/colors';
-
-function SignIn({ onSwitchToSignUp, onSwitchToForgotPass }) {
+import './auth.modul.css';
+function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -19,6 +19,9 @@ function SignIn({ onSwitchToSignUp, onSwitchToForgotPass }) {
   return (
     <Container fluid className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
       <Card className='text-black' style={{ borderRadius: '10px', width: '40%', maxWidth: '40%' }}>
+        <div className='d-flex justify-content-end close-btn'>
+          <Close  onClick={onClose} />
+        </div>
         <Card.Body>
           <Row>
             <Col className='d-flex flex-column align-items-center'>
@@ -50,7 +53,7 @@ function SignIn({ onSwitchToSignUp, onSwitchToForgotPass }) {
                   <Form.Floating className="flex-grow-1">
                     <Form.Control 
                       id='signin-mail' 
-                      type='email' 
+                      type='email'  
                       placeholder='Your Email' 
                       style={{ color: `${colors.primary.green_100}` }} 
                       required 

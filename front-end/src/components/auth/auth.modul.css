@@ -1,0 +1,7 @@
+.close-btn {
+    cursor: pointer;
+    margin: 0.5rem 0.5rem 0.5rem 0rem;
+}
+.close-btn:hover {
+    color: red;
+}

@@ -3,8 +3,8 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import ForgotPass from "./ForgotPass";
 
-const AuthDialog = () => {
-    const [currentView, setCurrentView] = useState('signin');
+const AuthDialog = ({onClose, authState='signin'}) => {
+    const [currentView, setCurrentView] = useState(authState);
 
     const switchView = (view) => {
         setCurrentView(view);
@@ -16,16 +16,19 @@ const AuthDialog = () => {
                 <SignIn 
                     onSwitchToSignUp={() => switchView('signup')}
                     onSwitchToForgotPass={() => switchView('forgotpass')}
+                    onClose={onClose}
                 />
             )}
             {currentView === 'signup' && (
                 <SignUp 
                     onSwitchToSignIn={() => switchView('signin')}
+                    onClose={onClose}
                 />
             )}
             {currentView === 'forgotpass' && (
                 <ForgotPass 
                     onSwitchToSignIn={() => switchView('signin')}
+                    onClose={onClose}
                 />
             )}
         </div>

@@ -30,7 +30,9 @@ CREATE TABLE "Users" (
   "reset_token" varchar(255),
   "avatar" varchar(255),
   "quote" varchar(255),
-  "university_id" int
+  "university_id" int,
+  "is_verified" bool,
+  "is_admin" bool
 );
 
 CREATE TABLE "UserCourses" (
