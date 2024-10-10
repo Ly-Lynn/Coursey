@@ -1,0 +1,84 @@
+.carousel-container {
+    padding: 0 50px; /* Add padding to make room for controls */
+  }
+
+.carousel-content {
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+.carousel {
+    position: relative;
+  }
+.carousel-content {
+    height: 300px;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.58);
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.459) 0px 0px 5px;
+}
+
+.carousel-control-prev {
+  left: -20px; /* Move outside the content area */
+}
+
+.carousel-control-next {
+  right: -20px; /* Move outside the content area */
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  opacity: 1;
+  background-color: rgba(26, 162, 174, 0.8);
+  .carousel-control-icon {
+      color: white;
+      width: 24px;
+      height: 24px;
+    }
+}
+
+.carousel-control-icon {
+  color: #1AA1AE;
+  width: 24px;
+  height: 24px;
+}
+
+
+@media (max-width: 768px) {
+  .carousel-container {
+    padding: 0 30px; /* Reduce padding on smaller screens */
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 30px;
+    height: 30px;
+  }
+
+  .carousel-control-prev {
+    left: -30px;
+  }
+
+  .carousel-control-next {
+    right: -30px;
+  }
+
+  .carousel-control-icon {
+    width: 18px;
+    height: 18px;
+  }
+}

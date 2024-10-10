@@ -1,0 +1,18 @@
+.ribbon {
+    padding: 15px;
+    height: 50px;
+    background: #1AA1AE;
+    clip-path: polygon(100% 0, 95% 50%, 100% 100%, 0% 100%, 0% 0%, 0% 0%);
+    font-family: "font_condensed";
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: 0.18em;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+  }
+  

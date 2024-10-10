@@ -6,12 +6,13 @@ CREATE TABLE "Courses" (
   "host_id" int,
   "image" varchar(255),
   "url_list" varchar(255),
-  "rate" int DEFAULT 1,
+  "rate" float DEFAULT 1,
   "videos" int[],
   "hours" int,
   "cost" float DEFAULT 0,
   "field" varchar(255),
-  "learners" integer
+  "learners" integer,
+  "views" integer
 );
 
 CREATE TABLE "Videos" (
