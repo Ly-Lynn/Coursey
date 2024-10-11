@@ -3,6 +3,10 @@
   --pacman-size: 70px;
 }
 
+.courses {
+  padding: 0 30px;
+}
+
 body {
   .pac-man {
     border-radius: 50%;

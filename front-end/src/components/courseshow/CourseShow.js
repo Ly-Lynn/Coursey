@@ -28,7 +28,7 @@ const CourseShow = ({ courses, title="Popular Courses" }) => {
     return (
         <ThemeProvider className="container" theme={theme}>
             <div className="title">
-                <h3 className="mt-3" style={{marginBottom:0}}>{title}</h3>
+                <h3 className="mt-2" style={{marginBottom:0}}>{title}</h3>
             </div>
             <div className="row p-3">
                 {courses && courses.slice((page - 1) * 4, page * 4).map((course) => (
@@ -51,7 +51,7 @@ const CourseShow = ({ courses, title="Popular Courses" }) => {
                 onChange={(event, value) => setPage(value)}
                 variant="outlined"
                 color="primary"
-                style={{marginBottom: "10px"}}
+                style={{marginBottom: "5px"}}
             />
             
         </ThemeProvider>

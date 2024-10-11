@@ -4,7 +4,7 @@ import Header from "../../components/header/header/header_";
 import SlideShow from "../../components/slideshow/SlideShow";
 import axios from "axios";
 import { updateCoursesSuccess, updateCoursesFailure } from "../../redux/actions/serverActions";
-
+import "./CourseScreen.modul.css"
 const CourseShow = lazy(() => import("../../components/courseshow/CourseShow"));
 
 const CourseScreen = (
@@ -40,7 +40,7 @@ const CourseScreen = (
     }
     console.log("Courses: ", courses);
     return (
-        <div>
+        <div className="courses">
             <Header />
             <SlideShow />
             <Suspense fallback={<div className="pac-man"></div>}>
