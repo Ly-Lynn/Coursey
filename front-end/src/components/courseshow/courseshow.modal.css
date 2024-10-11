@@ -1,13 +1,13 @@
 .ribbon {
     padding: 15px;
-    height: 50px;
+    height: 40px;
     background: #1AA1AE;
     clip-path: polygon(100% 0, 95% 50%, 100% 100%, 0% 100%, 0% 0%, 0% 0%);
     font-family: "font_condensed";
     text-transform: uppercase;
     color: #fff;
     letter-spacing: 0.18em;
-    font-size: 50px;
+    font-size: 20px;
     display: flex;
     /* justify-content: center; */
     align-items: center;
@@ -16,7 +16,9 @@
     max-width: 100%;
   }
   
-
+.title {
+  color:#1AA1AE
+}
   .custom-pagination .MuiPagination-ul {
     display: flex;
     align-items: center;
