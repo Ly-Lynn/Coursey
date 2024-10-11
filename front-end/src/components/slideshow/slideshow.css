@@ -1,5 +1,5 @@
 .carousel-container {
-    padding: 0 50px; /* Add padding to make room for controls */
+    padding: 10px 50px 20px 50px; /* Add padding to make room for controls */
   }
 
 .carousel-content {
@@ -13,7 +13,7 @@
     position: relative;
   }
 .carousel-content {
-    height: 300px;
+    height: 240px;
 }
 .carousel-control-prev,
 .carousel-control-next {

@@ -1,6 +1,6 @@
 import CourseShow from './CourseShow';
 import axios from 'axios';
-import { withReduxProvider } from './preview';
+import { withReduxProvider } from '../../../.storybook/preview'
 
 const meta = {
   component: CourseShow,

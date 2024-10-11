@@ -6,46 +6,27 @@ import { updateCoursesSuccess, updateCoursesFailure } from "../../redux/actions/
 import { useDispatch, useSelector } from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './courseshow.modal.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const CourseShow = ( {title="Popular Courses"} ) => {
-    const dispatch = useDispatch();
-    const courses = useSelector((state) => state.courses.courses);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#1AA1AE',
+      }
+    }
+  });
+  
+
+const CourseShow = ({ courses, title="Popular Courses" }) => {
     const [page, setPage] = useState(1); // Moved here
-
-
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const response = await axios.get("/dummy_data/courses.json");
-                dispatch(updateCoursesSuccess(response.data));
-                setLoading(false);
-            } catch (error) {
-                dispatch(updateCoursesFailure(error.message));
-                setError(error.message);
-                setLoading(false);
-            }
-        };
-
-        fetchCourses();
-    }, [dispatch]);
-
-    if (loading) {
-        return <h1>Loading...</h1>;
-    }
-
-    if (error) {
-        return <h1>Error: {error}</h1>;
-    }
-    console.log("Courses: ", courses);
+    console.log(courses)
     const totalCourses = courses.length;
     console.log("Total courses: ", totalCourses);
     
     const totalPage = Math.ceil(totalCourses / 4); // Using Math.ceil to ensure we round up
 
     return (
-        <div className="container">
+        <ThemeProvider className="container" theme={theme}>
             <div className="ribbon">
                 <h1 className="mt-3">{title}</h1>
             </div>
@@ -64,12 +45,16 @@ const CourseShow = ( {title="Popular Courses"} ) => {
                 ))}
             </div>
             <Pagination
-                className="mt-3"
+                className="d-flex justify-content-end .custom-pagination"
                 count={totalPage}
                 page={page}
                 onChange={(event, value) => setPage(value)}
+                variant="outlined"
+                color="primary"
+                style={{marginBottom: "20px"}}
             />
-        </div>
+            
+        </ThemeProvider>
     );
 };
 

@@ -9,10 +9,21 @@
     letter-spacing: 0.18em;
     font-size: 50px;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     text-align: left;
     width: 100%;
     max-width: 100%;
   }
   
+
+  .custom-pagination .MuiPagination-ul {
+    display: flex;
+    align-items: center;
+}
+
+.custom-pagination .MuiPagination-ul > *:not(:last-child)::after {
+    content: '|';
+    margin: 0 8px;
+    color: #ccc;
+}

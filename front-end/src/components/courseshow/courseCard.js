@@ -20,17 +20,15 @@ import cornell_logo from "../../assests/images/cornell.jpg";
 
 const CourseCard = ({
     courseID,
-    courseName= "Fundamentals AI for Beginner",
-    courseDescription= "Course Description",
-    // coursePrice,
-    courseRating=3.5,   
-    courseLecturer="John Doe",
-    courseOrganizer="Cornell University",  
-  // courseImage      
+    courseName = "Fundamentals AI for Beginner",
+    courseDescription = "Course Description",
+    courseRating = 3.5,   
+    courseLecturer = "John Doe",
+    courseOrganizer = "Cornell University",
+    size = "small" // New prop for size: "small", "medium", or "large"
 }) => {
   
   const renderStars = (courseRate) => {
-    // Input: courseRate from database
     const stars = [];
     for (let i = 1; i <= 5; i++) {
         if (i <= courseRate) {
@@ -42,18 +40,26 @@ const CourseCard = ({
         }
     }
     return stars;
-    }
+  }
 
   const onCourseClick = () => {
-    // Redirect to course detail page
     console.log("Course ID: ", courseID);
   }
+
+  // Define sizes
+  const sizes = {
+    small: { height: "260px", imageHeight: "100px", titleVariant: "body1", descriptionLines: 1 },
+    medium: { height: "300px", imageHeight: "150px", titleVariant: "h6", descriptionLines: 2 },
+    large: { height: "400px", imageHeight: "200px", titleVariant: "h6", descriptionLines: 3 }
+  };
+
+  const currentSize = sizes[size] || sizes.large;
 
   return (
     <Card 
         key={courseID} 
         sx={{
-            height: "400px",
+            height: currentSize.height,
             display: 'flex', 
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -62,38 +68,41 @@ const CourseCard = ({
     >
         <CardMedia
             component="img"
-            height="200"
+            height={currentSize.imageHeight}
             image={courseImage}
             alt={courseName}
         />
 
-        <CardContent sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                {courseName}
-            </Typography>
+        <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Box>
+                <Typography variant={currentSize.titleVariant} sx={{ fontWeight: 'bold', mb: 1 }}>
+                    {courseName}
+                </Typography>
 
-            <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'text.secondary', marginBottom: 1 }}>
-                {courseLecturer}
-            </Typography>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'text.secondary', mb: 1 }}>
+                    {courseLecturer}
+                </Typography>
 
-            <Typography variant="body2" 
-                        sx={{
-                          color: 'text.secondary',
-                          marginBottom: 1,
-                          overflow: 'hidden',         // Ẩn phần nội dung tràn
-                          textOverflow: 'ellipsis',   // Thêm dấu ba chấm
-                          whiteSpace: 'nowrap',       // Giữ cho văn bản trên một dòng
-                          display: 'block',           // Đảm bảo thuộc tính overflow hoạt động
-                          maxWidth: '100%',           // Đảm bảo không vượt quá chiều rộng
-                      }}
-                        
-            >
-                {courseDescription}
-            </Typography>
+                <Typography variant="body2" 
+                            sx={{
+                              color: 'text.secondary',
+                              mb: 1,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              display: '-webkit-box',
+                              WebkitLineClamp: currentSize.descriptionLines,
+                              WebkitBoxOrient: 'vertical',
+                            }}
+                >
+                    {courseDescription}
+                </Typography>
+            </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Avatar className="logo" alt="cornell" src={cornell_logo} />
+                    <Avatar className="logo" alt="cornell" src={cornell_logo} sx={{ width: 24, height: 24, mr: 1 }}
+                            style={{width: "45px", height: "45px"}}
+                    />
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                         {courseOrganizer}
                     </Typography>
@@ -101,14 +110,14 @@ const CourseCard = ({
                 
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     {renderStars(courseRating)} 
-                    <Typography variant="body2" sx={{ marginLeft: 1 }}>
+                    <Typography variant="body2" sx={{ ml: 1 }}>
                         {courseRating} 
                     </Typography>
                 </Box>
             </Box>
         </CardContent>
     </Card>
-);
+  );
 }
 
 export default CourseCard;

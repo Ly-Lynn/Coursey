@@ -1,13 +1,12 @@
-/** @type { import('@storybook/react').Preview } */
-const preview = {
-  parameters: {
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
-      },
-    },
-  },
-};
+// .storybook/preview.js or in a separate file
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from '../src/redux/stores/stores';
 
-export default preview;
+export const withReduxProvider = (Story) => (
+  <Provider store={store}>
+    <Story />
+  </Provider>
+);
+
+export const decorators = [withReduxProvider];

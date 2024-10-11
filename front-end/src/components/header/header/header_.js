@@ -14,7 +14,7 @@ const Header = () => {
 
     return (
         <div className="header">
-            <img className='logo' alt='logo' src={logo}/>
+            <img className='logo' style={{width:"200px"}} alt='logo' src={logo}/>
             <SearchBar 
                 onFocus={handleFocus}
                 onChangeText={handleTextChange} />
