@@ -6,13 +6,14 @@
 
     header('Content-Type: application/json');
     $userController = new UserController();
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+    if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+        
+        $headers = getallheaders();
+        $accessToken = $headers["Authorization"] ?? null; 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $userController->login($data);
-    }
+        $userController->deleteUser($accessToken, $data['username'], $data['deletedUser']);
+    }   
 
 
 ?>

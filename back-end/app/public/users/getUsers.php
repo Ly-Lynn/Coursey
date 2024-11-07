@@ -6,13 +6,11 @@
 
     header('Content-Type: application/json');
     $userController = new UserController();
-
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+        $headers = getallheaders();
+        $accessToken = $headers["Authorization"] ?? null; 
         $data = json_decode(file_get_contents("php://input"), true);
-
-        $userController->login($data);
+        $userController->getUsers($accessToken, $data['username']);
     }
-
 
 ?>
