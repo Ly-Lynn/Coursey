@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  padding: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -12,3 +13,10 @@ code {
     monospace;
 }
 
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #ff7e5f, #feb47b); /* Gradient màu */
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f4f4;
+}

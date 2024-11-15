@@ -18,12 +18,13 @@ const theme = createTheme({
   
 
 const CourseShow = ({ courses, title="Popular Courses" }) => {
-    const [page, setPage] = useState(1); // Moved here
+    const [page, setPage] = useState(1); 
     console.log(courses)
+    courses = courses.courses
     const totalCourses = courses.length;
     console.log("Total courses: ", totalCourses);
     
-    const totalPage = Math.ceil(totalCourses / 4); // Using Math.ceil to ensure we round up
+    const totalPage = Math.ceil(totalCourses / 4);
 
     return (
         <ThemeProvider className="container" theme={theme}>
@@ -38,9 +39,9 @@ const CourseShow = ({ courses, title="Popular Courses" }) => {
                             courseName={course.course_name}
                             courseDescription={course.course_intro}
                             courseRating={course.rate}
-                            courseLecturer={course.lecturer_id} // Temporary ID
-                            courseOrganizer={course.host_id} // Temporary ID
-                        />
+                            courseLecturer={course.lecturer_id} 
+                            courseOrganizer={course.host_id} 
+                        />  
                     </div>
                 ))}
             </div>

@@ -1,10 +1,13 @@
 import {combineReducers} from 'redux';
 // import {userReducer} from './userReducer';
-import {updateCourses} from './serverReducer';
+import {updateCourses, updateAds} from './serverReducer';
+import authReducer from '../stores/authSlice';
 
 export const rootReducers = combineReducers({
     // user: userReducer,
-    courses: updateCourses
+    auth: authReducer,
+    courses: updateCourses,
+    ads: updateAds,
 });
 
 export default rootReducers;

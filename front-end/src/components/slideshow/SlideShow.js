@@ -4,10 +4,12 @@ import { Row, Col, Button } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './slideshow.css';
-import { ads } from '../../../public/dummy_data/ads';
+// import { ads } from '../../../public/dummy_data/ads';
 
-function SlideShow () {
-    return (
+function SlideShow ( {ads} ) {
+  ads = ads.ads;
+  // console.log("Ads: ", ads);
+  return (
         <div className="carousel-container position-relative">
           <Carousel
             prevIcon={<ChevronLeft className="carousel-control-icon" />}
