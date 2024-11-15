@@ -5,7 +5,7 @@ import img from "./llama.png";
 const Image = () => {
     return (
         <div className="Right">
-            <img src={img}/>
+            <img className='intro_img' src={img}/>
                 <div className="text">
                     <div>
                         <div class="text_">The world </div>

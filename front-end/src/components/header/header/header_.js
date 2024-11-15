@@ -12,6 +12,9 @@ const Header = () => {
         console.log('focused');
     }
 
+    // Lấy thông tin user từ dispatch nếu isAuthenticated = true
+    // const user = useSelector((state) => state.auth.user);
+
     return (
         <div className="header">
             <img className='logo' style={{width:"200px"}} alt='logo' src={logo}/>

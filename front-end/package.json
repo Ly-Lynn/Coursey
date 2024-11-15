@@ -12,13 +12,15 @@
     "@mui/material": "^6.1.1",
     "@mui/styles": "^6.1.1",
     "@react-spring/web": "^9.7.4",
-    "@reduxjs/toolkit": "^2.2.7",
+    "@reduxjs/toolkit": "^2.3.0",
+    "@storybook/router": "^8.4.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "fullpage.js": "^4.0.29",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.451.0",
     "mdb-react-ui-kit": "^9.0.0",
     "react": "^18.3.1",
@@ -32,6 +34,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
     "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -63,6 +66,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.9.0",
+    "@redux-devtools/core": "^4.0.0",
     "@storybook/addon-essentials": "^8.3.3",
     "@storybook/addon-interactions": "^8.3.3",
     "@storybook/addon-links": "^8.3.3",

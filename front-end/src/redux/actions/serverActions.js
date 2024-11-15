@@ -10,3 +10,13 @@ export const updateCoursesFailure = (err) => ({
 	type: serverTypes.UPDATE_COURSES_FAILURE,
 	payload: err,
 });
+
+export const updateAdsSuccess = (ads) => ({
+	type: serverTypes.UPDATE_ADS_SUCCESS,
+	payload: ads,
+});
+
+export const updateAdsFailure = (err) => ({
+	type: serverTypes.UPDATE_ADS_FAILURE,
+	payload: err,
+});
