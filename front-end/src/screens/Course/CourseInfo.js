@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import "./CourseScreen.modul.css"
+import "./coursescreen.modul.css"
 import InfoBanner from "../../components/course_info/banner";
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../components/header/header/header_';

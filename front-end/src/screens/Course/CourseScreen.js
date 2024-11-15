@@ -4,7 +4,7 @@ import Header from "../../components/header/header/header_";
 import SlideShow from "../../components/slideshow/SlideShow";
 import axios from "axios";
 import { updateCoursesSuccess, updateCoursesFailure, updateAdsSuccess, updateAdsFailure } from "../../redux/actions/serverActions";
-import "./CourseScreen.modul.css"
+import "./coursescreen.modul.css"
 const CourseShow = lazy(() => import("../../components/courseshow/CourseShow"));
 
 const CourseScreen = (

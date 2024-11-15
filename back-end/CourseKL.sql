@@ -12,7 +12,8 @@ CREATE TABLE "Courses" (
   "cost" float DEFAULT 0,
   "field" varchar(255),
   "learners" integer,
-  "views" integer
+  "views" integer,
+  "rating_count" integer
 );
 
 CREATE TABLE "Videos" (
