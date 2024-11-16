@@ -20,6 +20,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText } from "@mui/material";
+import LoadingFallback from '../../components/fallback/LoadingFallBack';
+
 const InfoTypography = styled(Typography)({
   color: "white",
   marginBottom: "1rem",
@@ -71,10 +73,10 @@ const CreateListRequired = ({ list }) => (
 
 
 const CourseInfoPage = () => {
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
-  const isAuthenticated = auth.isAuthenticated;
-  console.log(isAuthenticated)
+  // const dispatch = useDispatch();
+  // const auth = useSelector((state) => state.auth);
+  // const isAuthenticated = auth.isAuthenticated;
+  // console.log(isAuthenticated)
   const location = useLocation();
   const [courseData, setCourseData] = useState(null);
     console.log(location.search)
@@ -93,15 +95,13 @@ const CourseInfoPage = () => {
 
   if (!courseData) {
     return (
-      <div className="d-flex justify-content-center">
-          <div className="loader"></div>
-      </div>
+      <LoadingFallback/>
   )
   }
   console.log(courseData)
   return (
     <div>
-      { !isAuthenticated && <Header /> }
+      <Header /> 
       <div className='info-intro'>
         <div className='info-intro-container'>
           <div className='info-intro-wrapper'>

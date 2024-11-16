@@ -1,7 +1,8 @@
 .navbar {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: justify;
+    width: 20%;
 }
 .btn_nav {
     padding: 5px 15px 5px 15px;

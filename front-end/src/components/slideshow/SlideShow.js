@@ -7,8 +7,8 @@ import './slideshow.css';
 // import { ads } from '../../../public/dummy_data/ads';
 
 function SlideShow ( {ads} ) {
-  ads = ads.ads;
-  // console.log("Ads: ", ads);
+  // ads = ads.ads;
+  console.log("Ads slideshow: ", ads);
   return (
         <div className="carousel-container position-relative">
           <Carousel

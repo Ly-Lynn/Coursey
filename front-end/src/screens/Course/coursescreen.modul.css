@@ -38,11 +38,11 @@ body {
 
 .banner-container {
   position: sticky ;
-  margin: -42% 0 0 30%;
+  margin: -42% 0 0 65%;
   /* margin-top: -15%;  */
   /* margin-left: 50%; */
   left: 0;
-  width: 100%;
+  /* width: 100%; */
   height: auto;
   display: flex;
   justify-content: center;
