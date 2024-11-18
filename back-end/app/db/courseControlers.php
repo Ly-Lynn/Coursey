@@ -10,6 +10,29 @@
             $this->userController = new UserController();
         }
 
+        public function insertCourse($userInfo, $data) {
+            $accessToken = $userInfo['access_token'];
+            $username = $userInfo['username'];
+            if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
+                $courseName = $data['courseName'];
+                $courseIntro = $data['courseIntro'];
+                $lecturerID = $data['lecturerID'];
+                $hostID = $data['hostID'];
+                $image = $data["image"];
+                $hours = $data["hours"];
+                $cost = $data["cost"];
+                $field = $data["field"];
+                $learners = 0;
+                $gained = $data["gained"];
+                $require = $data["require"];
+                $ratingCount = $data["ratingcount"]
+
+                # check if hostID and letureID is exist in the system
+
+
+            }
+        }
+
         # get courses with specific id
         public function CourseUserCheck($data, $courseID, $accessToken, $api_return=true) {
             
@@ -77,7 +100,7 @@
 
         
         public function getBestViewCourse($quantity=5) {        
-            $sql = "SELECT *     FROM Courses ORDER BY views DESC LIMIT :quantity";
+            $sql = "SELECT *  FROM Courses ORDER BY views DESC LIMIT :quantity";
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->execute();

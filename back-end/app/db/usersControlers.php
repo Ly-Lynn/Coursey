@@ -230,7 +230,7 @@
         }
 
 
-        private function isAdmin($username) {
+        public function isAdmin($username) {
             $sql = "SELECT is_admin FROM Users WHERE username = :username";
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':username', $username);

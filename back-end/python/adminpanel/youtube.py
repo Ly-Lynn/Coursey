@@ -83,17 +83,12 @@ class YoububeDownloader:
         with open(save_metadata_file, "w") as f:
             json.dump(video_info_list, f, indent=4)
             
-    
-    def getURLList(self, url: str) -> List[str]:
-        with YoutubeDL(self.getPlaylist_opts) as ydl:
+    @staticmethod
+    def getURLList(url: str, getPlaylist_opts = {"extract_flat": "in_playlist", "skip_download": True
+        }) -> List[str]:
+        with YoutubeDL(getPlaylist_opts) as ydl:
             playlist_info = ydl.extract_info(url, download=False) # not download the info of playlist
         
         video_urls = [video["url"] for video in playlist_info["entries"]]
         
         return video_urls            
-    
-url = "https://www.youtube.com/playlist?list=PLSzYQGCXRW1EJLitNxaUFGU0ZU8ZaKplQ"  
-a = YoububeDownloader("CS321")
-urls = a.getURLList(url)
-# a.audioDownLoader(url)
-print(urls)        

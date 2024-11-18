@@ -113,6 +113,17 @@ Replate the host. (localhost if local)
 - Get the list of best Viewing Courses
 
 
+- Get URL video List from utube Link list (python)
+
+```bash
+
+    curl -X POST "http://localhost:8080/python/getUrllist" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "url": "https://www.youtube.com/playlist?list=PLoROMvodv4rOca_Ovz1DvdtWuz8BfSWL2"
+    }'
+```  
+
 
 ## 
 
