@@ -86,3 +86,34 @@ Replate the host. (localhost if local)
     }'
 ```
 
+## courses
+- Get course info with specific courseID and accestoken
+```bash
+    curl -X GET "http://localhost:8080/course/getCourseInfo.php?courseID=101" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -H "Content-Type: application/json" \
+    -d '{"userID": 1, "username": "lynn"}'
+
+```
+
+- Check the course is bought by a user
+```bash
+    curl -X GET "http://localhost:8080/course/checkCourseUser.php?courseID=101" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -H "Content-Type: application/json" \
+    -d '{"userID": 1, "username": "lynn"}'
+```
+
+- Get the list of best Rating Courses
+```bash
+    curl -X GET "http://localhost:8080/course/getBestgRatingCourse.php" \
+    -H "Content-Type: application/json"
+```
+
+- Get the list of best Viewing Courses
+
+
+
+## 
+
+

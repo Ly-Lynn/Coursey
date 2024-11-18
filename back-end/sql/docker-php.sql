@@ -4,13 +4,16 @@ CREATE TABLE IF NOT EXISTS Courses (
   course_intro VARCHAR(255),
   lecturer_id INT,
   host_id INT,
-  image VARCHAR(255),  url_list VARCHAR(255),
+  image VARCHAR(255),  
+  url_list VARCHAR(255),
   rate FLOAT DEFAULT 1,
   hours INT,
   cost FLOAT DEFAULT 0,
   field VARCHAR(255),
   learners INT,
-  views INT
+  views INT,
+  gained VARCHAR(255),
+  required VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Videos (

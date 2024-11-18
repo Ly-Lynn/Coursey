@@ -19,7 +19,7 @@ services:
     volumes:
       - mysqldata:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
     restart: unless-stopped
     env_file:
       - ./.env/.env
@@ -31,6 +31,17 @@ services:
       - "8081:80"
     env_file:
       - ./.env/.env
+
+  python:
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./python/adminpanel:/app
+
+
 
 
 volumes:

@@ -215,7 +215,7 @@
 
         }    
 
-        private function isValidToken($accessToken, $username) {
+        public function isValidToken($accessToken, $username) {
             $sql = "SELECT access_token FROM Users WHERE access_token = :access_token AND username = :username"; 
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':access_token', $accessToken);

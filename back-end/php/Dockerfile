@@ -18,5 +18,5 @@ RUN composer require symfony/dotenv \
 
 COPY . .
 
-RUN ls  /var/www/html/vendor
-RUN ls
+# RUN ls  /var/www/html/vendor
+# RUN ls
