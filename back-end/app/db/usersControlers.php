@@ -190,6 +190,28 @@
             $this->response("Update fail", 401);
         }
 
+        public function updateRole($accessToken, $username, $updateUser, $role) {
+            if ($this->isValidToken($accessToken, $username)) {
+                if($this->isAdmin($username)) {
+                    $sql = "PUT INTO Users Values role = :role WHERE username = :updateUser";
+                    $stmt = $this->db->conn->prepare($sql);
+                    $stmt->bindParam(':updateUser', $updateUser);
+                    $stmt->execute();
+
+                    if ($stmt->rowCount() > 0) {
+                        $this->response('User deleted successfully', 200);
+                    }
+                    else {
+                        $this->response("Delete fail", 401);
+                    }
+                }
+
+                else {
+                    return $this->response("No permission", 401);
+                }
+
+            }
+        }
         # delete user for admin
         public function deleteUser($accessToken, $username, $deletedUser){
             if ($this->isValidToken($accessToken, $username)) {

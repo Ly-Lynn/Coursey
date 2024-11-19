@@ -11,26 +11,26 @@
         }
 
 
-        public function insertCourse($accessToken, $username, $data) {
-            if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
-                $courseName = $data['courseName'];
-                $courseIntro = $data['courseIntro'];
-                $lecturerID = $data['lecturerID'];
-                $hostID = $data['hostID'];
-                $image = $data["image"];
-                $hours = $data["hours"];
-                $cost = $data["cost"];
-                $field = $data["field"];
-                $learners = 0;
-                $gained = $data["gained"];
-                $require = $data["require"];
-                $ratingCount = $data["ratingcount"]
+        // public function insertCourse($accessToken, $username, $data) {
+        //     if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
+        //         $courseName = $data['courseName'];
+        //         $courseIntro = $data['courseIntro'];
+        //         $lecturerID = $data['lecturerID'];
+        //         $hostID = $data['hostID'];
+        //         $image = $data["image"];
+        //         $hours = $data["hours"];
+        //         $cost = $data["cost"];
+        //         $field = $data["field"];
+        //         $learners = 0;
+        //         $gained = $data["gained"];
+        //         $require = $data["require"];
+        //         $ratingCount = $data["ratingcount"]
 
-                # check if hostID and letureID is exist in the system
+        //         # check if hostID and letureID is exist in the system
 
 
-            }
-        }
+        //     }
+        // }
 
         # get courses with specific id
         public function CourseUserCheck($data, $courseID, $accessToken, $api_return=true) {
