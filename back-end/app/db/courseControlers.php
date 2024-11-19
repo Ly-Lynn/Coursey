@@ -1,36 +1,64 @@
 <?php 
     require_once 'connect.php';
     require_once 'usersControlers.php';
+    require_once 'hostController.php';
+    require_once 'lecturerControlers.php';
     class CourseController {
         private $db;
         private $userController;
+        private $hostController;
+        private $lecturerController;
+
 
         public function __construct() {
             $this->db = new Database();
             $this->userController = new UserController();
+            $this->hostController = new HostController();
+            $this->lecturerController = new LectuterController();
         }
 
 
-        // public function insertCourse($accessToken, $username, $data) {
-        //     if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
-        //         $courseName = $data['courseName'];
-        //         $courseIntro = $data['courseIntro'];
-        //         $lecturerID = $data['lecturerID'];
-        //         $hostID = $data['hostID'];
-        //         $image = $data["image"];
-        //         $hours = $data["hours"];
-        //         $cost = $data["cost"];
-        //         $field = $data["field"];
-        //         $learners = 0;
-        //         $gained = $data["gained"];
-        //         $require = $data["require"];
-        //         $ratingCount = $data["ratingcount"]
+        public function insertCourse($accessToken, $username, $data) {  
+            if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
+                $fields = [];
+                $placeholders = [];
+                $params = [];
+            
+                foreach ($data as $key => $value) {
+                    if ($key === 'username') continue;
+            
+                    $fields[] = $key;
+                    $placeholders[] = ":$key";
+                    $params[":$key"] = $value;
+                }
+                
+                if (!$this->lecturerController->isLecturerExist($data['lecturer_id']) || !$this->hostController->isHostExist($data['host_id'])) {
+                    $this->response("Lecturer or Host is not exist", 401);
+                }
 
-        //         # check if hostID and letureID is exist in the system
+                else {
+                    $sql = "INSERT INTO COURSE (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
+                    $stmt = $this->db->conn->prepare($sql);
+                    $stmt->execute($params);
+    
+                    if ($stmt->rowCount() > 0) {
+                        $this->response("Course inserted successfully", 200);
+                    } 
+                    else {
+                        $this->response("Insert failed", 401);
+                    }
+                }
 
+            }
 
-        //     }
-        // }
+            else {
+                $this->response("No permission", 401);
+            }
+                
+        }
+
+        
+
 
         # get courses with specific id
         public function CourseUserCheck($data, $courseID, $accessToken, $api_return=true) {

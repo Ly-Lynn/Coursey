@@ -11,6 +11,23 @@
             $this->db = new Database();
             $this->userController = new UserController();
         }
+
+
+        public function isLecturerExist($lecturerID) {
+            $sql = "SELECT * FROM Lecturers WHERE lecturer_id = :lecturerID";
+            $stmt = $this->db->conn->prepare($sql);
+            $stmt->bindParam(':hostID', $lecturerID, PDO::PARAM_INT);
+            $stmt->execute();
+            $host = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if ($host) {
+                return true;
+            } 
+            else {
+                return false;
+            }
+        }
+
         
         public function insertLecturer($accessToken, $username, $data) {
             if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {

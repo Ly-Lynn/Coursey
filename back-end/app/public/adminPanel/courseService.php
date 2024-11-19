@@ -5,13 +5,13 @@
     require_once '../../db/courseControlers.php';
 
     header('Content-Type: application/json');
-    $lecturerController = new LectuterController();
+    $courseController = new CourseController();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $headers = getallheaders();
         $accessToken = $headers["Authorization"];   
         $data = json_decode(file_get_contents("php://input"), true);
-        $lecturerController->insertLecturer($accessToken, $data["username"], $data);
+        $courseController->insertCourse($accessToken, $data["username"], $data);
 
     }
 

@@ -11,6 +11,22 @@ class HostController {
         $this->db = new Database();
         $this->userController = new UserController();
     }
+
+
+    public function isHostExist($hostID) {
+        $sql = "SELECT * FROM Hosts WHERE host_id = :hostID";
+        $stmt = $this->db->conn->prepare($sql);
+        $stmt->bindParam(':hostID', $hostID, PDO::PARAM_INT);
+        $stmt->execute();
+        $host = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($host) {
+            return true;
+        } 
+        else {
+            return false;
+        }
+    }
     
     public function insertHost($accessToken, $username, $data) {
         if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
