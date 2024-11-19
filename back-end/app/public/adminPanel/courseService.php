@@ -2,7 +2,7 @@
 
     require_once '/var/www/html/vendor/autoload.php';
 
-    require_once '../../db/lecturerControlers.php';
+    require_once '../../db/courseControlers.php';
 
     header('Content-Type: application/json');
     $lecturerController = new LectuterController();
@@ -17,8 +17,7 @@
 
 
     else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $lecturerID = isset($_GET["lecturerID"]) ? $_GET["lecturerID"] : null;
-
+        $lecturerID = $_GET["lecturerID"];
         $lecturerController->getLecturer($lecturerID);
     }
     

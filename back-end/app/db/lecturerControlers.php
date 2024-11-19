@@ -108,15 +108,19 @@
 
         public function getLecturer($lecturerID) {
             
-                
-            $sql = "SELECT lecturer_id, name, bio, avatar FROM Lecturers WHERE lecturer_id = :lecturerID";
-            
-            $stmt = $this->db->conn->prepare($sql);
-            
-            $stmt->bindParam(':lecturerID', $lecturerID, PDO::PARAM_INT);
+            if (!$lecturerID) {
+                $sql = "SELECT * FROM Lecturers";
+                $stmt = $this->db->conn->prepare($sql);
+            }
+            else {
+                $sql = "SELECT lecturer_id, name, bio, avatar FROM Lecturers WHERE lecturer_id = :lecturerID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':lecturerID', $lecturerID, PDO::PARAM_INT);
+            }  
+
             $stmt->execute();
             
-            $lecturer = $stmt->fetch(PDO::FETCH_ASSOC);
+            $lecturer = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             if ($lecturer) {
                 $this->response($lecturer, 200);

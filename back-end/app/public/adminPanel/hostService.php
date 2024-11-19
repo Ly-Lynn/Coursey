@@ -2,24 +2,23 @@
 
     require_once '/var/www/html/vendor/autoload.php';
 
-    require_once '../../db/lecturerControlers.php';
+    require_once '../../db/hostController.php';
 
     header('Content-Type: application/json');
-    $lecturerController = new LectuterController();
+    $hostController = new hostController();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $headers = getallheaders();
         $accessToken = $headers["Authorization"];   
         $data = json_decode(file_get_contents("php://input"), true);
-        $lecturerController->insertLecturer($accessToken, $data["username"], $data);
+        $hostController->insertHost($accessToken, $data["username"], $data);
 
     }
 
 
     else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $lecturerID = isset($_GET["lecturerID"]) ? $_GET["lecturerID"] : null;
-
-        $lecturerController->getLecturer($lecturerID);
+        $hostID = isset($_GET["hostID"]) ? $_GET["hostID"] : null;
+        $hostController->getHost($hostID);
     }
     
 
@@ -27,16 +26,16 @@
     else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         $headers = getallheaders();
         $accessToken = $headers["Authorization"];   
-        $lecturerID = $_GET["lecturerID"];
+        $hostID= $_GET["hostID"];
         $data = json_decode(file_get_contents("php://input"), true);
-        $lecturerController->deleteLecturer($accessToken, $data["username"], $lecturerID);
+        $hostController->deleteHost($accessToken, $data["username"], $hostID);
     }
 
     else if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         $headers = getallheaders();
         $data = json_decode(file_get_contents("php://input"), true);
         $accessToken = $headers["Authorization"];   
-        $lecturerController->updateLecturer($accessToken, $data["username"], $data);
+        $hostController->updateHost($accessToken, $data["username"], $data);
     }
 
 ?>

@@ -10,9 +10,8 @@
             $this->userController = new UserController();
         }
 
-        public function insertCourse($userInfo, $data) {
-            $accessToken = $userInfo['access_token'];
-            $username = $userInfo['username'];
+
+        public function insertCourse($accessToken, $username, $data) {
             if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
                 $courseName = $data['courseName'];
                 $courseIntro = $data['courseIntro'];

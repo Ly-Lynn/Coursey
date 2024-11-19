@@ -147,7 +147,7 @@ Replate the host. (localhost if local)
 
 - Get lecturer info with leturerID
 ```bash
-    curl -X GET "http://localhost:8080/adminPanel/lecturerService.php?lecturerI2"
+    curl -X GET "http://localhost:8080/adminPanel/lecturerService.php?lecturerID=2"
 ```
 
 - Delete lecturer
@@ -170,6 +170,46 @@ Replate the host. (localhost if local)
         "username": "lynn", 
         "bio": "Machinelearning is ez", #option
         "lecturerID": 3
+    }'
+```
+
+- Get hostInfo with hostID
+```bash
+    curl -X GET "http://localhost:8080/adminPanel/hostService.php?hostID=1"
+```
+
+- Insert host
+```bash
+    curl -X POST http://localhost:8080/adminPanel/hostService.php \
+    -H "Content-Type: application/json" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -d '{
+        "username": "lynn",
+        "hostID": 102,
+        "hostName": "AI Reseach",
+        "logoImage": "ai_logo_new.png"
+    }'
+```
+
+- Delete host
+```bash
+    curl -X DELETE "http://localhost:8080/adminPanel/hostService.php?hostID=100" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -d '{
+        "username": "lynn"
+    }'
+```
+
+- Update host
+```bash
+    curl -X PUT "http://localhost:8080/adminPanel/hostService.php" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -d '{
+        "username": "lynn",
+        "hostID": 102,
+        "host_name": "Vinbig"
     }'
 ```
 
