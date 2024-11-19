@@ -17,6 +17,15 @@ const initialState = {
             image: "https://www.classcentral.com/report/wp-content/uploads/2022/04/Artificial-Intelligence-Featured-Image.png",
         },
     ],
+    courses: [
+        {
+            course_id: 101,
+            course_name: "Introduction to Machine Learning",
+            lecturer_name: "Lynn Lee",
+            cost: 200,
+            image: "https://www.classcentral.com/report/wp-content/uploads/2022/04/Artificial-Intelligence-Featured-Image.png",
+        },
+    ]
 };
 
 const userSlice = createSlice({

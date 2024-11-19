@@ -10,9 +10,9 @@ import NavBarAuth from '../navBar/navBarAuth_';
 const Header = () => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
+    const user = useSelector((state) => state.auth.user);
     const isAuthenticated = auth.isAuthenticated;
-    console.log(isAuthenticated)
-
+    
     const handleTextChange = (text) => {
         console.log(text);
     }
@@ -27,8 +27,8 @@ const Header = () => {
             <SearchBar 
                 onFocus={handleFocus}
                 onChangeText={handleTextChange} />
-            {isAuthenticated && <NavBar/>}
-            {!isAuthenticated && <NavBarAuth />}     
+            {!isAuthenticated && <NavBar/>}
+            {isAuthenticated && <NavBarAuth userId={user.id} userName={user.username}/>}     
         </div>
     )
 }

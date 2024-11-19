@@ -84,7 +84,7 @@ const ShoppingCart = () => {
                     onClick={handleClose}
                     PaperProps={{
                         style: {
-                            maxHeight: '400px',
+                            maxHeight: '450px',
                             width: '300px',
                         }
                     }}

@@ -7,6 +7,12 @@ const serverSlice = createSlice({
         ads: [],
         coursesError: '',
         adsError: '',
+        
+        currentStudy: [],
+        currentStudyError: '',
+
+        completedStudy: [],
+        completedStudyError: ''
     },
     reducers: {
         updateCoursesSuccess: (state, action) => {
@@ -29,6 +35,25 @@ const serverSlice = createSlice({
             state.ads = [];
             state.adsError = action.payload;
         },
+
+        // Current study courses
+        updateCurrentStudySuccess: (state, action) => {
+            state.currentStudy = action.payload;
+
+        },
+        updateCurrentStudyFailure: (state, action) => {
+            state.currentStudy = [];
+            state.currentStudyError = action.payload;
+        },
+
+        // Completed study courses
+        updateCompletedStudySuccess: (state, action) => {
+            state.userCompletedCourses = action.payload;
+        },
+        updateCompletedStudyFailure: (state, action) => {
+            state.completedStudy = [];
+            state.completedStudyError = action.payload;
+        }
     },
 });
 
