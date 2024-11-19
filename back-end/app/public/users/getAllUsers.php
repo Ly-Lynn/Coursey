@@ -12,7 +12,6 @@
         $accessToken = $headers["Authorization"] ?? null;
         $data = json_decode(file_get_contents("php://input"), true);
         $userController->getAllUsers($accessToken, $data['username']);
-
     }
 
 

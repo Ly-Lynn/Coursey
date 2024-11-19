@@ -31,7 +31,7 @@ Replate the host. (localhost if local)
 ```bash
     curl -X POST http://localhost:8080/auth/changePassword.php \
     -H "Content-Type: application/json" \
-    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzA5OTA0NDd9" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
     -d '{"username": "lynn", "newPassword": "abc"}'
 ```
 
@@ -48,7 +48,7 @@ Replate the host. (localhost if local)
 ```bash
     curl -X POST http://localhost:8080/users/getUsers.php \
     -H "Content-Type: application/json" \
-    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzA5OTMyMjR9" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
     -d '{"username": "lynn"}'
 ```
 
@@ -57,7 +57,7 @@ Replate the host. (localhost if local)
 ```bash
     curl -X POST http://localhost:8080/users/getAllUsers.php \
     -H "Content-Type: application/json" \
-    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzA5OTMyMjR9" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
     -d '{"username": "lynn"}'
 ```
 
@@ -66,11 +66,11 @@ Replate the host. (localhost if local)
 ```bash
     curl -X PUT http://localhost:8080/users/updateUsers.php \
     -H "Content-Type: application/json" \
-    -H "Authorization: eyJ1c2VybmFtZSI6Imtob2F0biIsImV4cGlyeSI6MTczMDkwOTM0OH0=" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
     -d '{
-    "username": "khoatn",
-    "gmail": "khoatn@gmail.com",
-    "quote": "No pain no gain"
+    "username": "lynn",
+    "gmail": "lynn@gmail.com",
+    "quote": "Love or promote"
     }'
 ```
 
@@ -79,10 +79,10 @@ Replate the host. (localhost if local)
 ```bash
     curl -X PUT http://localhost:8080/users/deleteUsers.php \
     -H "Content-Type: application/json" \
-    -H "Authorization: eyJ1c2VybmFtZSI6Imtob2F0biIsImV4cGlyeSI6MTczMDkwOTM0OH0=" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
     -d '{
-    "username": "khoatn",
-    "deletedUser": "lynn",
+    "username": "lynn",
+    "deletedUser": "khoatn",
     }'
 ```
 
@@ -106,12 +106,15 @@ Replate the host. (localhost if local)
 
 - Get the list of best Rating Courses
 ```bash
-    curl -X GET "http://localhost:8080/course/getBestgRatingCourse.php" \
+    curl -X GET "http://localhost:8080/course/getBestRatingCourse.php" \
     -H "Content-Type: application/json"
 ```
 
 - Get the list of best Viewing Courses
-
+```bash
+    curl -X GET "http://localhost:8080/course/getBestViewCourse.php" \
+    -H "Content-Type: application/json"
+```
 
 - Get URL video List from utube Link list (python)
 
@@ -125,6 +128,50 @@ Replate the host. (localhost if local)
 ```  
 
 
-## 
+
+## Admin Panel
+
+- Add new Lecture
+```bash
+    curl -X POST http://localhost:8080/adminPanel/lecturerService.php \
+    -H "Content-Type: application/json" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -d '{
+        "username": "lynn",
+        "lecturerID": 100,
+        "name": "HoangNgocLuong",
+        "bio": "An experienced lecturer in Evolution",
+        "avatar": "avatar.png"
+    }'
+```
+
+- Get lecturer info with leturerID
+```bash
+    curl -X GET "http://localhost:8080/adminPanel/lecturerService.php?lecturerI2"
+```
+
+- Delete lecturer
+```bash
+    curl -X DELETE "http://localhost:8080/adminPanel/lecturerService.php?lecturerID=100" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -d '{
+        "username": "lynn"
+    }'
+
+```
+
+- Update lecture info
+```bash
+    curl -X PUT "http://localhost:8080/adminPanel/lecturerService.php" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -d '{
+        "username": "lynn", 
+        "bio": "Machinelearning is ez", #option
+        "lecturerID": 3
+    }'
+```
+
 
 

@@ -236,8 +236,8 @@
             $stmt->bindParam(':username', $username);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            
             if($result['is_admin'] == 1) {
+
                 return true;
             }
             return false;
