@@ -87,7 +87,6 @@ const NavBarAuth = ({
                             },
                         },
                     }}
-                    // Điều chỉnh vị trí menu để nó xuất hiện giữa avatar
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'center',

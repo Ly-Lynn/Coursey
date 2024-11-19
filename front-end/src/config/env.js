@@ -2,30 +2,38 @@
 const ENV = {
     development: {
       hostName: 'http://localhost:3000/',
-      // các config khác cho môi trường development
-    },
-    staging: {
-      hostName: 'https://staging-api.yourapp.com/',
-      // các config khác cho môi trường staging
     },
     production: {
-      hostName: 'https://api.yourapp.com/',
-      // các config khác cho môi trường production
+      hostName: 'https://f02b-222-253-85-202.ngrok-free.app/',
     }
   };
   
-  // Lấy môi trường từ process.env.NODE_ENV hoặc mặc định là development
-  const environment = process.env.NODE_ENV || 'development';
+  const environment = 'production';
   
-  // Export config dựa theo môi trường
   export const config = ENV[environment];
   
-  // Export các biến riêng lẻ để dễ sử dụng
   export const { hostName } = config;
   
-  // Có thể export thêm các hằng số khác
   export const API_ENDPOINTS = {
-    LOGIN: 'api/auth/login',
-    VALIDATE: 'api/auth/validate',
-    // ... các endpoint khác
+    SIGNUP: 'auth/signup.php',
+    LOGIN: 'auth/login.php',
+    CHANGE_PASS: 'auth/changePassword.php',
+    FORGOT_PASSWORD: 'auth/forgotPassword.php',
+    RESET_PASSWORD: 'auth/resetPassword.php',
+    LOGOUT: 'auth/logout.php',
+
+    GET_USER:'users/getUsers.php',
+    GET_ALL_USER: 'users/getAllUsers.php',
+    UPDATE_USER: 'users/updateUsers.php',
+    DELETE_USER: 'users/deleteUsers.php',
+    UPDATE_PROFILE: 'auth/updateProfile.php',
+
+    GET_COURSE_INFO: 'course/getCourseInfo.php',
+    CHECK_BOUGHT: 'course/checkCourseUser.php',
+    GET_BEST_RATING: 'course/getBestRatingCourse.php',
+    GET_BEST_VIEWING: 'course/getBestViewCourse.php' ,
+    GET_URL_VID: 'python/getUrllist',
+
+    GET_CURRENT_STUDY: '',  // trả thông tin từng course mà user đang học
+    GET_COMPLETED_STUDY: '', // trả thông tin từng course mà user đã học xong
   };
