@@ -16,7 +16,7 @@
         public function isLecturerExist($lecturerID) {
             $sql = "SELECT * FROM Lecturers WHERE lecturer_id = :lecturerID";
             $stmt = $this->db->conn->prepare($sql);
-            $stmt->bindParam(':hostID', $lecturerID, PDO::PARAM_INT);
+            $stmt->bindParam(':lecturerID', $lecturerID, PDO::PARAM_INT);
             $stmt->execute();
             $host = $stmt->fetch(PDO::FETCH_ASSOC);
     
