@@ -2,22 +2,28 @@
     require_once '/var/www/html/vendor/autoload.php';
     $dotenv = Dotenv\Dotenv::createImmutable("/app/.env");
     $dotenv->load();
-    
+
     class Database {
         private $host;
         private $user;
         private $password;
         private $dbName;
-
+        private static $instance = null;
         public $conn;
 
-        public function __construct()
-        {   
+        private function __construct() {
             $this->host = $_ENV["MYSQL_HOST"];
             $this->user = $_ENV["MYSQL_USER"];
             $this->password = $_ENV["MYSQL_PASSWORD"];
             $this->dbName = $_ENV["MYSQL_DATABASE"];
             $this->connect();
+        }
+
+        public static function getInstance() {
+            if (self::$instance === null) {
+                self::$instance = new Database();
+            }
+            return self::$instance;
         }
 
         private function connect() {
@@ -29,8 +35,5 @@
                 die("Connected fail to database: " . $e->getMessage());
             }
         }
-
-
     }
-
 ?>

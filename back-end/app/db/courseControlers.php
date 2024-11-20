@@ -1,68 +1,77 @@
 <?php 
+    // ini_set('memory_limit', '5096M');
+
     require_once 'connect.php';
     require_once 'usersControlers.php';
     require_once 'hostController.php';
     require_once 'lecturerControlers.php';
+    require_once 'videoController.php';
     class CourseController {
         private $db;
         private $userController;
         private $hostController;
         private $lecturerController;
+        private $videoController;
 
 
         public function __construct() {
-            $this->db = new Database();
+            $this->db = Database::getInstance();
             $this->userController = new UserController();
             $this->hostController = new HostController();
             $this->lecturerController = new LectuterController();
+            $this->videoController = new VideoController();
         }
 
 
-        public function insertCourse($accessToken, $username, $data) {  
-            if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
+        public function insertCourse($accessToken, $username, $data) { 
+            $response = ['error' => null, 'insertCourse' => false, 'insertVideo' => false];
+            $statusCode = 401;
+            $this->response("khoa", 200);
+            return;
+                if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
+
+                if (!$this->lecturerController->isLecturerExist($data['lecturer_id']) || !$this->hostController->isHostExist($data['host_id'])) {
+                    $response['error'] = "Lecturer or Host does not exist";
+                    $this->response($response, $statusCode);
+                    return;
+                }
+        
                 $fields = [];
                 $placeholders = [];
                 $params = [];
-            
+        
                 foreach ($data as $key => $value) {
                     if ($key === 'username') continue;
-            
+        
                     $fields[] = $key;
                     $placeholders[] = ":$key";
                     $params[":$key"] = $value;
                 }
-                
-                if (!$this->lecturerController->isLecturerExist($data['lecturer_id']) || !$this->hostController->isHostExist($data['host_id'])) {
-                    $this->response("Lecturer or Host is not exist", 401);
-                }
-
-                else {
-                    $sql = "INSERT INTO COURSE (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
-                    $stmt = $this->db->conn->prepare($sql);
-                    $stmt->execute($params);
-    
-                    if ($stmt->rowCount() > 0) {
-                        $this->response("Course inserted successfully", 200);
-                    } 
-                    else {
-                        $this->response("Insert failed", 401);
-                    }
-                }
-
-            }
-
-            else {
-                $this->response("No permission", 401);
-            }
-                
-        }
 
         
-
+                $sql = "INSERT INTO COURSES (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->execute($params);
+        
+                if ($stmt->rowCount() > 0) {
+                    $response['insertCourse'] = true;
+                    
+                    if ($this->videoController->insertVideo($accessToken, $username, $data)) {
+                        $response['insertVideo'] = true;
+                        $statusCode = 200;
+                    }
+                } else {
+                    $response['error'] = "Failed to insert course";
+                }
+            } else {
+                $response['error'] = "No permission";
+            }
+        
+            $this->response($response, $statusCode);
+        }
 
         # get courses with specific id
         public function CourseUserCheck($data, $courseID, $accessToken, $api_return=true) {
-            
             $userID = $data['userID'];
             $username = $data['username'];
             $return = ['isValidCourseUsers'=> false, 'isValidUsers' => false];

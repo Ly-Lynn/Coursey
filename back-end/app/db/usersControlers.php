@@ -6,7 +6,7 @@
         private $db;
         
         public function __construct() {
-            $this->db = new Database();
+            $this->db = Database::getInstance();
         }
         
         # signup
@@ -193,7 +193,7 @@
         public function updateRole($accessToken, $username, $updateUser, $role) {
             if ($this->isValidToken($accessToken, $username)) {
                 if($this->isAdmin($username)) {
-                    $sql = "PUT INTO Users Values role = :role WHERE username = :updateUser";
+                    $sql = "PUT INTO Users VALUES role = :role WHERE username = :updateUser";
                     $stmt = $this->db->conn->prepare($sql);
                     $stmt->bindParam(':updateUser', $updateUser);
                     $stmt->execute();

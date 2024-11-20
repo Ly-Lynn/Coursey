@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Nov 18, 2024 at 03:30 PM
+-- Generation Time: Nov 20, 2024 at 03:55 AM
 -- Server version: 8.0.40
 -- PHP Version: 8.2.8
 
@@ -71,7 +71,8 @@ CREATE TABLE `Hosts` (
 --
 
 INSERT INTO `Hosts` (`host_id`, `host_name`, `logo_image`) VALUES
-(1, 'University of Information Technology', 'A');
+(1, 'University of Information Technology', 'A'),
+(102, 'Vinbig', 'ai_logo_new.png');
 
 -- --------------------------------------------------------
 
@@ -91,7 +92,8 @@ CREATE TABLE `Lecturers` (
 --
 
 INSERT INTO `Lecturers` (`lecturer_id`, `name`, `bio`, `avatar`) VALUES
-(1, 'Khoa Tran Nhat', 'No Pain No Gain', 'A');
+(1, 'Khoa Tran Nhat', 'No Pain No Gain', 'A'),
+(3, 'new_avatar.png', 'Machinelearning is ez', 'new_avatar.png');
 
 -- --------------------------------------------------------
 
@@ -140,7 +142,7 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`id`, `username`, `gmail`, `password`, `reset_token`, `avatar`, `quote`, `university_id`, `is_verified`, `is_admin`, `access_token`, `refresh_token`) VALUES
-(1, 'lynn', 'lynn@gmail.com', '$2y$10$DTScXjL2lR3x6FQQB.oaYeJHRIuXvlllHGjXB8AmNzuoqrnMZxTra', NULL, NULL, NULL, NULL, 0, 0, 'eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9', 'eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE5ODA5Nzd9'),
+(1, 'lynn', 'lynn@gmail.com', '$2y$10$DTScXjL2lR3x6FQQB.oaYeJHRIuXvlllHGjXB8AmNzuoqrnMZxTra', NULL, NULL, NULL, NULL, 0, 1, 'eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9', 'eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE5ODA5Nzd9'),
 (2, 'khoatn', 'khoatn@gmail.com', '$2y$10$UkXkS.dcxlGYo4nL6a3Equ6ekFihpbHPDImzYgI.ViFgQXyxiiWg.', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------

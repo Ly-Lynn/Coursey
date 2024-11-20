@@ -8,7 +8,7 @@
         private $userController;
         
         public function __construct() {
-            $this->db = new Database();
+            $this->db = Database::getInstance();
             $this->userController = new UserController();
         }
 
