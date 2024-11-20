@@ -38,7 +38,9 @@ const serverSlice = createSlice({
 
         // Current study courses
         updateCurrentStudySuccess: (state, action) => {
+            console.log("Reducer: UPDATE_CURRENT_STUDY_SUCCESS", action.payload);
             state.currentStudy = action.payload;
+            state.currentStudyError = '';
 
         },
         updateCurrentStudyFailure: (state, action) => {
@@ -48,7 +50,9 @@ const serverSlice = createSlice({
 
         // Completed study courses
         updateCompletedStudySuccess: (state, action) => {
-            state.userCompletedCourses = action.payload;
+            console.log("Reducer: UPDATE_COMPLETED_STUDY_SUCCESS", action.payload);
+            state.completedStudy = action.payload;
+            state.completedStudyError = '';
         },
         updateCompletedStudyFailure: (state, action) => {
             state.completedStudy = [];
@@ -62,6 +66,10 @@ export const {
     updateCoursesFailure,
     updateAdsSuccess,
     updateAdsFailure,
+    updateCurrentStudySuccess,
+    updateCurrentStudyFailure,
+    updateCompletedStudySuccess,
+    updateCompletedStudyFailure
 } = serverSlice.actions;
 
 export default serverSlice.reducer;

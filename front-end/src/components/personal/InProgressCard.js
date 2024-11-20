@@ -7,6 +7,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
+import CustomButton from "../custom_components/CustomButton";
+
 const theme = createTheme({
     palette: {
       primary: {
@@ -41,8 +43,8 @@ export default function InProgressCard({ courseID=101,
                                         host_name='Meta',
                                         course_image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb8ocX1uyxWlO0NGGjiwM4w00ooWe9e3DMoA&s" }) {
     return (
-        <div>
-            <Card sx={{ display: "flex", flexDirection: "row", padding: "1rem", alignItems: "center", border:"1px solid black" }}>
+        <div style={{marginBottom:'1.5rem'}}>
+            <Card sx={{ display: "flex", borderRadius:0, flexDirection: "row", padding: "1rem", alignItems: "center", border:"1px solid black" }}>
                 <CardMedia
                     component="img"
                     style={{ width:"15%" }}
@@ -51,7 +53,7 @@ export default function InProgressCard({ courseID=101,
                 />
                 <Box sx={{ display:'flex',  flex: 1 }}>
                     <Box  sx={{ width: "80%"}}>
-                    <Typography sx={{marginLeft:'1rem'}} variant="body2">Course | {host_name}</Typography>
+                    <Typography sx={{marginLeft:'1rem', marginBottom:'0.5rem'}} variant="body2">Course | {host_name}</Typography>
 
                     <Typography sx={{marginLeft:'1rem',fontWeight:'bold'}} variant="h5">{course_name}</Typography>
                     {/* <Link to={`/courses/${courseID}`}> */}
@@ -62,7 +64,7 @@ export default function InProgressCard({ courseID=101,
                     </Box>
                     <Divider orientation="vertical" variant="middle" flexItem />
                     <Box sx={{ display:"flex", width:'12rem', justifyContent:'center', alignItems:'center'}}>
-                        <Button style={{ height: "3rem", borderRadius:0}} endIcon={<KeyboardDoubleArrowRightIcon/>} color='#000' variant="contained">Study</Button>
+                        <CustomButton style={{ height: "3rem", borderRadius:0}} endIcon={<KeyboardDoubleArrowRightIcon/>} color='#000' variant="contained">Study</CustomButton>
                     </Box>
                     {/* </Link> */}
                 </Box>
