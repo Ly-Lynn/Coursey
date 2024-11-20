@@ -11,20 +11,48 @@ import { hostName, API_ENDPOINTS } from "../../config/env";
 import CompletedCard from "./CompletedCard";
 import InProgressCard from "./InProgressCard";
 
-export default function MyLearning(isCompleted=false) {
+export default function MyLearning({ isCompleted=false }) {
     const dispatch = useDispatch();
     const server = useSelector((state) => state.server);
     const completedCourses = server.completedStudy;
-    const currentCourses = user.currentStudy;
-    
+    const currentCourses = server.currentStudy;
+    // console.log("Server: ", server);
+    console.log("Completed Courses: ", completedCourses);
+    console.log("Current Courses: ", currentCourses);
     return (
-        <div>
-            <Paper>
-                <Box sx={{display:"flex", flexDirection:"row", padding:"0 10rem 0 10rem"}}>
+        <div style={{
+            padding: "20px",
+            maxWidth: "100%",
+            height: "100%"
+        }}>
+            <Paper elevation={3} sx={{
+                maxHeight: "40vh", 
+                border:0,
+                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0)",
+                overflow: "auto", 
+            }}>
+                <Box sx={{
+                    display: "flex", 
+                    flexDirection: "column",
+                    padding: {
+                        xs: "0 1rem", 
+                        md: "0 5rem", 
+                        lg: "0 10rem" 
+                    },
+                    gap: 1
+                }}>
                     {isCompleted ? completedCourses.map((course) => {
-                        return <CompletedCard />
+                        return <CompletedCard courseID={course.course_id}
+                                            course_name={course.course_name}
+                                            host_name={course.host_name}
+                                            progress={course.progress}
+                                            course_image={course.image}/>
                     }) : currentCourses.map((course) => {
-                        return <InProgressCard />
+                        return <InProgressCard courseID={course.course_id}
+                                            course_name={course.course_name}
+                                            host_name={course.host_name}
+                                            progress={course.progress}
+                                            course_image={course.image}/>
                     })}
                 </Box>
             </Paper>

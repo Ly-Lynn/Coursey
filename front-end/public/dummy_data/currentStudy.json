@@ -1,0 +1,48 @@
+[
+    {
+        "course_id": 101,
+        "course_name": "Introduction to Machine Learning",
+        "lecturer_name": "Lynn Lee",
+        "cost": 200,
+        "image": "https://www.classcentral.com/report/wp-content/uploads/2022/04/Artificial-Intelligence-Featured-Image.png",
+        "progress": 50,
+        "host_name": "Meta"
+    },
+    {
+        "course_id": 102,
+        "course_name": "Advanced Python Programming",
+        "lecturer_name": "Bob Brown",
+        "cost": 300,
+        "image": "https://www.classcentral.com/report/wp-content/uploads/2022/04/Artificial-Intelligence-Featured-Image.png",
+        "progress": 65,
+        "host_name": "IBM"
+    }
+    ,
+    {
+        "course_id": 103,
+        "course_name": "Web Development Fundamentals",
+        "lecturer_name": "Sarah Wilson",
+        "cost": 250,
+        "image": "https://www.classcentral.com/report/wp-content/uploads/2022/04/Artificial-Intelligence-Featured-Image.png",
+        "progress": 40,
+        "host_name": "Udacity"
+    },
+    {
+        "course_id": 104,
+        "course_name": "Data Science Basics",
+        "lecturer_name": "Mike Johnson",
+        "cost": 275,
+        "image": "https://www.classcentral.com/report/wp-content/uploads/2022/04/Artificial-Intelligence-Featured-Image.png",
+        "progress": 80,
+        "host_name": "Coursera"
+    },
+    {
+        "course_id": 105,
+        "course_name": "Cloud Computing Essentials",
+        "lecturer_name": "David Chen",
+        "cost": 350,
+        "image": "https://www.classcentral.com/report/wp-content/uploads/2022/04/Artificial-Intelligence-Featured-Image.png",
+        "progress": 30,
+        "host_name": "AWS"
+    }
+]
