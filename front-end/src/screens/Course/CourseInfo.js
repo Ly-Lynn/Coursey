@@ -154,7 +154,12 @@ const CourseInfoPage = () => {
         </div>
       </div>
       <div className='banner-container'>
-        { courseData && <InfoBanner title={courseData.course_name} image={courseData.image} cost={courseData.cost} hours={courseData.hours} /> }
+        { courseData && <InfoBanner course_id={courseData.course_id} 
+                                    title={courseData.course_name}
+                                    lecturer_name={courseData.lecturer_name} 
+                                    image={courseData.image} 
+                                    cost={courseData.cost} 
+                                    hours={courseData.hours} /> }
 
       </div>
     </div>

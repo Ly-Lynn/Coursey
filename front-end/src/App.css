@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Pre:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Pre:wght@600&family=Press+Start+2P&display=swap');
+body {
+  font-family: 'Edu AU VIC WA NT Pre', sans-serif;
+  font-family: "Press Start 2P", system-ui;
+}
 .App {
   text-align: center;
 }
@@ -63,3 +69,4 @@
 ::-webkit-scrollbar-corner {
   background: #f5f5f5;
 }
+

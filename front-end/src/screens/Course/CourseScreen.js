@@ -1,3 +1,4 @@
+import { hostName, API_ENDPOINTS } from "../../config/env";
 import { React, useState, lazy, useEffect, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/header/header/header_";
@@ -21,6 +22,7 @@ const CourseScreen = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
+                // const courses = await axios.get(`${hostName}${API_ENDPOINTS.GET_BEST_RATING}`, {
                 const courses = await axios.get("/dummy_data/courses.json");
                 dispatch(updateCoursesSuccess(courses.data));
                 console.log("Courses: ", courses.data);
