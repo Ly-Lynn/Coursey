@@ -6,7 +6,7 @@
         private $db;
         
         public function __construct() {
-            $this->db = new Database();
+            $this->db = Database::getInstance();
         }
         
         # signup
@@ -190,6 +190,28 @@
             $this->response("Update fail", 401);
         }
 
+        public function updateRole($accessToken, $username, $updateUser, $role) {
+            if ($this->isValidToken($accessToken, $username)) {
+                if($this->isAdmin($username)) {
+                    $sql = "PUT INTO Users VALUES role = :role WHERE username = :updateUser";
+                    $stmt = $this->db->conn->prepare($sql);
+                    $stmt->bindParam(':updateUser', $updateUser);
+                    $stmt->execute();
+
+                    if ($stmt->rowCount() > 0) {
+                        $this->response('User deleted successfully', 200);
+                    }
+                    else {
+                        $this->response("Delete fail", 401);
+                    }
+                }
+
+                else {
+                    return $this->response("No permission", 401);
+                }
+
+            }
+        }
         # delete user for admin
         public function deleteUser($accessToken, $username, $deletedUser){
             if ($this->isValidToken($accessToken, $username)) {
@@ -215,7 +237,7 @@
 
         }    
 
-        private function isValidToken($accessToken, $username) {
+        public function isValidToken($accessToken, $username) {
             $sql = "SELECT access_token FROM Users WHERE access_token = :access_token AND username = :username"; 
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':access_token', $accessToken);
@@ -230,14 +252,14 @@
         }
 
 
-        private function isAdmin($username) {
+        public function isAdmin($username) {
             $sql = "SELECT is_admin FROM Users WHERE username = :username";
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':username', $username);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            
             if($result['is_admin'] == 1) {
+
                 return true;
             }
             return false;
