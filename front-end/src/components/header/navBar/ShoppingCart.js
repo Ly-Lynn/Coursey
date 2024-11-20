@@ -29,7 +29,7 @@ const OrderButton = styled(Button)({
 const ShoppingCart = () => {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.user.orders);
-    console.log(orders);   
+    // console.log(orders);   
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     

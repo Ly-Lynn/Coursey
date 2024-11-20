@@ -14,6 +14,10 @@ import { Card,
         CardHeader } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { updateProfile } from "../../redux/slices/authSlice";
+
+import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import CustomButton from "../../components/custom_components/CustomButton";
+
 const CustomTypography = styled("div")({
     fontFamily: "'Press Start 2P', system-ui",
     display: "flex",
@@ -31,13 +35,64 @@ const CustomTypography = styled("div")({
     },
 });
 
+const CustomTextField = styled(TextField)(({ theme, editmode }) => ({
+    width: '60%',
+        
+    '& .MuiOutlinedInput-root': {
+        borderRadius: 0,
+      '& fieldset': {
+        borderColor: '#000',
+      },
+      '&:hover fieldset': {
+        borderColor: '#000',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#000',
+      },
+    },
+    
+    '& .MuiInputLabel-root': {
+      color: '#000',
+      '&.Mui-focused': {
+        color: '#000',
+      },
+    },
+  
+    '& .MuiInputBase-input': {
+      color: '#000',
+    },
+  
+    ...(editmode === 'true' && {
+      '& .MuiFilledInput-root': {
+        borderRadius: 0,
+        fontWeight: 'bold',
+        backgroundColor: '#000',
+        '&:hover': {
+          backgroundColor: '#222',
+        },
+        '&.Mui-focused': {
+          backgroundColor: '#000',
+        },
+        '& .MuiInputBase-input': {
+          color: '#fff',
+        },
+      },
+      '& .MuiInputLabel-root': {
+        color: '#fff',
+        '&.Mui-focused': {
+          color: '#fff',
+        },
+      },
+    }),
+  }));
+
 const Ribbon = styled(Paper)(({ theme }) => ({
     textAlign: 'center',    
     display: 'flex',
     justifyContent: 'center',
     position: 'absolute',
-    right: '30px',
-    top: 'calc(0.2 * 0.5em)',
+    right: '12rem',
+    top: 'calc(2.4 * 1.5em)',
     height:"200px",
     width:"200px",
     padding: '0.2em',
@@ -54,17 +109,20 @@ export default function PersonalCard() {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
     const userInfo = auth.user;
-    console.log(userInfo);
-
-    const [editMode, setEditMode] = useState(false); // Toggle chế độ chỉnh sửa
+    console.log("PersonalCard info", userInfo);
+    const [exists, setExists] = useState(false);
+    
+    const [editMode, setEditMode] = useState(false); 
     const [editQuote, setEditQuote] = useState(false);
     const [userData, setUserData] = useState({
         username: userInfo.username,
         email: userInfo.email,
     });
+    
+    const [beforeUpdate, setBeforeUpdate] = useState({ ...userInfo });
 
     const [quote, setQuote] = useState(userInfo.quote);
-    const [loading, setLoading] = useState(false); // Loading state khi gọi API
+    const [loading, setLoading] = useState(false); 
 
     const handleChange = (e) => {
         setUserData({
@@ -76,8 +134,15 @@ export default function PersonalCard() {
     const handleSaveChanges = async () => {
         setLoading(true);
         try {
-            await dispatch(updateProfile(userData)).unwrap(); 
-            setEditMode(false); 
+            if (userData.username === beforeUpdate.username && userData.email === beforeUpdate.email) {
+                setExists(true);
+                setEditMode(false);
+                return;
+            }
+            // await dispatch(updateProfile(userData)).unwrap(); 
+            console.log("User data afer update: ", userData);
+            setEditMode(false);
+            setBeforeUpdate({ ...userData }); 
         } catch (error) {
             console.error("Error updating profile:", error); 
         } finally {
@@ -90,37 +155,55 @@ export default function PersonalCard() {
     };
 
     return (
-        <div>
-            <Card sx={{ display: "flex", flexDirection: "row", padding: "1rem", alignItems: "center", border:"1px solid black" }}>
-                <Avatar src={userInfo.ava} alt="Avatar" variant="square" sx={{ width: "15%", height: "15%", marginRight: "1rem" }} />
+        <div style={{margin:'1rem 8rem 1.5rem 8rem'}}>
+            <Snackbar
+                open={exists}
+                autoHideDuration={1200}
+                onClose={() => setExists(false)}
+                message="Nothing changed!"
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                variant="filled"
+                sx={{
+                    '& .MuiSnackbarContent-root': {
+                    backgroundColor: '#000', 
+                    color: 'white', 
+                    fontSize: '16px', 
+                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                    },
+                }}
+            />
+            <Card sx={{ display: "flex", flexDirection: "row", padding: "1rem", alignItems: "center", border:"1px solid black", borderRadius:0, boxShadow:'0px 4px 12px rgba(0, 0, 0, 0.5)' }}>
+                <Avatar src={userInfo.ava} alt="Avatar" variant="square" sx={{ width: "100px", height: "100px", marginRight: "1rem" }} />
 
                 <Box sx={{ flex: 1 }}>
-                    <CardHeader title="Your Information" />
+                    <CardHeader sx={{p:0, paddingLeft:1}} titleTypographyProps={{ fontSize: '1.25rem', fontWeight:'bold'}} title="Your Information" />
                     <CardContent>
                         <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                             {/* Username */}
-                            <TextField
-                                label="Username"
-                                name="username"
-                                sx={{width: "60%"}}
+                            <CustomTextField
+                                size="small"
+                                editmode={editMode.toString()}
                                 value={userData.username}
                                 onChange={handleChange}
+                                label="Username"
+                                name="username"
+                                variant={editMode ? "filled" : "outlined"}
                                 InputProps={{
                                     readOnly: !editMode,
                                 }}
-                                variant="outlined"
                             />
                             {/* Email */}
-                            <TextField
+                            <CustomTextField
+                                size="small"
                                 label="Email"
                                 name="email"
-                                sx={{width: "60%"}}
                                 value={userData.email}
                                 onChange={handleChange}
+                                editmode={editMode.toString()}
+                                variant={editMode ? "filled" : "outlined"}
                                 InputProps={{
                                     readOnly: !editMode,
                                 }}
-                                variant="outlined"
                             />
                         </Box>
                     </CardContent>
@@ -128,17 +211,17 @@ export default function PersonalCard() {
                     <CardActions>
                         {!editMode ? (
                             <>
-                                <Button variant="contained" onClick={() => setEditMode(true)}>
+                                <CustomButton variant="outlined" onClick={() => setEditMode(true)}>
                                     Edit Info
-                                </Button>
-                                <Button variant="contained" color="error">
+                                </CustomButton>
+                                <CustomButton variant="contained" color="error">
                                     Change Password
-                                </Button>
+                                </CustomButton>
                             </>
                         ) : (
-                            <Button variant="contained" color="success" onClick={handleSaveChanges}>
+                            <CustomButton variant="contained" color="success" onClick={handleSaveChanges}>
                                 Save Changes
-                            </Button>
+                            </CustomButton>
                         )}
                     </CardActions>
                 </Box>

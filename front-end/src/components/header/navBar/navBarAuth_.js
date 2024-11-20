@@ -15,17 +15,22 @@ import './navBar.modul.css'
 import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ShoppingCart from "./ShoppingCart";
+import { useNavigate } from "react-router-dom";
 
 const NavBarAuth = ({
     userAva="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb8ocX1uyxWlO0NGGjiwM4w00ooWe9e3DMoA&s", 
     userId=1,
     userName="Gojo Satoru"
 }) => {
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+    const handleClickAccount = () => {
+        navigate(`/account`);
+    }
     const handleClose = () => {
         setAnchorEl(null);
     };  
@@ -103,7 +108,7 @@ const NavBarAuth = ({
                         <Typography variant="subtitle1" component="div" sx={{fontWeight:"bold"}}>{userName}</Typography>
                     </MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={handleClickAccount}>
                         <ListItemIcon>
                             <AutoAwesomeIcon fontSize="small" />
                         </ListItemIcon> My Account
