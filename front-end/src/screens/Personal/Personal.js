@@ -12,6 +12,7 @@ import PersonalCard from "../../components/personal/PersonalCard";
 import MyLearning from "../../components/personal/MyLearning";
 import NavBarAuth from "../../components/header/navBar/navBarAuth_";
 import Header from "../../components/header/header/header_";
+import LoadingFallback from "../../components/fallback/LoadingFallBack";
 
 const CustomButton = styled(Button)(({ variant }) => ({
     borderRadius: 0,
@@ -108,6 +109,11 @@ export default function Personal() {
         fetchCompletedStudy();
         fetchCurrentStudy();
     }, [dispatch]);
+
+    if (loading) {
+        return <LoadingFallback />;
+    }
+
 
     return (
         <div>
