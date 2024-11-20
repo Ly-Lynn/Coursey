@@ -26,12 +26,10 @@
         public function insertCourse($accessToken, $username, $data) { 
             $response = ['error' => null, 'insertCourse' => false, 'insertVideo' => false];
             $statusCode = 401;
-            $this->response("khoa", 200);
-            return;
-                if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
 
+            if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
                 if (!$this->lecturerController->isLecturerExist($data['lecturer_id']) || !$this->hostController->isHostExist($data['host_id'])) {
-                    $response['error'] = "Lecturer or Host does not exist";
+                    $response['error'] = "Lecturer or Host already exist";
                     $this->response($response, $statusCode);
                     return;
                 }
@@ -49,7 +47,8 @@
                 }
 
         
-                $sql = "INSERT INTO COURSES (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
+                $sql = "INSERT INTO Courses (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
+                
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->execute($params);
         
@@ -60,15 +59,52 @@
                         $response['insertVideo'] = true;
                         $statusCode = 200;
                     }
-                } else {
+                } 
+                else {
                     $response['error'] = "Failed to insert course";
                 }
-            } else {
+            } 
+            else {
                 $response['error'] = "No permission";
             }
-        
+
             $this->response($response, $statusCode);
         }
+
+        public function deleteCourse($accessToken, $username, $CourseID) { 
+
+            if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
+                # delete video
+                $sql = "DELETE FROM Videos WHERE course_id = :CourseID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':CourseID', $CourseID);
+                $stmt->execute();
+
+                if ($stmt->rowCount() === 0) {
+                    $this->response("Delete Courses failed", 401);
+                    return;
+                }
+
+                # delete Course
+                $sql = "DELETE FROM Courses WHERE course_id = :CourseID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':CourseID', $CourseID);
+                $stmt->execute();
+                if ($stmt->rowCount() === 0) {
+                    $this->response("Delete Course failed", 401);
+                    return;
+                }
+                else {
+                    $this->response("Delete Course success", 200);
+                    return;
+                }
+            }
+
+            $this->response("No permissions", 401);
+        }
+
+
+        
 
         # get courses with specific id
         public function CourseUserCheck($data, $courseID, $accessToken, $api_return=true) {
@@ -117,6 +153,31 @@
             }
             $this->response("Access fail", 401);
         }
+
+        public function getAllCourse($courseID) {
+            if(!$courseID) {
+                $sql = "SELECT * FROM Courses";
+                $stmt = $this->db->conn->prepare($sql);
+            }
+            else {
+                $sql = "SELECT * FROM Courses WHERE course_id = :courseID";
+    
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+            }
+    
+            $stmt->execute();
+    
+            $course = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            if ($course) {
+                $this->response($course, 200);
+            } else {
+                $this->response("Course not found", 404);
+            }
+        }
+
+
 
 
         public function getBestRatingCourse($quantity=5) {        

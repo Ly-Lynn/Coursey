@@ -12,13 +12,13 @@
         $accessToken = $headers["Authorization"];   
         $data = json_decode(file_get_contents("php://input"), true);
         $courseController->insertCourse($accessToken, $data["username"], $data);
-
+        
     }
 
 
     else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $lecturerID = $_GET["lecturerID"];
-        $lecturerController->getLecturer($lecturerID);
+        $courseID = isset($_GET["courseID"]) ? $_GET["courseID"] : null;
+        $courseController->getAllCourse($courseID);
     }
     
 
@@ -26,16 +26,9 @@
     else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         $headers = getallheaders();
         $accessToken = $headers["Authorization"];   
-        $lecturerID = $_GET["lecturerID"];
         $data = json_decode(file_get_contents("php://input"), true);
-        $lecturerController->deleteLecturer($accessToken, $data["username"], $lecturerID);
+        $courseController->deleteCourse($accessToken, $data["username"], $data['course_id']);
     }
 
-    else if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-        $headers = getallheaders();
-        $data = json_decode(file_get_contents("php://input"), true);
-        $accessToken = $headers["Authorization"];   
-        $lecturerController->updateLecturer($accessToken, $data["username"], $data);
-    }
 
 ?>

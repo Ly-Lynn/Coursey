@@ -7,12 +7,14 @@ services:
     volumes:
       - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
 
+
   app:
     build:
       context: ./php
       dockerfile: Dockerfile
     volumes:
       - .:/app
+
 
   db:
     image: mysql:8.0
@@ -40,7 +42,6 @@ services:
       - "8002:8002"
     volumes:
       - ./python/adminpanel:/app
-
 
 
 

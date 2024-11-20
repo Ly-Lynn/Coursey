@@ -7,7 +7,7 @@
         private $userController;
         public function __construct() {
             $this->db = Database::getInstance();
-            $this->userController = new UserController();
+                $this->userController = new UserController();
         }
 
         public function insertVideo($accessToken, $username, $data) {
@@ -15,10 +15,10 @@
                 return false;
             }
         
-            $videoListLink = $data['url'];
-            $videoLinks = $this->getVideoLink($videoListLink);
-            $courseID = $data['courseID'];
-        
+            $videoListLink = $data['url_list'];
+            $videoLinks = $this->getVideoLink($videoListLink)["message"];
+            $courseID = $data['course_id'];
+            
             $videoID = 0;
             $sql = "INSERT INTO Videos (video_id, course_id, video_path, script, url, fps) 
                     VALUES (:videoID, :courseID, :videoPath, :script, :url, :fps)";
@@ -42,31 +42,36 @@
 
 
         public function getVideoLink($youtubeurl) {
-            $url = "http://localhost:8080/python/getUrllist";
-
+            $url = "http://python:8002/getUrllist";
+            
             $data = [
                 "url" => $youtubeurl
             ];
             
+            $json_data = json_encode($data);
+            
             $options = [
-                "http" => [
-                    "header" => "Content-Type: application/json\r\n",
-                    "method" => "POST",
-                    "content" => json_encode($data),
+                'http' => [
+                    'method'  => 'POST',
+                    'header'  => "Content-Type: application/json\r\n",
+                    'content' => $json_data
                 ]
             ];
             
             $context = stream_context_create($options);
             
-            $response = file_get_contents($url, false, $context);
+            $result = file_get_contents($url, false, $context);
             
-            if ($response['message'] === "Error") {
-                return false;
-            } 
-            else {
-                return $response["message"];
-            }
+
+            
+            return json_decode($result, true);
         }
+
+        private function response($message, $statusCode) {
+            http_response_code($statusCode);
+            echo json_encode(['message' => $message]);
+        }
+
     }
 
 ?>

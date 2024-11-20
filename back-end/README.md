@@ -214,4 +214,44 @@ Replate the host. (localhost if local)
 ```
 
 
+- Insert Course
+```bash
+    curl -X POST "http://localhost:8080/adminPanel/courseService.php" \
+    -H "Authorization: eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "username": "lynn",
+        "course_id": 106,
+        "course_name": "Test_1",
+        "course_intro": "Test_1",
+        "lecturer_id": 3,
+        "host_id": 102,
+        "image": "Test",
+        "url_list": "https://www.youtube.com/playlist?list=PLoROMvodv4rOca_Ovz1DvdtWuz8BfSWL2",
+        "rate": 4.7,
+        "hours": 40,
+        "cost": 299.99,
+        "field": "AI",
+        "views": 1000,
+        "gained": "Test",
+        "required": "Python",
+        "rating_count": 1000
+    }'
+```
+
+- Delete Course (also delete Video)
+```bash
+    curl -X DELETE "http://localhost:8080/adminPanel/courseService.php" \
+        -H "Authorization: Bearer eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
+        -H "Content-Type: application/json" \
+        -d '{
+            "username": "lynn",
+            "course_id": 106
+        }'
+```
+
+- Get All Course (or specific Course, null if not given)
+```bash
+    curl -X GET "http://localhost:8080/adminPanel/courseService.php?courseID=101"
+```       
 
