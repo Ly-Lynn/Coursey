@@ -86,7 +86,7 @@ const InfoBanner = ({
                   backgroundColor: '#FF6161', 
                   color: 'white', 
                   fontSize: '16px', 
-                  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Đổ bóng
+                  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
                 },
               }}
         />
