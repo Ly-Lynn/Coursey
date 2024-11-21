@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="users.css">
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            <li><a href="users.html">Users</a></li>
+            <li><a href="course.html">Courses</a></li>
+            <li><a href="course.html">Add Course</a></li>
+            <li><a href="course.html">Orders</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>Users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên người dùng</th>
+                    <th>Gmail</th>
+                    <th>Role</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="user-table">
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const endpoint = 'http://localhost:8080/adminV2/usersService.php';
+            const bodyData = { username: localStorage.getItem('username') };
+            const token = localStorage.getItem('accessToken');
+            
+            if (!token) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    },
+                    body: JSON.stringify(bodyData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const users = data.message;
+                const userTable = document.getElementById('user-table');
+                console.log(users);
+
+                users.forEach((user, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${user.username}</td>
+                        <td>${user.gmail}</td>
+                        <td>${user.is_admin ? 'Admin' : 'User'}</td>
+                        <td><button onclick="deleteUser(${user.id})">Delete</button></td>
+                    `;
+                    userTable.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        });
+
+        function deleteUser(userId) {
+            alert(`Delete user with ID: ${userId}`);
+            // Add delete logic here
+        }
+    </script>
