@@ -156,12 +156,22 @@
 
         public function getAllCourse($courseID) {
             if(!$courseID) {
-                $sql = "SELECT * FROM Courses";
+                $sql = "SELECT c.course_id, c.course_name, c.url_list, 
+                                l.name, h.host_name, c.rate, c.hours, c.cost
+                        FROM Courses c
+                        LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
+                        LEFT JOIN Hosts h ON c.host_id = h.host_id
+                        ";  
                 $stmt = $this->db->conn->prepare($sql);
             }
             else {
-                $sql = "SELECT * FROM Courses WHERE course_id = :courseID";
-    
+                $sql = "SELECT c.course_id, c.course_name, c.url_list, 
+                                l.name, h.host_name, c.rate, c.hours, c.cost
+                        FROM Courses c
+                        LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
+                        LEFT JOIN Hosts h ON c.host_id = h.host_id
+                        WHERE c.course_id = :courseID";               
+
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
             }

@@ -146,7 +146,7 @@
         # get all users for admin
         public function getAllUsers($accessToken, $username) {
             if ($this->isValidToken($accessToken, $username) && $this->isAdmin($username)) {
-                $sql = "SELECT * FROM Users";
+                $sql = "SELECT id, username, gmail, is_admin FROM Users";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->execute();
                 $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
