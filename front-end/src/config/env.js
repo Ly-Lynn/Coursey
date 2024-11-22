@@ -1,14 +1,14 @@
 // src/config/env.js
 const ENV = {
     development: {
-      hostName: 'http://localhost:3000/',
+      hostName: 'http://localhost:8080/',
     },
     production: {
-      hostName: 'https://f02b-222-253-85-202.ngrok-free.app/',
+      hostName: 'https://6b90-203-205-32-65.ngrok-free.app',
     }
   };
   
-  const environment = 'production';
+  const environment = 'development';
   
   export const config = ENV[environment];
   
