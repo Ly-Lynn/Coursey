@@ -86,7 +86,7 @@ const CourseInfoPage = () => {
     // console.log(courseID)
     const fetchCourseDetails = async (id) => {
       const response = await axios.get(`/dummy_data/courses.json`);
-      console.log(response.data, id)
+      // console.log(response.data, id)
       setCourseData(response.data.find((course) => course.course_id === parseInt(id)));
     };
     fetchCourseDetails(courseID);
