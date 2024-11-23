@@ -5,6 +5,8 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
 const CardFinished = styled(Card)(({ theme }) => ({
+    height: "5rem",
+    // width: "200px",
     backgroundColor: "#000",
     display: "flex",
     color:'white',
@@ -23,9 +25,11 @@ const CardFinished = styled(Card)(({ theme }) => ({
 }));
 
 const CardNotFinished = styled(Card)(({ theme }) => ({
+    height: "5rem",
+    // width: "200px",
     display: "flex",
     flexDirection: "row",
-    // padding: "1rem",
+    paddingLeft: '1rem',
     alignItems: "center",
     border:"1px solid black",
     borderRadius:0,
@@ -47,7 +51,7 @@ export default function LessonCard ({
     const [isHovered, setIsHovered] = useState(false);
     
     return (
-        <div>
+        <div style={{width:'500px'}}>
             {finished ? (
                 <CardFinished 
                     onMouseEnter={() => setIsHovered(true)}
@@ -55,8 +59,8 @@ export default function LessonCard ({
                 >
                     <PlayCircleOutlineIcon sx={{ fontSize: 40, color: isHovered ? "#000" : "#fff" }} />
                     <CardContent>
-                        <h4>{video_title}</h4>
-                        <p><AccessTimeFilledIcon sx={{ fontSize: 15 }} /> {video_duration}</p>
+                        <h6 style={{margin:0, marginBottom:'0.5rem'}}>{video_title}</h6>
+                        <p style={{margin:0}}><AccessTimeFilledIcon sx={{ fontSize: 15 }} /> {video_duration}</p>
                     </CardContent>
                 </CardFinished>
             ) : (
@@ -66,8 +70,8 @@ export default function LessonCard ({
                 >
                     <PlayCircleOutlineIcon sx={{ fontSize: 40, color: isHovered ? "#fff" : "#000" }} />
                     <CardContent>
-                        <h4>{video_title}</h4>
-                        <p><AccessTimeFilledIcon sx={{ fontSize: 15 }} /> {video_duration}</p>
+                        <h6 style={{margin:0, marginBottom:'0.5rem'}}>{video_title}</h6>
+                        <p style={{margin:0}}><AccessTimeFilledIcon sx={{ fontSize: 15 }} /> {video_duration}</p>
                     </CardContent>
                 </CardNotFinished>
             )}

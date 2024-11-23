@@ -6,7 +6,7 @@ import { Divider, Button, ButtonGroup, LinearProgress, Typography, Box } from "@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-
+import { useNavigate } from "react-router-dom";
 import CustomButton from "../custom_components/CustomButton";
 
 const theme = createTheme({
@@ -42,6 +42,12 @@ export default function InProgressCard({ courseID=101,
                                         progress = 50,
                                         host_name='Meta',
                                         course_image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb8ocX1uyxWlO0NGGjiwM4w00ooWe9e3DMoA&s" }) {
+    
+    const navigate = useNavigate();
+    const onStudyClick = () => {
+        navigate(`/learn/${courseID}`);
+    }
+
     return (
         <div style={{marginBottom:'1.5rem'}}>
             <Card sx={{ display: "flex", borderRadius:0, flexDirection: "row", padding: "1rem", alignItems: "center", border:"1px solid black" }}>
@@ -64,7 +70,7 @@ export default function InProgressCard({ courseID=101,
                     </Box>
                     <Divider orientation="vertical" variant="middle" flexItem />
                     <Box sx={{ display:"flex", width:'12rem', justifyContent:'center', alignItems:'center'}}>
-                        <CustomButton style={{ height: "3rem", borderRadius:0}} endIcon={<KeyboardDoubleArrowRightIcon/>} color='#000' variant="contained">Study</CustomButton>
+                        <CustomButton onClick={onStudyClick} style={{ height: "3rem", borderRadius:0}} endIcon={<KeyboardDoubleArrowRightIcon/>} color='#000' variant="contained">Study</CustomButton>
                     </Box>
                     {/* </Link> */}
                 </Box>

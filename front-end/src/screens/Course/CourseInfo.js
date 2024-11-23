@@ -73,24 +73,32 @@ const CreateListRequired = ({ list }) => (
 
 
 const CourseInfoPage = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const auth = useSelector((state) => state.auth);
   // const isAuthenticated = auth.isAuthenticated;
   // console.log(isAuthenticated)
   const location = useLocation();
   const [courseData, setCourseData] = useState(null);
     console.log(location.search)
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const courseID = searchParams.get('courseID');
-    // console.log(courseID)
-    const fetchCourseDetails = async (id) => {
-      const response = await axios.get(`/dummy_data/courses.json`);
-      // console.log(response.data, id)
-      setCourseData(response.data.find((course) => course.course_id === parseInt(id)));
-    };
-    fetchCourseDetails(courseID);
-  }, [location.search]);
+  
+  const searchParams = new URLSearchParams(location.search);
+  const courseID = searchParams.get('courseID');
+
+  const course_datas = useSelector((state) => state.server.courses);
+  const this_course = course_datas.find((course) => course.course_id === parseInt(courseID));
+  
+
+  // useEffect(() => {
+  //   const searchParams = new URLSearchParams(location.search);
+  //   const courseID = searchParams.get('courseID');
+  //   // console.log(courseID)
+  //   const fetchCourseDetails = async (id) => {
+  //     const response = await axios.get(`/dummy_data/courses.json`);
+  //     // console.log(response.data, id)
+  //     setCourseData(response.data.find((course) => course.course_id === parseInt(id)));
+  //   };
+  //   fetchCourseDetails(courseID);
+  // }, [location.search]);
 
 
   if (!courseData) {
