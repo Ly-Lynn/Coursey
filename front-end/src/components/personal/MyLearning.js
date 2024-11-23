@@ -17,8 +17,8 @@ export default function MyLearning({ isCompleted=false }) {
     const completedCourses = server.completedStudy;
     const currentCourses = server.currentStudy;
     // console.log("Server: ", server);
-    console.log("Completed Courses: ", completedCourses);
-    console.log("Current Courses: ", currentCourses);
+    // console.log("Completed Courses: ", completedCourses);
+    // console.log("Current Courses: ", currentCourses);
     return (
         <div style={{
             padding: "20px",

@@ -5,6 +5,7 @@ import MainPage from '../screens/Home/homeScreen';
 import CourseInfoPage from '../screens/Course/CourseInfo';
 import Checkout from '../screens/Checkout/Checkout';
 import Personal from '../screens/Personal/Personal';
+import StudyScreen from '../screens/Study/StudyScreen';
 
 const AppRoutes = () => {
     return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
                 <Route path="/courseinfo" element={<CourseInfoPage />} />
                 <Route path='/checkout' element={<Checkout />}></Route>
                 <Route path='/account' element={<Personal />}></Route>
+                <Route path='/learn' element={<StudyScreen />}></Route>
             </Routes>
         </Router>
     );
