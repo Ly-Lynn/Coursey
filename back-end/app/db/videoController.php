@@ -1,6 +1,7 @@
 <?php
     require_once 'connect.php';
     require_once "courseControlers.php";
+    // require_once '../cors/cors.php';
 
     class VideoController {
         private $db;
@@ -16,7 +17,7 @@
             }
         
             $videoListLink = $data['url_list'];
-            $videoLinks = $this->getVideoLink($videoListLink)["message"];
+            $videoLinks = $this->getVideoLink($videoListLink)["message"]['urls'];
             $courseID = $data['course_id'];
             
             $videoID = 0;

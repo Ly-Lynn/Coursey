@@ -6,6 +6,8 @@
     require_once 'hostController.php';
     require_once 'lecturerControlers.php';
     require_once 'videoController.php';
+    // require_once '../cors/cors.php';
+
     class CourseController {
         private $db;
         private $userController;
@@ -45,8 +47,20 @@
                     $placeholders[] = ":$key";
                     $params[":$key"] = $value;
                 }
+                
+                $videoLinks = $this->videoController->getVideoLink($data['url_list'])["message"];
+                $views = $videoLinks['view_count'];
+                $hours = $videoLinks['total_times'];
+                $fields[] = 'views'; 
+                $placeholders[] = ':views'; 
+                $params[':views'] = $views;
 
-        
+                $fields[] = 'hours'; 
+                $placeholders[] = ':hours'; 
+                $params[':hours'] = $hours; 
+
+
+                
                 $sql = "INSERT INTO Courses (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
                 
                 $stmt = $this->db->conn->prepare($sql);
@@ -75,6 +89,14 @@
 
             if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
                 # delete video
+
+
+
+                $sqlDeleteUserCourses = "DELETE FROM UserCourses WHERE course_id = :CourseID";
+                $stmtUserCourses = $this->db->conn->prepare($sqlDeleteUserCourses);
+                $stmtUserCourses->bindParam(':CourseID', $CourseID);
+                $stmtUserCourses->execute();
+
                 $sql = "DELETE FROM Videos WHERE course_id = :CourseID";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':CourseID', $CourseID);
@@ -99,8 +121,10 @@
                     return;
                 }
             }
+            else {
+                $this->response("No permissions", 401);
 
-            $this->response("No permissions", 401);
+            }
         }
 
 
@@ -114,6 +138,8 @@
             $status_code = 401;
             if ($this->userController->isValidToken($accessToken, $username)) {
                 $return['isValidUsers'] = true;
+
+
 
                 $sql = "SELECT * FROM UserCourses where user_id = :userID and course_id = :courseID";
                 $stmt = $this->db->conn->prepare($sql);

@@ -1,6 +1,7 @@
 <?php
 
     require_once 'connect.php';
+    // require_once '../cors/cors.php';
 
     class UserController {
         private $db;
@@ -199,10 +200,10 @@
                     $stmt->execute();
 
                     if ($stmt->rowCount() > 0) {
-                        $this->response('User deleted successfully', 200);
+                        $this->response('User update successfully', 200);
                     }
                     else {
-                        $this->response("Delete fail", 401);
+                        $this->response("Updated fail", 401);
                     }
                 }
 
@@ -213,19 +214,26 @@
             }
         }
         # delete user for admin
-        public function deleteUser($accessToken, $username, $deletedUser){
+        public function deleteUser($accessToken, $username, $deletedID){
             if ($this->isValidToken($accessToken, $username)) {
                 if($this->isAdmin($username)) {
-                    $sql = "DELETE FROM Users WHERE username = :deletedUser";
+
+
+                    $sqlDeleteUserCourses = "DELETE FROM UserCourses WHERE user_id = :deletedID";
+                    $stmtUserCourses = $this->db->conn->prepare($sqlDeleteUserCourses);
+                    $stmtUserCourses->bindParam(':deletedID', $deletedID);
+                    $stmtUserCourses->execute();
+
+                    $sql = "DELETE FROM Users WHERE id = :deletedID";
                     $stmt = $this->db->conn->prepare($sql);
-                    $stmt->bindParam(':deletedUser', $deletedUser);
+                    $stmt->bindParam(':deletedID', $deletedID);
                     $stmt->execute();
 
                     if ($stmt->rowCount() > 0) {
-                        $this->response('User deleted successfully', 200);
+                        return $this->response('User deleted successfully', 200);
                     }
                     else {
-                        $this->response("Delete fail", 401);
+                        return $this->response("Delete fail", 401);
                     }
                 }
 
@@ -234,6 +242,7 @@
                 }
 
             }
+            return $this->response("Not valid Token", 401);
 
         }    
 
@@ -264,6 +273,10 @@
             }
             return false;
         }
+
+
+        
+
 
 
 
