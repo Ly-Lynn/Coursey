@@ -20,7 +20,7 @@
         $accessToken = $headers["Authorization"] ?? null; 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $userController->deleteUser($accessToken, $data['username'], $data['deletedUser']);
+        $userController->deleteUser($accessToken, $data['username'], $data['deletedID']);
     }   
 
     else if ($_SERVER['REQUEST_METHOD'] == 'PUT') {

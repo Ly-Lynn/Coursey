@@ -11,12 +11,17 @@
         <ul>
             <li><a href="users.html">Users</a></li>
             <li><a href="course.html">Courses</a></li>
-            <li><a href="course.html">Add Course</a></li>
-            <li><a href="course.html">Orders</a></li>
+            <li><a href="addCourse.html">Add Course</a></li>
+            <li><a href="addLecturer.html">Add Lecturer</a></li>
+            <li><a href="addHost.html">Add Host</a></li>
         </ul>
     </div>
+
+
     <div class="main-content">
         <h1>Course</h1>
+        <input type="text" id="search-course" placeholder="Search by course name..." oninput="filterCourses()">
+
         <table>
             <thead>
                 <tr>
@@ -61,23 +66,75 @@
                     row.innerHTML = `
                         <td>${index + 1}</td>
                         <td>${course.course_name}</td>
-                        <td>${course.name}</td>
                         <td>${course.hours}</td>
+                        <td>${course.name}</td>
                         <td>${course.host_name}</td>
                         <td>${course.url_list}</td>
                         <td>${course.cost}</td>
                         <td>${course.rate}</td>
-                        <td><button onclick="deleteUser(${course.course_id})">Delete</button></td>
+                        <td><button onclick="deleteCourse(${course.course_id})">Delete</button></td>
                     `;
                     courseTable.appendChild(row);
                 });
             } catch (error) {
-                console.error('Error fetching coures:', error);
+                console.error('Error fetching courses:', error);
             }
         });
 
-        function deleteUser(userId) {
-            alert(`Delete user with ID: ${userId}`);
-            // Add delete logic here
+        async function deleteCourse(courseId) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                const username = localStorage.getItem("username");
+                const token = localStorage.getItem('accessToken');
+                
+                const endpoint = 'http://localhost:8080/adminV2/courseService.php';
+                const body = {
+                    username: username,
+                    course_id: courseId
+                };
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': token,
+                        },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();  // Parse the response as JSON
+
+                    if (data.message) {
+                        alert('Course deleted successfully!');
+                        window.location.reload();  // Reload the page to refresh the course list
+                    } else {
+                        alert(`Error deleting course: ${data.message}`);
+                    }
+                } catch (error) {
+                    console.error('Error deleting course:', error);
+                    alert('An error occurred while deleting the course');
+                }
+            }
+        }
+
+
+        function filterCourses() {
+            const searchInput = document.getElementById('search-course').value.toLowerCase();
+            const tableRows = document.querySelectorAll('#course-table tr');
+
+            tableRows.forEach(row => {
+                const courseName = row.children[1]?.textContent.toLowerCase(); // Access the second column (index 1)
+                if (courseName && courseName.includes(searchInput)) {
+                    row.style.display = ''; 
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         }
     </script>
+</body>
+</html>

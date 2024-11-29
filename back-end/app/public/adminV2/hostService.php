@@ -3,6 +3,7 @@
     require_once '/var/www/html/vendor/autoload.php';
 
     require_once '../../db/hostController.php';
+    require_once '../../cors/cors.php';
 
     header('Content-Type: application/json');
     $hostController = new hostController();

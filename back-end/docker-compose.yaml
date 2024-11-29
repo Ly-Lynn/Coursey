@@ -44,8 +44,13 @@ services:
     volumes:
       - ./python/adminpanel:/app
 
+  # reactjs:
+  #   build:
 
-
+  #   port:
+  #     - "3000:3000" 
+  #   volumes:
+  #     - 
 
 volumes:
   mysqldata:
