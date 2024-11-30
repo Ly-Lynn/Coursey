@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { hostName, API_ENDPOINTS } from '../../config/env';
+import { addCurrentCourse, addFinishedCourse } from './userSlice';
+import { useDispatch } from 'react-redux';
 
 // Utility function for handling user data and token storage
 const handleAuthStorage = (userData, token, isRemember) => {
@@ -40,10 +42,36 @@ export const loginUser = createAsyncThunk(
     try {
       const { data } = await axios.post(`${hostName}${API_ENDPOINTS.LOGIN}`, userData);
       const { user, token } = data.data;
+      dispatch(addCurrentCourses(user.id));
       handleAuthStorage(user, token, isRemember);
       return { user, token, isRemember };
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Login failed');
+    }
+  }
+);
+const addCurrentCourses = createAsyncThunk(
+  'user/addUserCourses',
+  async (userId, { dispatch, rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${hostName}${API_ENDPOINTS.GET_CURRENT_STUDY}`,
+        {
+          id: userId
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          },
+        }
+      );
+      
+      data.courses.forEach(course => {
+        dispatch(addCurrentCourse(course)); // Dispatch action addOrder vào userSlice
+      });
+      return data.courses;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || 'Failed to fetch courses');
     }
   }
 );

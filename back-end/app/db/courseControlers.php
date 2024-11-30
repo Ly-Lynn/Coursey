@@ -1,5 +1,4 @@
 
-
 <?php 
     // ini_set('memory_limit', '5096M');
 
@@ -166,20 +165,6 @@
         
         }   
 
-        # get header Course
-        // public function CourseInfo($data, $courseID, $accessToken) {
-
-        //     if ($this->CourseUserCheck($data, $courseID, $accessToken, false)) {
-        //         $sql = "SELECT * FROM Courses where course_id = :courseID";
-        //         $stmt = $this->db->conn->prepare($sql);
-        //         $stmt->bindParam(':courseID', $courseID);
-        //         $stmt->execute();
-        //         $course = $stmt->fetch(PDO::FETCH_ASSOC);
-        //         $this->response($course, 200);
-        //         return;
-        //     }
-        //     $this->response("Access fail", 401);
-        // }
 
 
 
@@ -202,6 +187,22 @@
         }
             
 
+        public function getCurrentCourse($data, $accessToken) {
+
+            if($this->userController->isValidToken($accessToken, $data['username'])) {
+                $sql = "SELECT course_id FROM Courses WHERE user_id = :userID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':userID', $data['userID']);
+                $stmt->execute();
+                $course = $stmt->fetch(PDO::FETCH_ASSOC);
+                $this->response($course, 200);
+                return; 
+            }
+            $this->response("Access fail", 401);
+        }
+
+
+
         public function getAllCourse($courseID) {
             if(!$courseID) {
                 $sql = "SELECT c.course_id, c.course_name, c.url_list, 
@@ -215,6 +216,40 @@
             else {
                 $sql = "SELECT c.course_id, c.course_name, c.url_list, 
                                 l.name, h.host_name, c.rate, c.hours, c.cost
+                        FROM Courses c
+                        LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
+                        LEFT JOIN Hosts h ON c.host_id = h.host_id
+                        WHERE c.course_id = :courseID";               
+
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+            }
+    
+            $stmt->execute();
+    
+            $course = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            if ($course) {
+                $this->response($course, 200);
+            } else {
+                $this->response("Course not found", 404);
+            }
+        }
+
+
+        public function getAllCourse_($courseID) {
+            if(!$courseID) {
+                $sql = "SELECT c.*, 
+                                l.name, h.host_name
+                        FROM Courses c
+                        LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
+                        LEFT JOIN Hosts h ON c.host_id = h.host_id
+                        ";  
+                $stmt = $this->db->conn->prepare($sql);
+            }
+            else {
+                $sql = "SELECT c.*, 
+                                l.name, h.host_name
                         FROM Courses c
                         LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                         LEFT JOIN Hosts h ON c.host_id = h.host_id
