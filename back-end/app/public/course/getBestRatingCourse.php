@@ -5,7 +5,7 @@
     require_once '../../db/courseControlers.php';
     // require_once '../../db/mediaControlers.php';
 
-    header('Content-Type: application/json');
+    // header('Content-Type: application/json');
     $courseController = new CourseController();
     // $mediaController = new MediaControllers();
 
