@@ -43,7 +43,7 @@
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
   opacity: 1;
-  background-color: rgba(26, 162, 174, 0.8);
+  background-color: #000;
   .carousel-control-icon {
       color: white;
       width: 24px;
@@ -52,7 +52,7 @@
 }
 
 .carousel-control-icon {
-  color: #1AA1AE;
+  color: #000;
   width: 24px;
   height: 24px;
 }

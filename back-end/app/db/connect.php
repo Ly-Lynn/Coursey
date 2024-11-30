@@ -1,7 +1,8 @@
 <?php
-    require_once '../../cors/cors.php';
 
     require_once '/var/www/html/vendor/autoload.php';
+    // require_once '../cors/cors.php';
+
     $dotenv = Dotenv\Dotenv::createImmutable("/app/.env");
     $dotenv->load();
 

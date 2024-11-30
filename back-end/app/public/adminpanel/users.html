@@ -11,8 +11,9 @@
         <ul>
             <li><a href="users.html">Users</a></li>
             <li><a href="course.html">Courses</a></li>
-            <li><a href="course.html">Add Course</a></li>
-            <li><a href="course.html">Orders</a></li>
+            <li><a href="addCourse.html">Add Course</a></li>
+            <li><a href="addLecturer.html">Add Lecturer</a></li>
+            <li><a href="addHost.html">Add Host</a></li>
         </ul>
     </div>
     <div class="main-content">
@@ -70,7 +71,7 @@
                         <td>${user.username}</td>
                         <td>${user.gmail}</td>
                         <td>${user.is_admin ? 'Admin' : 'User'}</td>
-                        <td><button onclick="deleteUser(${user.id})">Delete</button></td>
+                        <td><button onclick="deleteUser('${user.user_id}')">Delete</button></td>
                     `;
                     userTable.appendChild(row);
                 });
@@ -79,8 +80,52 @@
             }
         });
 
-        function deleteUser(userId) {
-            alert(`Delete user with ID: ${userId}`);
-            // Add delete logic here
+        function deleteUser(deletedID) {
+            const endpoint = 'http://localhost:8080/adminV2/usersService.php';
+            const token = localStorage.getItem('accessToken');
+            const username = localStorage.getItem('username');
+
+            if (!token || !username) {
+                alert('Authorization failed. Please log in again.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const bodyData = {
+                username: username, 
+                deletedID: deletedID 
+            };
+
+            console.log(bodyData);
+
+            if (confirm(`Are you sure you want to delete user with ID: ${deletedID}?`)) {
+                fetch(endpoint, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    },
+                    body: JSON.stringify(bodyData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response;
+                })
+                .then(data => {
+                    if (data.message) {
+                        alert('User deleted successfully!');
+                        document.getElementById('user-table').innerHTML = '';
+                        window.location.reload(); 
+                    } else {
+                        alert(`Error deleting user: ${data.message}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting user:', error);
+                    alert('An error occurred while trying to delete the user.');
+                });
+            }
         }
     </script>

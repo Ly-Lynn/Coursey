@@ -241,7 +241,7 @@ Replate the host. (localhost if local)
 
 - Delete Course (also delete Video)
 ```bash
-    curl -X DELETE "http://localhost:8080/adminPanel/courseService.php" \
+    curl -X DELETE "http://localhost:8080/adminV2/courseService.php" \
         -H "Authorization: Bearer eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9" \
         -H "Content-Type: application/json" \
         -d '{

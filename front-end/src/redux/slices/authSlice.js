@@ -146,7 +146,7 @@ const authSlice = createSlice({
         quote:"no pain no gain", 
         ava: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb8ocX1uyxWlO0NGGjiwM4w00ooWe9e3DMoA&s"
     },
-    accessToken: "eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzE4OTgxNzd9",
+    accessToken: "eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzI4ODkzMTR9",
     isAuthenticated: true,
     loading: false,
     error: null,

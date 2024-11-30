@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './navBar.modul.css'
 import AuthDialog from '../../auth/AuthDialog';
+import CustomButton from '../../custom_components/CustomButton';
 
 const NavBar = () => {
     const [authState, setAuthState] = useState(null);
@@ -14,9 +15,17 @@ const NavBar = () => {
     return (
         <>
             <div className="navbar">
-                <Link to="/courses" className="btn_nav" id="courses_nav">Courses</Link>
-                <div onClick={openLogin} className="btn_nav" id="login_nav">Login</div>
-                <div onClick={openSignup} className="btn_nav" id="join-us">Join us</div>
+                <Link to="/courses" className="btn_nav" style={{color:'black'}}>Courses</Link>
+                <CustomButton variant='outlined' 
+                            style={{ fontWeight: 'bold'}}
+                            onClick={openLogin}>
+                    Login
+                </CustomButton>
+                <CustomButton variant='contained' 
+                            style={{ fontWeight: 'bold'}}
+                            onClick={openSignup}>
+                    Sign up
+                </CustomButton>
             </div>
             {authState && 
                 <div className="modal-overlay">

@@ -89,6 +89,12 @@ class YoububeDownloader:
         with YoutubeDL(getPlaylist_opts) as ydl:
             playlist_info = ydl.extract_info(url, download=False) # not download the info of playlist
         
-        video_urls = [video["url"] for video in playlist_info["entries"]]
-        
-        return video_urls            
+        video_urls = [video["url"].split("?v=")[1] for video in playlist_info["entries"]]
+        total_times =  sum([video.get("duration", 0) for video in playlist_info["entries"]]) / 3600
+        view_count = max([video.get("view_count", 0) for video in playlist_info["entries"]])
+        results = {
+            "urls": video_urls,
+            "total_times": total_times,
+            "view_count": view_count 
+        }
+        return results   

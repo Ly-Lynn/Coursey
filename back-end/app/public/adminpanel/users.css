@@ -3,16 +3,48 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+}
   
-  /* Body */
-  body {
+body {
     font-family: Arial, sans-serif;
     background-color: #f1f1f1;
-  }
+}
+
+/* Search Input */
+.main-content input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 2px solid #f60505;
+    border-radius: 25px;
+    outline: none;
+    box-shadow: 0 4px 6px rgba(249, 4, 4, 0.1);
+    transition: all 0.3s ease-in-out;
+    background-color: #fff;
+    color: #333;
+}
+
+.main-content input::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
+
+.main-content input:focus {
+    border-color: #00aaff;
+    box-shadow: 0 4px 8px rgba(0, 170, 255, 0.3);
+    background-color: #f9f9f9;
+    color: #000;
+}
+
+.main-content input:hover {
+    border-color: #00aaff;
+    box-shadow: 0 4px 8px rgba(0, 170, 255, 0.2);
+}
   
-  /* Sidebar */
-  .sidebar {
+/* Sidebar */
+.sidebar {
     position: fixed;
     top: 0;
     left: 0;
@@ -22,56 +54,57 @@
     padding: 20px;
     color: #fff;
     text-align: center;
-  }
+}
   
-  .sidebar ul {
+.sidebar ul {
     list-style-type: none;
-  }
+}
   
-  .sidebar a {
-      text-decoration: none;
-  }  
-  .sidebar li {
+.sidebar a {
+    text-decoration: none;
+}  
+  
+.sidebar li {
     padding: 10px 0;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
+}
   
-  .sidebar li:hover {
+.sidebar li:hover {
     background-color: #00ffff;
-  }
+}
   
-  /* Main Content */
-  .main-content {
+/* Main Content */
+.main-content {
     margin-left: 220px;
     padding: 20px;
-  }
+}
   
-  .main-content h1 {
+.main-content h1 {
     color: #000000;
     margin-bottom: 20px;
-  }
+}
   
-  /* Table */
-  table {
+/* Table */
+table {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
+}
   
-  th, td {
+th, td {
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-  }
+}
   
-  th {
+th {
     background-color: #000000;
     color: #fff;
-  }
+}
   
-  td button {
+td button {
     background-color: #dc3545;
     color: #fff;
     border: none;
@@ -79,8 +112,8 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
+}
   
-  td button:hover {
+td button:hover {
     background-color: #c82333;
-  }
+}

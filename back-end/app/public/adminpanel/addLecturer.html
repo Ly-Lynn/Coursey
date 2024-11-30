@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Admin Panel - Add Lecturer</title>
+   <link rel="stylesheet" href="admin-panel.css">
+</head>
+<body>
+   <div class="sidebar">
+       <ul>
+            <li><a href="users.html">Users</a></li>
+            <li><a href="course.html">Courses</a></li>
+            <li><a href="addCourse.html">Add Course</a></li>
+            <li><a href="addLecturer.html">Add Lecturer</a></li>
+            <li><a href="addHost.html">Add Host</a></li>
+       </ul>
+   </div>
+   <div class="main-content">
+       <h1>Add Lecturer</h1>
+       <form id="add-lecturer-form" enctype="multipart/form-data">
+           <div class="form-group">
+               <label for="lecturer-id">Lecturer ID:</label>
+               <input type="number" id="lecturer-id" name="lecturerID" required>
+           </div>
+           <div class="form-group">
+               <label for="name">Name:</label>
+               <input type="text" id="name" name="name" required>
+           </div>
+           <div class="form-group">
+               <label for="bio">Bio:</label>
+               <textarea id="bio" name="bio" placeholder="An experienced lecturer in..."></textarea>
+           </div>
+           <div class="form-group">
+               <label for="avatar">Avatar:</label>
+               <input type="file" id="avatar" name="avatar" accept="image/*">
+           </div>
+           <button type="submit">Add Lecturer</button>
+       </form>
+   </div>
+   <script>
+document.getElementById("add-lecturer-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const endpoint = 'http://localhost:8080/adminV2/lecturerService.php';
+    const username = localStorage.getItem("username");
+    const token = localStorage.getItem('accessToken');
+
+    // Validate login
+    if (!token) {
+        alert('Please login first');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    if (!username) {
+        alert("Username not found in local storage. Please log in again.");
+        return;
+    }
+
+    // Get form data
+    const formData = new FormData(this);
+    formData.append("username", username);
+
+    // Convert form data to object
+    const formObject = {};
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+
+    const avatarFile = formData.get('avatar');
+
+    // Handle avatar processing
+    try {
+        if (avatarFile && avatarFile instanceof File && avatarFile.size > 0) {
+            const base64Avatar = await convertImageToBase64(avatarFile);
+            formObject.avatar = base64Avatar;
+            console.log(base64Avatar);
+        } else {
+            formObject.avatar = ''; // Allow submission without avatar
+        }
+
+        console.log('Sending data:', formObject); // Debug
+
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`,
+            },
+            body: JSON.stringify(formObject),
+        });
+
+        console.log('Response status:', response.status); // Debug
+        let result;
+        const textResponse = await response.text();
+        console.log('Raw response:', textResponse); // Debug
+        
+        try {
+            result = JSON.parse(textResponse);
+        } catch (e) {
+            console.error('JSON parse error:', e);
+            alert('Server response was not in JSON format');
+            return;
+        }
+
+        if (response.ok) {
+            alert("Lecturer added successfully!");
+            this.reset();
+        } else {
+            alert(`Failed to add lecturer: ${result.message || "Unknown error"}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while processing your request.");
+    }
+});
+
+// Helper function to convert image to base64
+function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+   </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Admin Panel - Add Course</title>
+   <link rel="stylesheet" href="admin-panel.css">
+</head>
+<body>
+   <div class="sidebar">
+       <ul>
+        <li><a href="users.html">Users</a></li>
+        <li><a href="course.html">Courses</a></li>
+        <li><a href="addCourse.html">Add Course</a></li>
+        <li><a href="addLecturer.html">Add Lecturer</a></li>
+        <li><a href="addHost.html">Add Host</a></li>
+       </ul>
+   </div>
+   <div class="main-content">
+       <h1>Add Course</h1>
+       <form id="add-course-form" enctype="multipart/form-data">
+           <div class="form-group">
+               <label for="course-id">Course ID:</label>
+               <input type="number" id="course-id" name="course_id" required>
+           </div>
+           <div class="form-group">
+               <label for="course-name">Course Name:</label>
+               <input type="text" id="course-name" name="course_name" required>
+           </div>
+           <div class="form-group">
+               <label for="course-intro">Course Introduction:</label>
+               <input type="text" id="course-intro" name="course_intro" required>
+           </div>
+           <div class="form-group">
+               <label for="lecturer-id">Lecturer:</label>
+               <select id="lecturer-id" name="lecturer_id" required>
+                   <!-- Lecturer options will be populated here -->
+               </select>
+           </div>
+           <div class="form-group">
+               <label for="host-id">Host:</label>
+               <select id="host-id" name="host_id" required>
+                   <!-- Host options will be populated here -->
+               </select>
+           </div>
+           <div class="form-group">
+               <label for="course-image">Course Image:</label>
+               <input type="file" id="course-image" name="image" accept="image/*" required>
+           </div>
+           <div class="form-group">
+               <label for="url-list">Course URL:</label>
+               <input type="url" id="url-list" name="url_list" required>
+           </div>
+           <div class="form-group">
+               <label for="rate">Course Rating:</label>
+               <input type="number" id="rate" name="rate" step="0.1" required>
+           </div>
+           <div class="form-group">
+               <label for="cost">Course Cost:</label>
+               <input type="number" id="cost" name="cost" step="0.01" required>
+           </div>
+           <div class="form-group">
+               <label for="field">Field:</label>
+               <input type="text" id="field" name="field" required>
+           </div>
+           <div class="form-group">
+               <label for="gained">What Students Will Gain:</label>
+               <input type="text" id="gained" name="gained" required>
+           </div>
+           <div class="form-group">
+               <label for="required">Prerequisites:</label>
+               <input type="text" id="required" name="required" required>
+           </div>
+           <div class="form-group">
+               <label for="rating-count">Rating Count:</label>
+               <input type="number" id="rating-count" name="rating_count" required>
+           </div>
+           <button type="submit">Add Course</button>
+       </form>
+   </div>
+   <script>
+document.addEventListener("DOMContentLoaded", async function() {
+    const lecturerSelect = document.getElementById("lecturer-id");
+    const hostSelect = document.getElementById("host-id");
+
+    // Fetch lecturers
+    const lecturerResponse = await fetch('http://localhost:8080/adminV2/lecturerService.php');
+    const lecturerData = await lecturerResponse.json();
+    if (lecturerData.message) {
+        lecturerData.message.forEach(lecturer => {
+            const option = document.createElement("option");
+            option.value = lecturer.lecturer_id;
+            option.textContent = `${lecturer.lecturer_id} - ${lecturer.name}`;
+            lecturerSelect.appendChild(option);
+        });
+    }
+
+    // Fetch hosts
+    const hostResponse = await fetch('http://localhost:8080/adminV2/hostService.php');
+    const hostData = await hostResponse.json();
+    if (hostData.message) {
+        hostData.message.forEach(host => {
+            const option = document.createElement("option");
+            option.value = host.host_id;
+            option.textContent = `${host.host_id} - ${host.host_name}`;
+            hostSelect.appendChild(option);
+        });
+    }
+});
+
+document.getElementById("add-course-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const endpoint = 'http://localhost:8080/adminV2/courseService.php';
+    const username = localStorage.getItem("username");
+    const token = localStorage.getItem('accessToken');
+
+    // Validate login
+    if (!token) {
+        alert('Please login first');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    if (!username) {
+        alert("Username not found in local storage. Please log in again.");
+        return;
+    }
+
+    // Get form data
+    const formData = new FormData(this);
+    formData.append("username", username);
+
+    // Convert form data to object
+    const formObject = {};
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+
+    const imageFile = formData.get('image');
+    
+    // Handle image processing
+    try {
+        if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+            const base64Image = await convertImageToBase64(imageFile);
+            formObject.image = base64Image;
+            console.log(base64Image);
+        } else {
+            formObject.image = '';
+        }
+
+        console.log('Sending data:', formObject); 
+
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`,
+            },
+            body: JSON.stringify(formObject),
+        });
+
+        console.log('Response status:', response.status);
+        // Parse JSON safely
+        let result;
+        const textResponse = await response.text();
+        console.log('Raw response:', textResponse); 
+        
+        try {
+            result = JSON.parse(textResponse);
+        } catch (e) {
+            console.error('JSON parse error:', e);
+            alert('Server response was not in JSON format');
+            return;
+        }
+
+        if (response.ok) {
+            alert("Course added successfully!");
+            this.reset();
+        } else {
+            alert(`Failed to add course: ${result.message || "Unknown error"}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while processing your request.");
+    }
+});
+
+// Helper function to convert image to base64
+function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+   </script>
+</body>
+</html>

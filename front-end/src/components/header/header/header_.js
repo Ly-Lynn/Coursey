@@ -6,24 +6,28 @@ import logo from './logo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import NavBarAuth from '../navBar/navBarAuth_';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
     const user = useSelector((state) => state.auth.user);
     const isAuthenticated = auth.isAuthenticated;
-    
+    const navigate = useNavigate();
     const handleTextChange = (text) => {
         console.log(text);
     }
     const handleFocus = () => {
         console.log('focused');
     }
+    const navigateHome = () => {
+        navigate('/');
+    }
 
 
     return (
         <div className="header">
-            <img className='logo' style={{width:"200px"}} alt='logo' src={logo}/>
+            <img className='logo' onClick={navigateHome} style={{width:"10%", height:'auto', marginLeft:'5%', cursor:'pointer'}} alt='logo' src={logo}/>
             <SearchBar 
                 onFocus={handleFocus}
                 onChangeText={handleTextChange} />

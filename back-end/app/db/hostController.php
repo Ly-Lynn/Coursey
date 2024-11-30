@@ -2,6 +2,7 @@
 
 require_once 'connect.php';
 require_once 'usersControlers.php';
+// require_once '.././cors/cors.php';
 
 class HostController {
     private $db;
