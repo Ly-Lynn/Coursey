@@ -17,74 +17,8 @@ import { updateProfile } from "../../redux/slices/authSlice";
 
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import CustomButton from "../../components/custom_components/CustomButton";
-
-const CustomTypography = styled("div")({
-    fontFamily: "'Press Start 2P', system-ui",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    width: "80%",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    fontSize: "20px",
-    lineHeight: 1.2,
-    resize: "both", 
-    "@media (max-width: 600px)": {
-        fontSize: "5px",
-    },
-});
-
-const CustomTextField = styled(TextField)(({ theme, editmode }) => ({
-    width: '60%',
-        
-    '& .MuiOutlinedInput-root': {
-        borderRadius: 0,
-      '& fieldset': {
-        borderColor: '#000',
-      },
-      '&:hover fieldset': {
-        borderColor: '#000',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#000',
-      },
-    },
-    
-    '& .MuiInputLabel-root': {
-      color: '#000',
-      '&.Mui-focused': {
-        color: '#000',
-      },
-    },
-  
-    '& .MuiInputBase-input': {
-      color: '#000',
-    },
-  
-    ...(editmode === 'true' && {
-      '& .MuiFilledInput-root': {
-        borderRadius: 0,
-        fontWeight: 'bold',
-        backgroundColor: '#000',
-        '&:hover': {
-          backgroundColor: '#222',
-        },
-        '&.Mui-focused': {
-          backgroundColor: '#000',
-        },
-        '& .MuiInputBase-input': {
-          color: '#fff',
-        },
-      },
-      '& .MuiInputLabel-root': {
-        color: '#fff',
-        '&.Mui-focused': {
-          color: '#fff',
-        },
-      },
-    }),
-  }));
+import CustomTextField from "../custom_components/CustomTextField";
+import CustomTypography from "../custom_components/CustomTypography";
 
 const Ribbon = styled(Paper)(({ theme }) => ({
     textAlign: 'center',    

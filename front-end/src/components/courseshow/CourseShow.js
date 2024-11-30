@@ -21,7 +21,7 @@ const CourseShow = ({ courses, title="Popular Courses" }) => {
     const [page, setPage] = useState(1); 
     // console.log(courses)
     const totalCourses = courses.length;
-    console.log("Total courses: ", totalCourses);
+    console.log("Total courses: ", courses);
     
     const totalPage = Math.ceil(totalCourses / 4);
 
@@ -50,7 +50,7 @@ const CourseShow = ({ courses, title="Popular Courses" }) => {
                 page={page}
                 onChange={(event, value) => setPage(value)}
                 variant="outlined"
-                color="primary"
+                color="standard"
                 style={{marginBottom: "5px"}}
             />
             
