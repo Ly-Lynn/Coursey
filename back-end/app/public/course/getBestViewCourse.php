@@ -4,7 +4,7 @@
 
     require_once '../../db/courseControlers.php';
 
-    header('Content-Type: application/json');
+    // header('Content-Type: application/json');
     $courseController = new CourseController();
 
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {

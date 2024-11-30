@@ -1,4 +1,7 @@
 # API curl
+<!-- getBestRatingCourse.php: thêm tên lecturer, host -->
+ <!-- Trả tất cả các course user đang học, completer -->
+<!-- otp, gmail, forgot password -->
 
 Replate the host. (localhost if local)
 

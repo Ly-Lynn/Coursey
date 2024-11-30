@@ -1,3 +1,5 @@
+
+
 <?php 
     // ini_set('memory_limit', '5096M');
 
@@ -90,8 +92,6 @@
             if ($this->userController->isValidToken($accessToken, $username) && $this->userController->isAdmin($username)) {
                 # delete video
 
-
-
                 $sqlDeleteUserCourses = "DELETE FROM UserCourses WHERE course_id = :CourseID";
                 $stmtUserCourses = $this->db->conn->prepare($sqlDeleteUserCourses);
                 $stmtUserCourses->bindParam(':CourseID', $CourseID);
@@ -167,18 +167,40 @@
         }   
 
         # get header Course
-        public function CourseInfo($data, $courseID, $accessToken) {
-            if ($this->CourseUserCheck($data, $courseID, $accessToken, false)) {
-                $sql = "SELECT * FROM Courses where course_id = :courseID";
+        // public function CourseInfo($data, $courseID, $accessToken) {
+
+        //     if ($this->CourseUserCheck($data, $courseID, $accessToken, false)) {
+        //         $sql = "SELECT * FROM Courses where course_id = :courseID";
+        //         $stmt = $this->db->conn->prepare($sql);
+        //         $stmt->bindParam(':courseID', $courseID);
+        //         $stmt->execute();
+        //         $course = $stmt->fetch(PDO::FETCH_ASSOC);
+        //         $this->response($course, 200);
+        //         return;
+        //     }
+        //     $this->response("Access fail", 401);
+        // }
+
+
+
+        public function CourseInfo($data, $accessToken) {
+
+            if ($this->userController->isValidToken($accessToken, $data['username'])) {
+                $sql = "SELECT c.* 
+                    FROM Courses c
+                    INNER JOIN UserCourses uc ON c.course_id = uc.course_id
+                    WHERE uc.user_id = :userID";
+            
                 $stmt = $this->db->conn->prepare($sql);
-                $stmt->bindParam(':courseID', $courseID);
+                $stmt->bindParam(':userID', $data['userID']);
                 $stmt->execute();
-                $course = $stmt->fetch(PDO::FETCH_ASSOC);
-                $this->response($course, 200);
+                $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $this->response($courses, 200);
                 return;
             }
             $this->response("Access fail", 401);
         }
+            
 
         public function getAllCourse($courseID) {
             if(!$courseID) {
@@ -217,7 +239,15 @@
 
 
         public function getBestRatingCourse($quantity=5) {        
-            $sql = "SELECT * FROM Courses ORDER BY rate DESC LIMIT :quantity";
+            // $sql = "SELECT * FROM Courses ORDER BY rate DESC LIMIT :quantity";
+            $sql = "SELECT c.*, l.name, h.host_name 
+                    FROM Courses c
+                    LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
+                    LEFT JOIN Hosts h ON c.host_id = h.host_id
+                    ORDER BY c.rate DESC 
+                    LIMIT :quantity";
+
+
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->execute();
@@ -233,7 +263,13 @@
 
         
         public function getBestViewCourse($quantity=5) {        
-            $sql = "SELECT *  FROM Courses ORDER BY views DESC LIMIT :quantity";
+            $sql = "SELECT c.*, l.name, h.host_name 
+                    FROM Courses c
+                    LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
+                    LEFT JOIN Hosts h ON c.host_id = h.host_id
+                    ORDER BY c.views DESC 
+                    LIMIT :quantity";
+
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->execute();
