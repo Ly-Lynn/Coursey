@@ -5,7 +5,7 @@
     require_once '../../db/hostController.php';
     require_once '../../cors/cors.php';
 
-    header('Content-Type: application/json');
+    // header('Content-Type: application/json');
     $hostController = new hostController();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
