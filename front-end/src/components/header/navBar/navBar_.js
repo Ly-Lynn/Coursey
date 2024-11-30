@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './navBar.modul.css'
 import AuthDialog from '../../auth/AuthDialog';
 import CustomButton from '../../custom_components/CustomButton';
+import ModalOverlay from '../../custom_components/ModalOverlay';
 
 const NavBar = () => {
     const [authState, setAuthState] = useState(null);
@@ -28,11 +29,11 @@ const NavBar = () => {
                 </CustomButton>
             </div>
             {authState && 
-                <div className="modal-overlay">
+                <ModalOverlay>
                     <div className="modal-content">
                         <AuthDialog authState={authState} onClose={closeDialog} />
                     </div>
-                </div>
+                </ModalOverlay>
             }
         </>
     );
