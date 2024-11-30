@@ -35,6 +35,8 @@ const CourseShow = ({ courses, title="Popular Courses" }) => {
                     <div className="col-md-3" key={course.course_id}>
                         <CourseCard
                             courseID={course.course_id}
+                            courseImage={course.image}
+                            // hostLogo={course.host_logo}
                             courseName={course.course_name}
                             courseDescription={course.course_intro}
                             courseRating={course.rate}
