@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import courseImage from "../../assests/images/course_img1.png";
+// import courseImage from "../../assests/images/course_img1.png";
 import cornell_logo from "../../assests/images/cornell.jpg";
 
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,8 @@ import StarRating from "./StarRating";
 
 const CourseCard = ({
     courseID,
+    courseImage,
+    hostLogo = cornell_logo,
     courseName = "Fundamentals AI for Beginner",
     courseDescription = "Course Description",
     courseRating = 3.5,   
@@ -162,7 +164,7 @@ const CourseCard = ({
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar 
                         alt="cornell" 
-                        src={cornell_logo} 
+                        src={hostLogo} 
                         sx={{ 
                             width: 32, 
                             height: 32, 
