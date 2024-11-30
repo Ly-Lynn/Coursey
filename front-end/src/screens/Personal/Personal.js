@@ -13,30 +13,7 @@ import MyLearning from "../../components/personal/MyLearning";
 import NavBarAuth from "../../components/header/navBar/navBarAuth_";
 import Header from "../../components/header/header/header_";
 import LoadingFallback from "../../components/fallback/LoadingFallBack";
-
-const CustomButton = styled(Button)(({ variant }) => ({
-    borderRadius: 0,
-    // textTransform: 'none',
-    transition: 'all 0.2s ease',
-    
-    ...(variant === 'contained' && {
-      backgroundColor: '#000',
-      color: 'white',
-      '&:hover': {
-        backgroundColor: '#333',
-      },
-    }),
-  
-    ...(variant === 'outlined' && {
-      backgroundColor: 'white',
-      color: '#000',
-      border: '1px solid #000',
-      '&:hover': {
-        backgroundColor: '#f5f5f5',
-        border: '1px solid #000',
-      },
-    }),
-  }));
+import CustomButton from "../../components/custom_components/CustomButton";
 
 export default function Personal() {
     const dispatch = useDispatch();

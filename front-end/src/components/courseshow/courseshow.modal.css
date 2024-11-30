@@ -1,7 +1,7 @@
 .ribbon {
     padding: 15px;
     height: 40px;
-    background: #1AA1AE;
+    background: #000;
     clip-path: polygon(100% 0, 95% 50%, 100% 100%, 0% 100%, 0% 0%, 0% 0%);
     font-family: "font_condensed";
     text-transform: uppercase;
@@ -17,7 +17,7 @@
   }
   
 .title {
-  color:#1AA1AE
+  color:#000
 }
   .custom-pagination .MuiPagination-ul {
     display: flex;

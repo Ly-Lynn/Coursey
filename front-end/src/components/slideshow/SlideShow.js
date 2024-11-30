@@ -22,7 +22,6 @@ function SlideShow ( {ads} ) {
                 <Row className="align-items-center content-container"
                     style={{
                         backgroundColor: `${ad.info.bg_color}`,
-                        borderRadius: '50px',
                     }}  
                 >
                   <Col xs={12} md={6} className="order-md-1 order-2">

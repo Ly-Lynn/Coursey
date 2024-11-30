@@ -16,15 +16,15 @@
  }
 
  .inputContainer:focus-within {
-  border: 2px solid #1AA1AE;
-  box-shadow: 0 0 8px #1aa2aea4
+  border: 2px solid #545454;
+  box-shadow: 0 0 8px #000000a4
 }
 
 
 .icon-container {
-  border: #1aa1ae solid 1px;
+  border: #000000 solid 1px;
   border-radius: 400px;
-  background-color: #1aa1ae;
+  background-color: #000000;
   width: 43px;
   height: 43px;
   display: flex;
@@ -37,7 +37,7 @@
   color: #ffffff;
   font-weight: 200;
   padding: 5px;
-  font-size: 20px !important;
+  font-size: 40px !important;
 }
 
 .input {
@@ -46,7 +46,7 @@
   flex: 1;
   font-size: 17px;
   font-weight: lighter;
-  color: #1AA1AE;
+  color: #000000;
   border: none;
   outline: none;
   width: 100%;

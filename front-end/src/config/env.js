@@ -1,14 +1,14 @@
 // src/config/env.js
 const ENV = {
     development: {
-      hostName: 'http://localhost:3000/',
+      hostName: 'http://localhost:8080/',
     },
     production: {
-      hostName: 'https://f02b-222-253-85-202.ngrok-free.app/',
+      hostName: 'https://6b90-203-205-32-65.ngrok-free.app',
     }
   };
   
-  const environment = 'production';
+  const environment = 'development';
   
   export const config = ENV[environment];
   
@@ -34,6 +34,6 @@ const ENV = {
     GET_BEST_VIEWING: 'course/getBestViewCourse.php' ,
     GET_URL_VID: 'python/getUrllist',
 
-    GET_CURRENT_STUDY: '',  // trả thông tin từng course mà user đang học
-    GET_COMPLETED_STUDY: '', // trả thông tin từng course mà user đã học xong
+    GET_CURRENT_STUDY: '',  // trả mảng course_id mà user đang học (hay dã mua)
+    GET_COMPLETED_STUDY: '', // trả mảng course_id mà user đã học xong (có thêm trường progress và trường certificate - link ảnh chứng chỉ) 
   };

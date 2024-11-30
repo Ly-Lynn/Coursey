@@ -36,7 +36,7 @@ const NavBarAuth = ({
     };  
     return (
         <div className="navbar" style={{padding:0}}>
-            <Link to="/courses" className="btn_nav" id="courses_nav">Courses</Link>
+            <Link to="/courses" className="btn_nav">Courses</Link>
             <ShoppingCart />
             <Box sx={{ 
                 display: 'flex', 
