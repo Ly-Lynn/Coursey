@@ -6,6 +6,7 @@ import Header from "../../components/header/header/header_"
 import Intro from "../../components/intro/intro/intro_"
 import BigTechIntro from '../../components/bigtech_intro/bigtech_intro/bigtech_intro_'
 // import { fetchPosts } from '../../actions/postActions';
+import BigHostIntro from '../../components/bighost_intro/BigHostIntro';
 
 const MainPage = () => {
     return (
@@ -13,6 +14,7 @@ const MainPage = () => {
             <Header />
             <Intro />
             <BigTechIntro />
+            <BigHostIntro />
         </div>
     )
 }

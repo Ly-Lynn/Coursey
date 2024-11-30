@@ -27,7 +27,7 @@ const Header = () => {
 
     return (
         <div className="header">
-            <img className='logo' onClick={navigateHome} style={{width:"10%", height:'auto', marginLeft:'5%', cursor:'pointer'}} alt='logo' src={logo}/>
+            <img className='logo' onClick={navigateHome} style={{width:"12%", height:'auto',  cursor:'pointer'}} alt='logo' src={logo}/>
             <SearchBar 
                 onFocus={handleFocus}
                 onChangeText={handleTextChange} />
