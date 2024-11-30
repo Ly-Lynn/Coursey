@@ -1,14 +1,23 @@
 import React from 'react';
-import './intro.modul.css'
 import Image from '../img_intro/img_intro_';
 import Text from '../text_intro/text_intro_';
+import { styled } from '@mui/material';
+
+const IntroBox = styled('div')({
+    marginTop:'1rem',
+    display: 'grid',
+    'grid-template-columns': 'auto auto',
+    'place-items': 'center',
+    width: '100%',
+    gap: '50px',
+});
 
 const Intro = () => {
     return (
-        <div className = "Intro">
+        <IntroBox>
             <Text />
             <Image />
-        </div>
+        </IntroBox>
     )
 }
 export default Intro;
