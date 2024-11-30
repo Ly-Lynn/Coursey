@@ -4,7 +4,7 @@
 
     require_once '../../db/usersControlers.php';
 
-    require_once '../../cors/cors.php';
+    // require_once '../../cors/cors.php';
 
     header('Content-Type: application/json');
     $userController = new UserController();
