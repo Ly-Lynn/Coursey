@@ -10,29 +10,10 @@
     clear: color;
     font-size: 18px;
     font-weight: 15px;
-    color: #1AA1AE;
+    color: #000;
     text-align: center;
     min-width: 55px;
     cursor: pointer;
-}
-#join-us {  
-    margin-left: 10px;
-    border: 3px solid 1px;
-    border-radius: 10px;
-    background-color: #1AA1AE;
-    color: white;
-    font-weight: bold;
-}
-#join-us:hover {
-    background-color: #ffffff;
-    color: #1AA1AE;
-    border: #1AA1AE solid 2px;
-}
-#login_nav:hover {
-    color: #fff;
-    background-color: #1AA1AE;
-    font-weight: bold;
-    border-radius: 10px;
 }
 .modal-overlay {
     position: fixed;

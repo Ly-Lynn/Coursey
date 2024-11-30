@@ -185,7 +185,7 @@ const CourseCard = ({
                 
                 {/* Đánh giá sao */}
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <StarRating rating={courseRating} /> {/* Sử dụng StarRating component */}
+                    <StarRating rating={courseRating} /> 
                     <Typography variant="body2" sx={{ ml: 1 }}>
                         {courseRating} 
                     </Typography>

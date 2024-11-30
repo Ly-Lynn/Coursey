@@ -22,10 +22,10 @@ const CourseScreen = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                // const courses = await axios.get(`${hostName}${API_ENDPOINTS.GET_BEST_RATING}`, {
-                const courses = await axios.get("/dummy_data/courses.json");
-                dispatch(updateCoursesSuccess(courses.data));
-                console.log("Courses: ", courses.data);
+                const courses = await axios.get(`${hostName}${API_ENDPOINTS.GET_BEST_RATING}`);
+                // const courses = await axios.get("/dummy_data/courses.json");
+                dispatch(updateCoursesSuccess(courses.data.message));
+                // console.log("Courses: ", courses.data);
                 setLoading(false);
             } catch (error) {
                 dispatch(updateCoursesFailure(error.message));
@@ -33,6 +33,34 @@ const CourseScreen = () => {
                 setLoading(false);
             }
         };
+        // const fetchCourses = async () => {
+        //     try {
+        //         const response = await fetch(`${hostName}${API_ENDPOINTS.GET_BEST_RATING}`, {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             }
+        //         });
+
+        //         if (!response.ok) {
+        //             throw new Error(`HTTP error! status: ${response.status}`);
+        //         }
+
+        //         const data = await response.json();
+        //         const courses = data.message;
+        //         const courseTable = document.getElementById('course-table');
+        //         console.log("COURSES", courses);
+            
+            // const courses = await response.json();
+            // dispatch(updateCoursesSuccess(courses));
+            // console.log("Courses: ", courses);
+        //     setLoading(false);
+        //     } catch (error) {
+        //     dispatch(updateCoursesFailure(error.message));
+        //     setError(error.message);
+        //     setLoading(false);
+        //     }
+        // };
         const fetchAds = async () => {
             try {
                 const ads = await axios.get("/dummy_data/ads.json");

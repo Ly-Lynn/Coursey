@@ -10,6 +10,9 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { colors } from '../../assests/colors';
 import './auth.modul.css';
+import CustomButton from '../custom_components/CustomButton';
+import CustomTextField from '../custom_components/CustomTextField';
+
 function SignUp({ onClose, onSwitchToSignIn }) {
 
   const [showPassword, setShowPassword] = useState(false);
@@ -148,7 +151,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
       <Toaster />
       <Card 
         className='text-black' 
-        style={{ borderRadius: '10px', width: '100%', maxWidth: '630px', padding: '15px', overflow: 'auto' }}
+        style={{ borderRadius: '0', width: '100%', maxWidth: '630px', padding: '15px', overflow: 'auto' }}
       >
         <div className='d-flex justify-content-end close-btn'>
           <Close  onClick={onClose} />
@@ -156,7 +159,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
         <Card.Body>
           <Row>
             <Col className='order-2 order-lg-1 d-flex flex-column align-items-center'>
-              <p className="text-center h3 fw-bold mb-2 mx-1 mx-md-4" style={{ color: `${colors.primary.green_100}` }}>Sign up</p> 
+              <p className="text-center h3 fw-bold mb-2 mx-1 mx-md-4" style={{ color: "black" }}>SIGN UP</p> 
               <Row className="d-flex text-center justify-content-center mb-2"> 
                 <p style={{ marginBottom: '0.5rem', fontWeight: 'bold' }}>Sign up with</p>
                 <ButtonGroup className="d-flex justify-content-center"> 
@@ -178,64 +181,79 @@ function SignUp({ onClose, onSwitchToSignIn }) {
               </Row>
               <Form className="w-100">
                 <Form.Group className="d-flex flex-row align-items-center mb-2"> 
-                  <FontAwesomeIcon icon={faUser} className="me-2 fa-lg" style={{ color: `${colors.primary.green_100}` }} />
+                  <FontAwesomeIcon icon={faUser} className="me-2 fa-lg" style={{ color: "black" }} />
                   <Form.Floating className="flex-grow-1">
-                    <Form.Control 
-                      id='signup-name' 
-                      type='text' 
-                      placeholder='Your Name'
-                      style={{ color: `${colors.primary.green_100}`, fontSize: '0.9rem' }} 
-                      onChange={(e) => setUserName(e.target.value)} required 
-                    />
-                    <Form.Label htmlFor='signup-name'>Your UserName</Form.Label>
+                    <CustomTextField
+                        id='signup-name'
+                        size="small"
+                        sx={{ width: '100%' }}
+                        editmode='false'
+                        label="Username"
+                        name="username"
+                        variant="outlined"
+                        onChange={(e) => setUserName(e.target.value)}
+                        required
+                      />                    
                   </Form.Floating>
                 </Form.Group>
 
                 <Form.Group className="d-flex flex-row align-items-center mb-2"> 
-                  <FontAwesomeIcon icon={faEnvelope} className="me-2 fa-lg" style={{ color: `${colors.primary.green_100}` }} />
+                  <FontAwesomeIcon icon={faEnvelope} className="me-2 fa-lg" style={{ color: "black" }} />
                   <Form.Floating className="flex-grow-1">
-                    <Form.Control 
-                      id='signup-mail' 
-                      type='email' 
-                      placeholder='Your Email' 
-                      onChange={(e) => setUserEmail(e.target.value)}  
-                      style={{ color: `${colors.primary.green_100}`, fontSize: '0.9rem' }} 
-                    />
-                    <Form.Label htmlFor='signup-mail'>Your Email</Form.Label>
+                    <CustomTextField
+                      id='signup-mail'
+                      size="small"
+                      type='email'
+                      sx={{ width: '100%' }}
+                      editmode='false'
+                      label="Email"
+                      name="email"
+                      variant="outlined"
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      required
+                    /> 
                   </Form.Floating>
                 </Form.Group>
 
                 <Form.Group className="d-flex flex-row align-items-center mb-2"> 
-                  <FontAwesomeIcon icon={faLock} className="me-2 mb-4 fa-lg" style={{ color: `${colors.primary.green_100}` }} />
+                  <FontAwesomeIcon icon={faLock} className="me-2 mb-4 fa-lg" style={{ color: "black" }} />
                   <Form.Floating className="flex-grow-1">
-                    <Form.Control
+                    <CustomTextField
                       id='signup-pass'
+                      size="small"
+                      editmode='false'
+                      label="Password"
+                      name="password"
+                      variant="outlined"
+                      sx={{ width: '100%' }}
                       type={showPassword ? 'text' : 'password'}
-                      placeholder='Password'
                       onChange={(e) => setUserPassword(e.target.value)}
-                      style={{ color: `${colors.primary.green_100}`, fontSize: '0.9rem' }}
+                      required  
                     />
-                    <Form.Label htmlFor='signup-pass'>Password</Form.Label>
-                    <span onClick={handleTogglePassword} style={{ cursor: 'pointer', position: 'absolute', right: '10px', top: '38%', transform: 'translateY(-50%)' }}>
+                    <span onClick={handleTogglePassword} style={{ cursor: 'pointer', position: 'absolute', right: '10px', top: '30%', transform: 'translateY(-50%)' }}>
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </span>
-                    <Form.Text className="text-muted mt-1" style={{ fontSize: '0.7rem', marginLeft:'1rem' }}>
+                    <Form.Text className="text-muted" style={{ fontSize: '0.7rem', marginLeft:'1rem' }}>
                       Password must have more than 8 characters and contain at least 1 capital letter and 1 special character.
                     </Form.Text>
                   </Form.Floating>
                 </Form.Group>
 
                 <Form.Group className="d-flex flex-row align-items-center mb-2">
-                  <FontAwesomeIcon icon={faKey} className="me-2 fa-lg" style={{ color: `${colors.primary.green_100}` }} />
+                  <FontAwesomeIcon icon={faKey} className="me-2 fa-lg" style={{ color: "black"}} />
                   <Form.Floating className="flex-grow-1">
-                    <Form.Control 
+                  <CustomTextField
                       id='signup-repeat' 
+                      size="small"
+                      editmode='false'
+                      label="Repeat Password"
+                      name="repeatpassword"
+                      variant="outlined"
+                      sx={{ width: '100%' }}
+                      type={showRepeatPassword ? 'text' : 'password'}
                       onChange={(e) => setUserRepeatPassword(e.target.value)}
-                      type={showRepeatPassword ? 'text' : 'password'} 
-                      placeholder='Repeat your password' 
-                      style={{ color: `${colors.primary.green_100}`, fontSize: '0.9rem' }} 
+                      required  
                     />
-                    <Form.Label htmlFor='signup-repeat'>Repeat your password</Form.Label>
                     <span onClick={handleToggleRepeatPassword} style={{ cursor: 'pointer', position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
                       {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
                     </span>
@@ -243,46 +261,45 @@ function SignUp({ onClose, onSwitchToSignIn }) {
                 </Form.Group>
 
                 <Form.Group className='mb-2' style={{ position: 'relative' }}>
-                  <Form.Control
-                    id='otp'
-                    type='text'
-                    placeholder='Enter OTP'
-                    style={{
-                      color: `${colors.primary.green_100}`,
-                      paddingRight: '80px',
-                      fontSize: '0.9rem', 
-                    }}
-                    disabled={!otpSent}
+                  <CustomTextField
+                      id='otp' 
+                      style={{
+                        width: '100%',
+                        color: "black",
+                      }}
+                      size='small'
+                      editmode='false'
+                      label="OTP"
+                      placeholder='Enter OTP'
+                      name="otp"
+                      variant="outlined"
+                      disabled={!otpSent}
                   />
-                  <Button
-                    variant="outlined"
-                    style={{
-                      fontWeight: 'bold',
-                      backgroundColor: `${colors.primary.green_100}`,
-                      color: 'white',
-                      position: 'absolute',
+                  <CustomButton className='mb-2'
+                    variant="contained"
+                    onClick={otpSent ? handleOtpSubmit : handleSendOtp}
+                    style={{ 
+                      fontWeight: 'bold',position: 'absolute',
                       right: '0%', 
                       top: '50%',
-                      transform: 'translateY(-50%)',
-                    }}
-                    size='medium' 
-                    onClick={otpSent ? handleOtpSubmit : handleSendOtp}
+                      transform: 'translateY(-50%)' }}
                   >
                     {otpSent ? 'Confirm' : 'Send OTP'}
-                  </Button>
+                  </CustomButton>
                 </Form.Group>
 
                 {otpSent && (
-                  <Button
+                  <CustomButton className='mb-2'
+                    variant="contained"
                     style={{
                       transform: 'translateY(-50%)',
                       fontSize: '0.8rem',
                     }}
-                    size='small' 
                     onClick={() => setOtpSent(false)}
+                    size='small'
                   >
                     Resend OTP
-                  </Button>
+                  </CustomButton>
                 )}
 
                 <Form.Group className='mb-2'>
@@ -295,17 +312,17 @@ function SignUp({ onClose, onSwitchToSignIn }) {
                 </Form.Group>
 
                 <div className="d-flex justify-content-center">
-                  <Button className='mb-2'
-                    variant="outlined"
-                    style={{ fontWeight: 'bold', color: `${colors.primary.green_100}` }}
+                <CustomButton className='mb-2'
+                    variant="contained"
+                    style={{ fontWeight: 'bold' }}
+                    onAbort={handleRegister}
                     size='medium'
-                    onClick={handleRegister}
-                  >Register</Button>
+                  >Register</CustomButton>
                 </div>
                 <div className="d-flex justify-content-center">
                   <Button 
                     style={{ 
-                      color: `${colors.primary.green_100}`, 
+                      color: "black", 
                       textTransform: 'none', 
                       textDecorationLine: 'underline',
                       fontSize: '0.8rem' 

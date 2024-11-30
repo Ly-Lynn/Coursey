@@ -8,6 +8,9 @@ import { GitHub, Google } from '@mui/icons-material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { colors } from '../../assests/colors';
 import './auth.modul.css';
+import CustomButton from '../custom_components/CustomButton';
+import CustomTextField from '../custom_components/CustomTextField';
+
 function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
 
   const [showPassword, setShowPassword] = useState(false);
@@ -18,14 +21,14 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
 
   return (
     <Container fluid className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-      <Card className='text-black' style={{ borderRadius: '10px', width: '40%', maxWidth: '40%' }}>
+      <Card className='text-black' style={{ borderRadius: '0', width: '40%', maxWidth: '40%' }}>
         <div className='d-flex justify-content-end close-btn'>
           <Close  onClick={onClose} />
         </div>
         <Card.Body>
           <Row>
             <Col className='d-flex flex-column align-items-center'>
-              <p className="text-center h1 fw-bold mb-3 mx-1 mx-md-4 mt-4" style={{ color: `${colors.primary.green_100}` }}>Sign in</p>
+              <p className="text-center h1 fw-bold mb-3 mx-1 mx-md-4 mt-4" style={{ color: 'black' }}>SIGN IN</p>
               <Row className="d-flex text-center justify-content-center mb-4">
                 <p style={{marginBottom:'0.5rem', fontWeight:'bold'}}>Sign in with</p>
                 <ButtonGroup className="d-flex justify-content-center"> 
@@ -49,30 +52,33 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
 
               <Form className="w-100">
                 <Form.Group className="d-flex flex-row align-items-center mb-4">
-                  <FontAwesomeIcon icon={faEnvelope} className="me-3 fa-lg" style={{ color: `${colors.primary.green_100}` }} />
+                  <FontAwesomeIcon icon={faEnvelope} className="me-3 fa-lg" style={{ color: "black" }} />
                   <Form.Floating className="flex-grow-1">
-                    <Form.Control 
-                      id='signin-mail' 
-                      type='email'  
-                      placeholder='Your Email' 
-                      style={{ color: `${colors.primary.green_100}` }} 
-                      required 
+                    <CustomTextField
+                        size="small"
+                        sx={{ width: '100%' }}
+                        editmode='false'
+                        label="Username"
+                        name="username"
+                        variant="outlined"
+                        required
                     />
-                    <Form.Label htmlFor='signin-mail'>Your Email</Form.Label>
                   </Form.Floating>
                 </Form.Group>
 
                 <Form.Group className="d-flex flex-row align-items-center mb-4 position-relative">
-                  <FontAwesomeIcon icon={faLock} className="me-3 fa-lg" style={{ color: `${colors.primary.green_100}` }} />
+                  <FontAwesomeIcon icon={faLock} className="me-3 fa-lg" style={{ color: "black" }} />
                   <Form.Floating className="flex-grow-1">
-                    <Form.Control
-                      id='signin-pass'
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder='Password'
-                      style={{ color: `${colors.primary.green_100}` }}
-                      required
+                    <CustomTextField
+                        size="small"
+                        editmode='false'
+                        label="Password"
+                        name="password"
+                        variant="outlined"
+                        sx={{ width: '100%' }}
+                        type={showPassword ? 'text' : 'password'}
+                        required  
                     />
-                    <Form.Label htmlFor='signin-pass'>Password</Form.Label>
                     <span onClick={handleTogglePassword} style={{ cursor: 'pointer', position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </span>
@@ -89,16 +95,15 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
                 </Form.Group>
 
                 <div className="d-flex justify-content-center">
-                  <Button className='mb-2'
-                    variant="outlined"
-                    style={{ fontWeight: 'bold', color: `${colors.primary.green_100}` }}
-                    size='large'
-                  >Sign In</Button>
+                  <CustomButton className='mb-2'
+                    variant="contained"
+                    style={{ fontWeight: 'bold' }}
+                  >Sign In</CustomButton>
                 </div>
                 <div className="d-flex justify-content-center">
                   <Button 
                     style={{ 
-                      color: `${colors.primary.green_100}`, 
+                      color: "black", 
                       textTransform: 'none', 
                       textDecorationLine: 'underline' }}
                     className='mb-4'
@@ -106,7 +111,7 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
                   >Don't have an account? Sign up</Button>
                   <Button 
                     style={{ 
-                      color: `${colors.primary.green_100}`, 
+                      color: "black", 
                       textTransform: 'none', 
                       textDecorationLine: 'underline' }}
                     className='mb-4'
