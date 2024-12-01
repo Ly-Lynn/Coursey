@@ -11,6 +11,22 @@
                 $this->userController = new UserController();
         }
 
+
+        public function getUrlCode($username, $accessToken, $courseID) {
+
+            if($this->userController->isValidToken($accessToken, $username)) {
+                $sql = "SELECT url FROM Videos WHERE course_id = $courseID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->execute();
+                $url = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $this->response($url, 200);
+                return;
+            }
+            $this->response("Access Fail", 400);
+
+        }   
+
+
         public function insertVideo($accessToken, $username, $data) {
             if (!$this->userController->isValidToken($accessToken, $username) || !$this->userController->isAdmin($username)) {
                 return false;

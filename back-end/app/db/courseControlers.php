@@ -283,8 +283,6 @@
         }
 
 
-
-
         public function getBestRatingCourse($quantity=5) {        
             // $sql = "SELECT * FROM Courses ORDER BY rate DESC LIMIT :quantity";
             $sql = "SELECT c.*, l.name, h.host_name 
@@ -328,6 +326,28 @@
                 $this->response("No courses found", 404);
             }
         }   
+
+        public function updateCurrentVideoCourse($userID, $courseID, $currentVideoID) {
+            $sql = "UPDATE UserCourses SET current_video_id = :currentVideoID WHERE course_id = :courseID AND user_id = :userID";
+            $stmt = $this->db->conn->prepare($sql);
+            $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+            $stmt->bindParam(':currentVideoID', $currentVideoID, PDO::PARAM_INT);
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->response("Success", 200);
+        }
+
+        public function buyCourse($userID, $courseID) {
+            $sql = "INSERT INTO UserCourses (user_id, course_id, current_video_id, is_completed) VALUES (:userID, :courseID, 1, 0)";
+            $stmt = $this->db->conn->prepare($sql);
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->response("Success", 200);
+
+        }
+
+
 
 
 
