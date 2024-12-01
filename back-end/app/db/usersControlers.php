@@ -1,13 +1,35 @@
 <?php
+    $dotenv = Dotenv\Dotenv::createImmutable("/app/.env");
+    $dotenv->load();
 
     require_once 'connect.php';
     // require_once '../cors/cors.php';
+    require_once '/var/www/html/vendor/autoload.php';
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;   
+    use PHPMailer\PHPMailer\STMP;    
+    
+ 
+    // require_once '/var/www/html/vendor/PHPMailer/SMTP.php';
+    // require_once '/var/www/html/vendor/PHPMailer/Exception.php';
+
 
     class UserController {
         private $db;
+        private $mailer;
+        
         
         public function __construct() {
             $this->db = Database::getInstance();
+            $this->mailer = new PHPMailer(true);
+            $this->mailer->SMTPAuth = true;
+            $this->mailer->Host = 'smtp.gmail.com';
+            $this->mailer->isSMTP();
+            $this->mailer->Username = $_ENV['MAIL_USERNAME']; 
+            $this->mailer->Password = $_ENV['PASS_APP'];    
+            $this->mailer->Port = 587;
+            $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
+
         }
         
         # signup
@@ -275,8 +297,44 @@
         }
 
 
+        public function sendMail($email) {
+            try {
+                // Kiểm tra email tồn tại trong hệ thống
+                $sql = "SELECT username FROM Users WHERE gmail = :email";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
-
+                if (!$user) {
+                    $this->response('Email không tồn tại', 404);
+                    return;
+                }
+        
+                $newPassword = '12345';
+                $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+        
+                $updateSql = "UPDATE Users SET password = :password WHERE gmail = :email";
+                $updateStmt = $this->db->conn->prepare($updateSql);
+                $updateStmt->bindParam(':password', $hashedPassword);
+                $updateStmt->bindParam(':email', $email);
+                $updateStmt->execute();
+        
+                $this->mailer->clearAddresses();
+                $this->mailer->addAddress($email);
+                $this->mailer->isHTML(true);
+                $this->mailer->Subject = 'Thông Tin Mật Khẩu Mới';
+                $this->mailer->Body = "Mật khẩu mới của bạn là: <b>123</b><br>Vui lòng đổi mật khẩu sau khi đăng nhập.";
+                if ($this->mailer->send()) {
+                    $this->response('Đã reset mật khẩu và gửi email thành công', 200);
+                } else {
+                    $this->response('Gửi email thất bại', 500);
+                }
+            } 
+            catch (Exception $e) {
+                $this->response("Lỗi: {$this->mailer->ErrorInfo}", 500);
+            }
+        }
 
 
 

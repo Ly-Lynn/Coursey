@@ -2,7 +2,8 @@
     "name": "your-username/your-project",
     "description": "A simple PHP project with Dotenv support",
     "require": {
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.4",
+        "phpmailer/phpmailer": "^6.8"
     },
     "autoload": {
         "psr-4": {
