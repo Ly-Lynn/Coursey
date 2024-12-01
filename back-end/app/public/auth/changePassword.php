@@ -4,7 +4,7 @@
 
     require_once '../../db/usersControlers.php';
 
-    header('Content-Type: application/json');
+    require_once '../../cors/cors.php';
     $userController = new UserController();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

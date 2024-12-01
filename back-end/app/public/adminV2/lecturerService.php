@@ -3,7 +3,6 @@
     require_once '/var/www/html/vendor/autoload.php';
 
     require_once '../../db/lecturerControlers.php';
-    require_once '../../cors/cors.php';
 
     header('Content-Type: application/json');
     $lecturerController = new LectuterController();
