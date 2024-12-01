@@ -109,19 +109,33 @@
                     'samesite' => 'Strict'
                 ]);
 
+
+                $sql = "SELECT username, ID FROM Users WHERE username = :username";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':username', $inputUsername);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
                 $this->response([
                     'message' => 'Login successful',
-                    'accessToken' => $accessToken
+                    'accessToken' => $accessToken,
+                    'username' => $result['username'],
+                    'userID' => $result['id']
                 ], 200);
 
                 # update the refresh token
                 $sql = "UPDATE Users SET access_token = :access_token, refresh_token = :refresh_token WHERE username = :username";
+                
+
 
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':username', $inputUsername);
                 $stmt->bindParam(':access_token', $accessToken);
                 $stmt->bindParam(':refresh_token', $refreshToken);        
                 $stmt->execute();
+
+                
             }
 
             else {

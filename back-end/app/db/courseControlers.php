@@ -171,7 +171,7 @@
         public function CourseInfo($data, $accessToken) {
 
             if ($this->userController->isValidToken($accessToken, $data['username'])) {
-                $sql = "SELECT c.* 
+                $sql = "SELECT c.*, Hosts.logo_image
                     FROM Courses c
                     INNER JOIN UserCourses uc ON c.course_id = uc.course_id
                     WHERE uc.user_id = :userID";
@@ -218,7 +218,7 @@
         public function getAllCourse($courseID) {
             if(!$courseID) {
                 $sql = "SELECT c.course_id, c.course_name, c.url_list, 
-                                l.name, h.host_name, c.rate, c.hours, c.cost
+                                l.name, h.host_name, h.logo_image, c.rate, c.hours, c.cost
                         FROM Courses c
                         LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                         LEFT JOIN Hosts h ON c.host_id = h.host_id
@@ -227,7 +227,7 @@
             }
             else {
                 $sql = "SELECT c.course_id, c.course_name, c.url_list, 
-                                l.name, h.host_name, c.rate, c.hours, c.cost
+                                l.name, h.host_name, h.logo_image, c.rate, c.hours, c.cost
                         FROM Courses c
                         LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                         LEFT JOIN Hosts h ON c.host_id = h.host_id
@@ -252,7 +252,7 @@
         public function getAllCourse_($courseID) {
             if(!$courseID) {
                 $sql = "SELECT c.*, 
-                                l.name, h.host_name
+                                l.name, h.host_name, h.logo_image
                         FROM Courses c
                         LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                         LEFT JOIN Hosts h ON c.host_id = h.host_id
@@ -261,7 +261,7 @@
             }
             else {
                 $sql = "SELECT c.*, 
-                                l.name, h.host_name
+                                l.name, h.host_name, h.logo_image
                         FROM Courses c
                         LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                         LEFT JOIN Hosts h ON c.host_id = h.host_id
@@ -285,7 +285,7 @@
 
         public function getBestRatingCourse($quantity=5) {        
             // $sql = "SELECT * FROM Courses ORDER BY rate DESC LIMIT :quantity";
-            $sql = "SELECT c.*, l.name, h.host_name 
+            $sql = "SELECT c.*, l.name, h.host_name, h.logo_image 
                     FROM Courses c
                     LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                     LEFT JOIN Hosts h ON c.host_id = h.host_id
@@ -308,7 +308,7 @@
 
         
         public function getBestViewCourse($quantity=5) {        
-            $sql = "SELECT c.*, l.name, h.host_name 
+            $sql = "SELECT c.*, l.name, h.host_name, h.logo_image 
                     FROM Courses c
                     LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                     LEFT JOIN Hosts h ON c.host_id = h.host_id
