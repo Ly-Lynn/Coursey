@@ -5,7 +5,7 @@
 
     require_once '../../db/usersControlers.php';
 
-    header('Content-Type: application/json');
+    // header('Content-Type: application/json');
     $userController = new UserController();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
