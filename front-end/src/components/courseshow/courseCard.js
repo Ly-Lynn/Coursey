@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Tooltip } from "@mui/material";
 // import courseImage from "../../assests/images/course_img1.png";
-import cornell_logo from "../../assests/images/cornell.jpg";
+// import cornell_logo from "../../assests/images/cornell.jpg";
 
 import { useNavigate } from "react-router-dom";
 import StarRating from "./StarRating"; 
@@ -15,7 +15,7 @@ import StarRating from "./StarRating";
 const CourseCard = ({
     courseID,
     courseImage,
-    hostLogo = cornell_logo,
+    hostLogo,
     courseName = "Fundamentals AI for Beginner",
     courseDescription = "Course Description",
     courseRating = 3.5,   
@@ -152,7 +152,6 @@ const CourseCard = ({
                 </Tooltip>
             </Box>
 
-            {/* Footer card */}
             <Box 
                 sx={{ 
                     display: 'flex', 

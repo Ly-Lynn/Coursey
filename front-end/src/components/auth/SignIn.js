@@ -10,14 +10,44 @@ import { colors } from '../../assests/colors';
 import './auth.modul.css';
 import CustomButton from '../custom_components/CustomButton';
 import CustomTextField from '../custom_components/CustomTextField';
+import { toast } from 'react-toastify';
+import { loginUser, addCurrentCourses, addFinishedCourses } from '../../redux/slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
-
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const [isRemember, setIsRemember] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleRemember = () => {
+    setIsRemember(!isRemember);
+  };
+
+  const handleLogin = async () => {
+    try {
+      const userData = { username: userName, password: userPassword }; 
+      const result = await dispatch(loginUser({ userData, isRemember })).unwrap();
+      console.log('Login result:', result); 
+      if (result.meta.requestStatus === 'fulfilled') {
+        dispatch(addCurrentCourses(result.payload.user));
+        dispatch(addFinishedCourses(result.payload.user)); 
+        toast.success('Log in successfully');
+        window.location.reload();
+      } else {
+        toast.error('Failed to register');
+      }
+    } catch (error) {
+      console.error('Signup failed:', error);
+      toast.error(error.message || 'An error occurred while registering');
+    }
+  }
 
   return (
     <Container fluid className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
@@ -28,9 +58,9 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
         <Card.Body>
           <Row>
             <Col className='d-flex flex-column align-items-center'>
-              <p className="text-center h1 fw-bold mb-3 mx-1 mx-md-4 mt-4" style={{ color: 'black' }}>SIGN IN</p>
+              <p className="text-center h1 fw-bold mb-3 mx-1 mx-md-4 mt-4" style={{ color: 'black' }}>LOG IN</p>
               <Row className="d-flex text-center justify-content-center mb-4">
-                <p style={{marginBottom:'0.5rem', fontWeight:'bold'}}>Sign in with</p>
+                <p style={{marginBottom:'0.5rem', fontWeight:'bold'}}>Log in with</p>
                 <ButtonGroup className="d-flex justify-content-center"> 
                     <Button
                     variant="outline-secondary"
@@ -62,6 +92,7 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
                         name="username"
                         variant="outlined"
                         required
+                      onChange={(e) => setUserName(e.target.value)}
                     />
                   </Form.Floating>
                 </Form.Group>
@@ -77,6 +108,7 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
                         variant="outlined"
                         sx={{ width: '100%' }}
                         type={showPassword ? 'text' : 'password'}
+                        onChange={(e) => setUserPassword(e.target.value)}
                         required  
                     />
                     <span onClick={handleTogglePassword} style={{ cursor: 'pointer', position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
@@ -91,6 +123,8 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
                     type='checkbox'
                     id='remember-bx'
                     label='Remember me'
+                    checked={isRemember}
+                    onChange={handleRemember}
                   />
                 </Form.Group>
 
@@ -98,6 +132,7 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
                   <CustomButton className='mb-2'
                     variant="contained"
                     style={{ fontWeight: 'bold' }}
+                    onClick={handleLogin}
                   >Sign In</CustomButton>
                 </div>
                 <div className="d-flex justify-content-center">

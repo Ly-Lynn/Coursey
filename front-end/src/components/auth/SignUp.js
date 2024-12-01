@@ -12,9 +12,12 @@ import { colors } from '../../assests/colors';
 import './auth.modul.css';
 import CustomButton from '../custom_components/CustomButton';
 import CustomTextField from '../custom_components/CustomTextField';
+import { hostName, API_ENDPOINTS } from '../../config/env';
+import { useDispatch, useSelector } from 'react-redux';
+import { signupUser } from '../../redux/slices/authSlice';
 
 function SignUp({ onClose, onSwitchToSignIn }) {
-
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [userName, setUserName] = useState('');
@@ -35,7 +38,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
     setShowRepeatPassword(!showRepeatPassword);
   };
 
-  const handleRegister = async () => {    
+  const handleRegister = async () => {
     // If any field is empty, show warning
     if (!userName || !userEmail || !userPassword || !userRepeatPassword) {
       toast.error('Please fill all fields',
@@ -68,78 +71,86 @@ function SignUp({ onClose, onSwitchToSignIn }) {
           icon: <ErrorIcon /> });
       return;
     }
-    // If email is not verified, show warning
-    if (!isEmailVerified) {
-      toast.error('Please verify your email first',
-        { duration: 3000, position: 'top-center', 
-          style: { width:'100%', height:'100%', fontSize:'25px' }, 
-          icon: <WarningIcon /> });
-      return;
-    }
+    // // If email is not verified, show warning
+    // if (!isEmailVerified) {
+    //   toast.error('Please verify your email first',
+    //     { duration: 3000, position: 'top-center', 
+    //       style: { width:'100%', height:'100%', fontSize:'25px' }, 
+    //       icon: <WarningIcon /> });
+    //   return;
+    // }
     // If all fields are valid, register the user
     try {
-      const response = await axios.post('/api/register', { name: userName, email: userEmail, password: userPassword });
-      if (response.data.success) {
+      const userData = { username: userName, gmail: userEmail, password: userPassword }; 
+      console.log(userData);
+      const response = await dispatch(signupUser(userData)).unwrap(); 
+      console.log("RESPONSE", response);
+      if (response) {
         toast.success('Registered successfully');
+        window.location.reload();
       } else {
         toast.error('Failed to register');
       }
     } catch (error) {
-      console.error('Error registering user:', error);
-      toast.error('An error occurred while registering');
+      console.error('Signup failed:', error);
+      toast.error(error.message || 'An error occurred while registering');
     }
   };
 
-  const handleSendOtp = async () => {
-    const loadingToast = toast.loading('Sending OTP...'); 
-    try {
-      const response = await axios.post('/api/send-otp', { email: userEmail });
-      if (response.data.success) {
-        setOtpSent(true);
-        toast.update(loadingToast, {
-          render: 'OTP sent to your email', // Update toast message on success
-          type: 'success',
-          autoClose: 3000,
-          isLoading: false,
-        });
-      } else {
-        toast.update(loadingToast, {
-          render: 'Failed to send OTP', 
-          type: 'error',
-          autoClose: 3000,
-          isLoading: false,
-        });
-      }
-    } catch (error) {
-      console.error('Error sending OTP:', error);
-      toast.update(loadingToast, {
-        render: 'An error occurred while sending OTP',
-        type: 'error',
-        autoClose: 3000,
-        isLoading: false,
-      });
-    }
-  };
+  // const handleSendOtp = async () => {
+  //   const loadingToast = toast.loading('Sending OTP...'); 
+  //   try {
+  //     const response = await axios.post(``, 
+  //       { 
+  //         email: userEmail, 
+  //       }
+  //     );
+  //     if (response.data.success) {
+  //       setOtpSent(true);
+  //       toast.update(loadingToast, {
+  //         render: 'OTP sent to your email', 
+  //         type: 'success',
+  //         autoClose: 3000,
+  //         isLoading: false,
+  //       });
+  //     } else {
+  //       toast.update(loadingToast, {
+  //         render: 'Failed to send OTP', 
+  //         type: 'error',
+  //         autoClose: 3000,
+  //         isLoading: false,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error sending OTP:', error);
+  //     toast.update(loadingToast, {
+  //       render: 'An error occurred while sending OTP',
+  //       type: 'error',
+  //       autoClose: 3000,
+  //       isLoading: false,
+  //     });
+  //   }
+  // };
 
-  const handleOtpSubmit = async () => {
-    if (!otp) {
-      toast.error('Please enter the OTP');
-      return;
-    }
+  // const handleOtpSubmit = async () => {
+  //   if (!otp) {
+  //     toast.error('Please enter the OTP');
+  //     return;
+  //   }
 
-    try {
-      const response = await axios.post('/api/verify-otp', { email: userEmail, otp });
-      if (response.data.success) {
-        setIsEmailVerified(true);
-        toast.success('Email verified successfully');
-      } else {
-        toast.error('Invalid OTP');
-      }
-    } catch (error) {
-      console.error('Error verifying OTP:', error);
-      toast.error('An error occurred while verifying OTP');
-    }
-  };
+  //   try {
+  //     const response = await axios.post('/api/verify-otp', { email: userEmail, otp });
+  //     if (response.data.success) {
+  //       setIsEmailVerified(true);
+  //       toast.success('Email verified successfully');
+  //     } else {
+  //       toast.error('Invalid OTP');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error verifying OTP:', error);
+  //     toast.error('An error occurred while verifying OTP');
+  //   }
+  // };
 
 
   return (
@@ -260,7 +271,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
                   </Form.Floating>
                 </Form.Group>
 
-                <Form.Group className='mb-2' style={{ position: 'relative' }}>
+                {/* <Form.Group className='mb-2' style={{ position: 'relative' }}>
                   <CustomTextField
                       id='otp' 
                       style={{
@@ -286,9 +297,9 @@ function SignUp({ onClose, onSwitchToSignIn }) {
                   >
                     {otpSent ? 'Confirm' : 'Send OTP'}
                   </CustomButton>
-                </Form.Group>
+                </Form.Group> */}
 
-                {otpSent && (
+                {/* {otpSent && (
                   <CustomButton className='mb-2'
                     variant="contained"
                     style={{
@@ -300,7 +311,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
                   >
                     Resend OTP
                   </CustomButton>
-                )}
+                )} */}
 
                 <Form.Group className='mb-2'>
                   <Form.Check
@@ -315,7 +326,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
                 <CustomButton className='mb-2'
                     variant="contained"
                     style={{ fontWeight: 'bold' }}
-                    onAbort={handleRegister}
+                    onClick={handleRegister}
                     size='medium'
                   >Register</CustomButton>
                 </div>

@@ -13,6 +13,8 @@ const Header = () => {
     const auth = useSelector((state) => state.auth);
     const user = useSelector((state) => state.auth.user);
     const isAuthenticated = auth.isAuthenticated;
+    console.log("USER", user);
+    // console.log("AUTHENTICATED", isAuthenticated);
     const navigate = useNavigate();
     const handleTextChange = (text) => {
         console.log(text);

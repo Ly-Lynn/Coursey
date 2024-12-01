@@ -39,18 +39,23 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async ({ userData, isRemember }, { rejectWithValue }) => {
     try {
-      const dispatch = useDispatch();
-      const { data } = await axios.post(`${hostName}${API_ENDPOINTS.LOGIN}`, 
+      console.log(userData)
+      const data  = await axios.post(`${hostName}${API_ENDPOINTS.LOGIN}`, 
         userData,
         {
           headers: {
             'Content-Type': 'application/json'
           }
         });
-      const { user, token } = data.data;
+      console.log("RESPONSE", data)
+      const response = data.data.message;
+      const user = response.username;
+      const token = response.accessToken;
+      const userID = response.userID;
 
       handleAuthStorage(user, token, isRemember);
-      dispatch(addCurrentCourses(user));
+      // dispatch(addCurrentCourses(user));
+      // dispatch(addFinishedCourses(user));
       
       return { user, token, isRemember };
     } catch (error) {
@@ -58,11 +63,10 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
-const addCurrentCourses = createAsyncThunk(
+export const addFinishedCourses = createAsyncThunk(
   'user/addUserCourses',
   async (userData, { dispatch, rejectWithValue }) => {
     try {
-      const dispatch = useDispatch();
       const { data } = await axios.get(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`,
         {
           id: userData.user_id,
@@ -85,16 +89,58 @@ const addCurrentCourses = createAsyncThunk(
     }
   }
 );
+export const addCurrentCourses = createAsyncThunk(
+  'user/addUserCourses',
+  async (userData, { dispatch, rejectWithValue }) => {
+    try {
+      const dispatch = useDispatch();
+      const { data } = await axios.get(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`,
+        {
+          id: userData.user_id,
+          username: userData.username
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          },
+        }
+      );
+      
+      data.courses.forEach(course => {
+        dispatch(addFinishedCourses(course)); 
+      });
+      return data.courses;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || 'Failed to fetch courses');
+    }
+  }
+);
 
 // Signup thunk
 export const signupUser = createAsyncThunk(
   'auth/signupUser',
   async (userData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${hostName}${API_ENDPOINTS.SIGNUP}`, userData);
-      return data.data;
+      console.log(`${hostName}${API_ENDPOINTS.SIGNUP}`)
+      const response = await fetch(`${hostName}${API_ENDPOINTS.SIGNUP}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Signup failed');
+      }
+
+      const data = await response.json();
+      return data.message;
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Signup failed');
+      console.log("Error: ", error);
+      return rejectWithValue(error.message || 'Signup failed');
     }
   }
 );
@@ -177,18 +223,20 @@ export const updateProfile = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    user: {
-        id: 1,
-        username: "lynn",
-        email: "lynn@gmail.com",
-        quote:"no pain no gain", 
-        ava: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb8ocX1uyxWlO0NGGjiwM4w00ooWe9e3DMoA&s"
+    user: 
+    {
+        // id: 1,
+        // username: "lynn",
+        // email: "lynn@gmail.com",
+        // quote:"no pain no gain", 
+        // ava: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb8ocX1uyxWlO0NGGjiwM4w00ooWe9e3DMoA&s"
     },
-    accessToken: "eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzI4ODkzMTR9",
-    isAuthenticated: true,
+    // accessToken: "eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzI4ODkzMTR9",
+    accessToken: null,
+    isAuthenticated: false,
     loading: false,
     error: null,
-    isRemember: true,
+    isRemember: null,
     passwordResetStatus: null,
     profileUpdateStatus: null
   },

@@ -24,7 +24,6 @@ const CourseScreen = () => {
             try {
                 const courses = await axios.get(`${hostName}${API_ENDPOINTS.GET_BEST_RATING}`);
                 dispatch(updateCoursesSuccess(courses.data.message));
-                // console.log("Courses: ", courses.data);
                 setLoading(false);
             } catch (error) {
                 dispatch(updateCoursesFailure(error.message));

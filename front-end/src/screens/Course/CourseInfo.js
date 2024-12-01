@@ -19,8 +19,10 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  Tooltip,
   ListItemText } from "@mui/material";
 import LoadingFallback from '../../components/fallback/LoadingFallBack';
+import { hostName, API_ENDPOINTS} from '../../config/env'
 
 const InfoTypography = styled(Typography)({
   color: "white",
@@ -88,17 +90,17 @@ const CourseInfoPage = () => {
   const this_course = course_datas.find((course) => course.course_id === parseInt(courseID));
   
 
-  // useEffect(() => {
-  //   const searchParams = new URLSearchParams(location.search);
-  //   const courseID = searchParams.get('courseID');
-  //   // console.log(courseID)
-  //   const fetchCourseDetails = async (id) => {
-  //     const response = await axios.get(`/dummy_data/courses.json`);
-  //     // console.log(response.data, id)
-  //     setCourseData(response.data.find((course) => course.course_id === parseInt(id)));
-  //   };
-  //   fetchCourseDetails(courseID);
-  // }, [location.search]);
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const courseID = searchParams.get('courseID');
+    // console.log(courseID)
+    const fetchCourseDetails = async (id) => {
+      const courseInfo = await axios.get(`${hostName}${API_ENDPOINTS.GET_COURSE_INFO}?courseID=${id}`);
+      console.log(courseInfo.data)
+      setCourseData(courseInfo.data.message.find((course) => course.course_id === parseInt(id)));
+    };
+    fetchCourseDetails(courseID);
+  }, [location.search]);
 
 
   if (!courseData) {
@@ -116,21 +118,23 @@ const CourseInfoPage = () => {
             <InfoTypography variant="h4" component="div" sx={{fontWeight:"bold", margin:"1rem 0 1rem 0", height:"3rem"}}>
                 {courseData.course_name}
             </InfoTypography>
-            <InfoTypography 
-              className='course-intro'
-              variant="h6" 
-              component="div" 
-              sx={{
-                height: "7rem",
-                display: "-webkit-box",
-                WebkitLineClamp: 4,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                textOverflow: "ellipsis"
-              }}
-            >
-              {courseData.course_intro}
-            </InfoTypography>
+            <Tooltip title={courseData.course_intro} placement="top">
+              <InfoTypography 
+                className='course-intro'
+                variant="h6" 
+                component="div" 
+                sx={{
+                  height: "7rem",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 4,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis"
+                }}
+              >
+                {courseData.course_intro}
+              </InfoTypography>
+            </Tooltip>
             <Box sx={{display: 'flex', alignItems: 'center'}}>
               <Typography variant="body1" component="div" sx={{margin: "0 0.5rem 0 1rem", color:"#fbc02d", fontWeight:"bold"}}>
                     {courseData.rate} 
@@ -148,7 +152,7 @@ const CourseInfoPage = () => {
           <InfoBox>
               <h4 style={{textAlign:"left", margin:"1rem 0 0rem 1.5rem"}}>You will gain</h4>
               <div className='gained-info'>
-                <CreateListGained list={courseData.more_info.gained} />
+                <CreateListGained list={courseData.gained.split(',')} />
               </div>
           </InfoBox>
         </div>
@@ -156,7 +160,7 @@ const CourseInfoPage = () => {
           <Box className="info-gained-container">
               <h4 style={{textAlign:"left", margin:"1rem 0 1rem 1.5rem"}}>Requirement</h4>
               <div className='gained-info'>
-                <CreateListRequired list={courseData.more_info.required} />
+                <CreateListRequired list={courseData.required.split(',')} />
               </div>
           </Box>
         </div>

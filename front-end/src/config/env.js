@@ -29,7 +29,7 @@ const ENV = {
     UPDATE_PROFILE: 'auth/updateProfile.php',
 
     GET_ALL_COURSE: 'course/getAllCourse.php',
-    GET_COURSE_INFO: 'course/getCourseInfo.php',
+    GET_COURSE_INFO: 'adminv2/courseService.php',
     CHECK_BOUGHT: 'course/checkCourseUser.php',
     GET_BEST_RATING: 'course/getBestRatingCourse.php',
     GET_BEST_VIEWING: 'course/getBestViewCourse.php' ,
