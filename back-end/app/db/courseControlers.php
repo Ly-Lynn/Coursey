@@ -190,18 +190,30 @@
         public function getCurrentCourse($data, $accessToken) {
 
             if($this->userController->isValidToken($accessToken, $data['username'])) {
-                $sql = "SELECT course_id FROM Courses WHERE user_id = :userID";
+                $sql = "SELECT course_id FROM UserCourses WHERE user_id = :userID";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':userID', $data['userID']);
                 $stmt->execute();
-                $course = $stmt->fetch(PDO::FETCH_ASSOC);
+                $course = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $this->response($course, 200);
                 return; 
             }
             $this->response("Access fail", 401);
         }
 
+        public function getFinishCourse($data, $accessToken) {
 
+            if($this->userController->isValidToken($accessToken, $data['username'])) {
+                $sql = "SELECT course_id FROM UserCourses WHERE user_id = :userID AND is_completed = 1";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':userID', $data['userID']);
+                $stmt->execute();
+                $course = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $this->response($course, 200);
+                return; 
+            }
+            $this->response("Access fail", 401);
+        }
 
         public function getAllCourse($courseID) {
             if(!$courseID) {
