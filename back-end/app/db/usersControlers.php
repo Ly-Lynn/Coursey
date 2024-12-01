@@ -101,13 +101,13 @@
                 $accessToken = $this->generateToken($inputUsername, 3600);
                 $refreshToken = $this->generateToken($inputUsername, 86400);
                 
-                setcookie('refresh_token', $refreshToken, [
-                    'expires' => time() + 86400,
-                    'path' => '/',
-                    'httpOnly' => true,
-                    'secure' => true,
-                    'samesite' => 'Strict'
-                ]);
+                // setcookie('refresh_token', $refreshToken, [
+                //     'expires' => time() + 86400,
+                //     'path' => '/',
+                //     'httpOnly' => true,
+                //     'secure' => true,
+                //     'samesite' => 'Strict'
+                // ]);
 
 
                 $sql = "SELECT username, id FROM Users WHERE username = :username";
