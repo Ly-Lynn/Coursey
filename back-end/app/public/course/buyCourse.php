@@ -12,9 +12,8 @@
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $headers = getallheaders();
-        $accessToken = $headers["Authorization"] ?? null;
         $data = json_decode(file_get_contents("php://input"), true); # username
-        $courseController->getCurrentCourse($data, $accessToken);
+        $courseController->buyCourse($data["userID"], $data["courseID"]);
     }
 
 

@@ -190,18 +190,30 @@
         public function getCurrentCourse($data, $accessToken) {
 
             if($this->userController->isValidToken($accessToken, $data['username'])) {
-                $sql = "SELECT course_id FROM Courses WHERE user_id = :userID";
+                $sql = "SELECT course_id FROM UserCourses WHERE user_id = :userID";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':userID', $data['userID']);
                 $stmt->execute();
-                $course = $stmt->fetch(PDO::FETCH_ASSOC);
+                $course = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $this->response($course, 200);
                 return; 
             }
             $this->response("Access fail", 401);
         }
 
+        public function getFinishCourse($data, $accessToken) {
 
+            if($this->userController->isValidToken($accessToken, $data['username'])) {
+                $sql = "SELECT course_id FROM UserCourses WHERE user_id = :userID AND is_completed = 1";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':userID', $data['userID']);
+                $stmt->execute();
+                $course = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $this->response($course, 200);
+                return; 
+            }
+            $this->response("Access fail", 401);
+        }
 
         public function getAllCourse($courseID) {
             if(!$courseID) {
@@ -271,8 +283,6 @@
         }
 
 
-
-
         public function getBestRatingCourse($quantity=5) {        
             // $sql = "SELECT * FROM Courses ORDER BY rate DESC LIMIT :quantity";
             $sql = "SELECT c.*, l.name, h.host_name 
@@ -316,6 +326,28 @@
                 $this->response("No courses found", 404);
             }
         }   
+
+        public function updateCurrentVideoCourse($userID, $courseID, $currentVideoID) {
+            $sql = "UPDATE UserCourses SET current_video_id = :currentVideoID WHERE course_id = :courseID AND user_id = :userID";
+            $stmt = $this->db->conn->prepare($sql);
+            $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+            $stmt->bindParam(':currentVideoID', $currentVideoID, PDO::PARAM_INT);
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->response("Success", 200);
+        }
+
+        public function buyCourse($userID, $courseID) {
+            $sql = "INSERT INTO UserCourses (user_id, course_id, current_video_id, is_completed) VALUES (:userID, :courseID, 1, 0)";
+            $stmt = $this->db->conn->prepare($sql);
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->response("Success", 200);
+
+        }
+
+
 
 
 

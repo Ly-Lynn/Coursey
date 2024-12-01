@@ -14,9 +14,11 @@ COPY ./conf.d/xdebug.ini /usr/local/etc/php/
 COPY ./composer.json ./
 
 RUN composer require symfony/dotenv \
+    && composer require phpmailer/phpmailer \
     && composer install \
     && composer dump-autoload \
-    && ls -la /var/www/html/vendor 
+    && ls -la /var/www/html/vendor/phpmailer/phpmailer
+
 
 COPY . .
 
