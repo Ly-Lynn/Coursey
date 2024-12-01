@@ -17,7 +17,6 @@ const handleAuthStorage = (userData, token, isRemember) => {
     sessionStorage.setItem('authData', JSON.stringify(authData));
   }
   
-  // Set default authorization header for all future requests
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
 
@@ -40,10 +39,19 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async ({ userData, isRemember }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${hostName}${API_ENDPOINTS.LOGIN}`, userData);
+      const dispatch = useDispatch();
+      const { data } = await axios.post(`${hostName}${API_ENDPOINTS.LOGIN}`, 
+        userData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
       const { user, token } = data.data;
-      dispatch(addCurrentCourses(user.id));
+
       handleAuthStorage(user, token, isRemember);
+      dispatch(addCurrentCourses(user));
+      
       return { user, token, isRemember };
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Login failed');
@@ -52,11 +60,13 @@ export const loginUser = createAsyncThunk(
 );
 const addCurrentCourses = createAsyncThunk(
   'user/addUserCourses',
-  async (userId, { dispatch, rejectWithValue }) => {
+  async (userData, { dispatch, rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${hostName}${API_ENDPOINTS.GET_CURRENT_STUDY}`,
+      const dispatch = useDispatch();
+      const { data } = await axios.get(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`,
         {
-          id: userId
+          id: userData.user_id,
+          username: userData.username
         },
         {
           headers: {
@@ -67,7 +77,7 @@ const addCurrentCourses = createAsyncThunk(
       );
       
       data.courses.forEach(course => {
-        dispatch(addCurrentCourse(course)); // Dispatch action addOrder vào userSlice
+        dispatch(addCurrentCourse(course)); 
       });
       return data.courses;
     } catch (error) {

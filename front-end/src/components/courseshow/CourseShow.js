@@ -40,8 +40,8 @@ const CourseShow = ({ courses, title="Popular Courses" }) => {
                             courseName={course.course_name}
                             courseDescription={course.course_intro}
                             courseRating={course.rate}
-                            courseLecturer={course.lecturer_id} 
-                            courseOrganizer={course.host_id} 
+                            courseLecturer={course.name} 
+                            courseOrganizer={course.host_name} 
                         />  
                     </div>
                 ))}

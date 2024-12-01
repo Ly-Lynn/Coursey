@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
+import { Tooltip } from "@mui/material";
 // import courseImage from "../../assests/images/course_img1.png";
 import cornell_logo from "../../assests/images/cornell.jpg";
 
@@ -130,25 +130,26 @@ const CourseCard = ({
                 >
                     {courseLecturer}
                 </Typography>
-
-                <Typography 
-                    variant={currentSize.descriptionVariant}
-                    sx={{
-                        color: 'text.secondary',
-                        mb: 1,
-                        mt: 0,
-                        display: '-webkit-box',
-                        whiteSpace: 'nowrap',
-                        WebkitLineClamp: descriptionLines,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis', 
-                        wordBreak: 'break-word', 
-                        maxHeight: `${1 * descriptionLines}em`, 
-                    }}
-                >
-                    {courseDescription}
-                </Typography>
+                <Tooltip title={courseDescription}>
+                    <Typography 
+                        variant={currentSize.descriptionVariant}
+                        sx={{
+                            color: 'text.secondary',
+                            mb: 1,
+                            mt: 0,
+                            display: '-webkit-box',
+                            whiteSpace: 'nowrap',
+                            WebkitLineClamp: descriptionLines,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis', 
+                            wordBreak: 'break-word', 
+                            maxHeight: `${1 * descriptionLines}em`, 
+                        }}
+                    >
+                        {courseDescription}
+                    </Typography>
+                </Tooltip>
             </Box>
 
             {/* Footer card */}
@@ -168,21 +169,23 @@ const CourseCard = ({
                         sx={{ 
                             width: 32, 
                             height: 32, 
-                            mr: 1 
+                            mr: 0.5 
                         }}
                     />
-                    <Typography 
-                        variant="body2" 
-                        sx={{ 
-                            color: 'text.secondary',
-                            maxWidth: '150px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        }}
-                    >
-                        {courseOrganizer}
-                    </Typography>
+                    <Tooltip title={courseOrganizer}>
+                        <Typography 
+                            variant="body2" 
+                            sx={{ 
+                                color: 'text.secondary',
+                                maxWidth: '6rem',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'wrap',
+                            }}
+                        >
+                            {courseOrganizer}
+                        </Typography>
+                    </Tooltip>
                 </Box>
                 
                 {/* Đánh giá sao */}

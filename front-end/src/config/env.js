@@ -28,12 +28,17 @@ const ENV = {
     DELETE_USER: 'users/deleteUsers.php',
     UPDATE_PROFILE: 'auth/updateProfile.php',
 
+    GET_ALL_COURSE: 'course/getAllCourse.php',
     GET_COURSE_INFO: 'course/getCourseInfo.php',
     CHECK_BOUGHT: 'course/checkCourseUser.php',
     GET_BEST_RATING: 'course/getBestRatingCourse.php',
     GET_BEST_VIEWING: 'course/getBestViewCourse.php' ,
     GET_URL_VID: 'python/getUrllist',
 
-    GET_CURRENT_STUDY: '',  // trả mảng course_id mà user đang học (hay dã mua)
-    GET_COMPLETED_STUDY: '', // trả mảng course_id mà user đã học xong (có thêm trường progress và trường certificate - link ảnh chứng chỉ) 
+    //{
+    //   "username": "lynn",
+    //    "userID": "1"
+    // }  
+    GET_CURRENT_COURSES: 'course/getCurrentCourse.php',  // trả mảng course_id mà user đang học (hay dã mua)
+    GET_FINISHED_COURSES: 'course/getFinishCourse.php', // trả mảng course_id mà user đã học xong (có thêm trường progress và trường certificate - link ảnh chứng chỉ) 
   };
