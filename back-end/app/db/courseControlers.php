@@ -217,8 +217,8 @@
 
         public function getAllCourse($courseID) {
             if(!$courseID) {
-                $sql = "SELECT c.course_id, c.course_name, c.url_list, 
-                                l.name, h.host_name, h.logo_image, c.rate, c.hours, c.cost
+                $sql = "SELECT c.*, 
+                                l.name, h.host_name, h.logo_image
                         FROM Courses c
                         LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                         LEFT JOIN Hosts h ON c.host_id = h.host_id
@@ -226,8 +226,8 @@
                 $stmt = $this->db->conn->prepare($sql);
             }
             else {
-                $sql = "SELECT c.course_id, c.course_name, c.url_list, 
-                                l.name, h.host_name, h.logo_image, c.rate, c.hours, c.cost
+                $sql = "SELECT c.*, 
+                                l.name, h.host_name, h.logo_image
                         FROM Courses c
                         LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id
                         LEFT JOIN Hosts h ON c.host_id = h.host_id
