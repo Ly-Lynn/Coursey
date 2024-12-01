@@ -1,4 +1,5 @@
 <?php
+    include '../../cors/cors.php'; 
 
     require_once '/var/www/html/vendor/autoload.php';
 
