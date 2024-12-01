@@ -110,7 +110,7 @@
                 ]);
 
 
-                $sql = "SELECT username, ID FROM Users WHERE username = :username";
+                $sql = "SELECT username, id FROM Users WHERE username = :username";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':username', $inputUsername);
                 $stmt->execute();
