@@ -44,8 +44,9 @@
                     body: JSON.stringify(loginData)
                 });
                 const result = await response.json();
-
-                if (response.ok) {
+                if (result.status === 200) {
+                    localStorage.removeItem('accessToken');
+                    console.log(result.message.accessToken);
                     localStorage.setItem('accessToken', result.message.accessToken);
                     localStorage.setItem('username', username);
 

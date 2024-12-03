@@ -117,12 +117,6 @@
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-                $this->response([
-                    'message' => 'Login successful',
-                    'accessToken' => $accessToken,
-                    'username' => $result['username'],
-                    'userID' => $result['id']
-                ], 200);
 
                 # update the refresh token
                 $sql = "UPDATE Users SET access_token = :access_token, refresh_token = :refresh_token WHERE username = :username";
@@ -136,6 +130,12 @@
                 $stmt->execute();
 
                 
+                $this->response([
+                    'message' => 'Login successful',
+                    'accessToken' => $accessToken,
+                    'username' => $result['username'],
+                    'userID' => $result['id']
+                ], 200);
             }
 
             else {
@@ -354,7 +354,8 @@
 
         private function response($message, $statusCode) {
             http_response_code($statusCode);
-            echo json_encode(['message' => $message]);
+            echo json_encode(['message' => $message, 'status' => $statusCode]);
+            exit();
         }
     }
 

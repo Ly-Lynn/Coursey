@@ -86,7 +86,7 @@
 
         private function response($message, $statusCode) {
             http_response_code($statusCode);
-            echo json_encode(['message' => $message]);
+            echo json_encode(['message' => $message, 'status' => $statusCode]);
         }
 
     }
