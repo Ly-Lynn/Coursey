@@ -1,7 +1,7 @@
 <?php
 
     require_once '/var/www/html/vendor/autoload.php';
-    // require_once '../../cors/cors.php';
+    require_once '../../cors/cors.php';
 
     require_once '../../db/hostController.php';
 

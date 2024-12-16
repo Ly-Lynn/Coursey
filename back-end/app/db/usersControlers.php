@@ -134,7 +134,9 @@
                     'message' => 'Login successful',
                     'accessToken' => $accessToken,
                     'username' => $result['username'],
-                    'userID' => $result['id']
+                    'userID' => $result['id'],
+                    'gmail' => $result['gmail'],
+                    'avatar' => $result['avatar']
                 ], 200);
             }
 
