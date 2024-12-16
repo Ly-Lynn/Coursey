@@ -13,12 +13,14 @@ import InProgressCard from "./InProgressCard";
 
 export default function MyLearning({ isCompleted=false }) {
     const dispatch = useDispatch();
-    const server = useSelector((state) => state.server);
-    const completedCourses = server.completedStudy;
-    const currentCourses = server.currentStudy;
-    // console.log("Server: ", server);
+    const server = useSelector((state) => state.server || {});
+    const completedCoursesID = server.completedStudy;
+    const currentCoursesID = server.currentStudy;
+    const allCourses = server.courses;
+
+    const completedCourses = allCourses.filter((course) => completedCoursesID.includes(course.course_id));
+    const currentCourses = allCourses.filter((course) => currentCoursesID.includes(course.course_id));
     // console.log("Completed Courses: ", completedCourses);
-    // console.log("Current Courses: ", currentCourses);
     return (
         <div style={{
             padding: "20px",
@@ -42,13 +44,15 @@ export default function MyLearning({ isCompleted=false }) {
                     gap: 1
                 }}>
                     {isCompleted ? completedCourses.map((course) => {
-                        return <CompletedCard courseID={course.course_id}
+                        return <CompletedCard key={course.course_id}
+                                            courseID={course.course_id}
                                             course_name={course.course_name}
                                             host_name={course.host_name}
                                             progress={course.progress}
                                             course_image={course.image}/>
                     }) : currentCourses.map((course) => {
-                        return <InProgressCard courseID={course.course_id}
+                        return <InProgressCard key={course.course_id}
+                                            courseID={course.course_id}
                                             course_name={course.course_name}
                                             host_name={course.host_name}
                                             progress={course.progress}
@@ -58,5 +62,4 @@ export default function MyLearning({ isCompleted=false }) {
             </Paper>
         </div>
     );
-
 }

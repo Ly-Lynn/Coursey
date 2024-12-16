@@ -17,8 +17,9 @@ const initialState = {
         //     image: "https://www.classcentral.com/report/wp-content/uploads/2022/04/Artificial-Intelligence-Featured-Image.png",
         // },
     ],
-    currentCourses: [],
-    completedCourses: []
+    // currentCourses: [],
+    // completedCourses: []
+    currentVids: [],
 };
 
 const userSlice = createSlice({
@@ -31,15 +32,22 @@ const userSlice = createSlice({
         removeOrder: (state, action) => {
             state.orders = state.orders.filter(order => order.course_id !== action.payload);
         },
-        addCurrentCourse: (state, action) => {
-            state.currentCourses.push(action.payload);
+        initialCurrentVids: (state, action) => {
+            state.currentVids = action.payload;
         },
-        addFinishedCourse: (state, action) => {
-            state.completedCourses.push(action.payload);
+        updateStatusVid: (state, action) => {
+            const index = state.currentVids.findIndex(vid => vid.video_id === action.payload);
+            state.currentVids[index].finished = true;
         }
     },
 });
 
-export const { addOrder, removeOrder, addCurrentCourse, addFinishedCourse } = userSlice.actions;
+export const { addOrder, 
+            removeOrder, 
+            updateStatusVid,
+            initialCurrentVids,
+            // addCurrentCourse, 
+            // addFinishedCourse 
+        } = userSlice.actions;
 
 export default userSlice.reducer;

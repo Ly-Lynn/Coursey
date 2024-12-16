@@ -50,7 +50,7 @@ export default function PersonalCard() {
     const [editQuote, setEditQuote] = useState(false);
     const [userData, setUserData] = useState({
         username: userInfo.username,
-        email: userInfo.email,
+        email: userInfo.gmail,
     });
     
     const [beforeUpdate, setBeforeUpdate] = useState({ ...userInfo });
@@ -160,7 +160,7 @@ export default function PersonalCard() {
                     </CardActions>
                 </Box>
 
-                <Ribbon>
+                {/* <Ribbon>
                 {editQuote ? (
                         <TextField
                             value={quote}
@@ -182,7 +182,7 @@ export default function PersonalCard() {
                             {quote || "Click to add a quote"}
                         </CustomTypography>
                     )}
-                </Ribbon>
+                </Ribbon> */}
             </Card>
         </div>
     );

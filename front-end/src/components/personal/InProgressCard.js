@@ -45,7 +45,7 @@ export default function InProgressCard({ courseID=101,
     
     const navigate = useNavigate();
     const onStudyClick = () => {
-        navigate(`/learn/${courseID}`);
+        navigate(`/learn?courseID=${courseID}`);
     }
 
     return (
@@ -62,7 +62,6 @@ export default function InProgressCard({ courseID=101,
                     <Typography sx={{marginLeft:'1rem', marginBottom:'0.5rem'}} variant="body2">Course | {host_name}</Typography>
 
                     <Typography sx={{marginLeft:'1rem',fontWeight:'bold'}} variant="h5">{course_name}</Typography>
-                    {/* <Link to={`/courses/${courseID}`}> */}
                     <CardContent>
                         <LinearProgressWithLabel value={progress} />
                         <Typography variant="body2" color="text.secondary">Overall Progress</Typography>

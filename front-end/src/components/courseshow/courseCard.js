@@ -6,8 +6,6 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Tooltip } from "@mui/material";
-// import courseImage from "../../assests/images/course_img1.png";
-// import cornell_logo from "../../assests/images/cornell.jpg";
 
 import { useNavigate } from "react-router-dom";
 import StarRating from "./StarRating"; 
@@ -21,7 +19,7 @@ const CourseCard = ({
     courseRating = 3.5,   
     courseLecturer = "John Doe",
     courseOrganizer = "Cornell University",
-    size = "medium", // Kích thước: "small", "medium", "large"
+    size = "medium", 
     titleLines = 2,
     descriptionLines = 2
 }) => {
@@ -160,7 +158,6 @@ const CourseCard = ({
                     // mt: 2
                 }}
             >
-                {/* Logo và tên tổ chức */}
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar 
                         alt="cornell" 
@@ -187,12 +184,8 @@ const CourseCard = ({
                     </Tooltip>
                 </Box>
                 
-                {/* Đánh giá sao */}
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <StarRating rating={courseRating} /> 
-                    <Typography variant="body2" sx={{ ml: 1 }}>
-                        {courseRating} 
-                    </Typography>
                 </Box>
             </Box>
         </CardContent>

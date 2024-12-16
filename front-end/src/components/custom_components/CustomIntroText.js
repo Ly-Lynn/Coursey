@@ -47,7 +47,6 @@ export const HighlightText = styled('span')({
     fontWeight: 'bold', 
     transition: 'transform 0.3s ease',
     '&:hover': {
-        transform: 'scale(4)', 
         textShadow: '2px 2px 4px rgba(255,0,0,0.7)', 
         cursor: 'pointer',
     }

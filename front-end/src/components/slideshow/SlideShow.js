@@ -4,10 +4,13 @@ import { Row, Col, Button } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './slideshow.css';
-// import { ads } from '../../../public/dummy_data/ads';
+import { styled } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { HighlightText } from "../custom_components/CustomIntroText";
+
 
 function SlideShow ( {ads} ) {
-  // ads = ads.ads;
+  const navigate = useNavigate();
   console.log("Ads slideshow: ", ads);
   return (
         <div className="carousel-container position-relative">
@@ -21,28 +24,34 @@ function SlideShow ( {ads} ) {
               <Carousel.Item key={ad.id}>
                 <Row className="align-items-center content-container"
                     style={{
-                        backgroundColor: `${ad.info.bg_color}`,
+                        backgroundColor: "black",
                     }}  
                 >
                   <Col xs={12} md={6} className="order-md-1 order-2">
                     <div className="carousel-content p-4">
-                      <h3 style={{color: `${ad.info.color}`}}
-                      >{ad.info.heading}</h3>
+                      <h3 style={{color: "white"}}
+                      >{ad.course_name}</h3>
                       <p
                         style={{
-                            color: `${ad.info.color}`,
+                            color: "white",
                             textAlign: 'justify',
                         }}
-                        >{ad.info.description}</p>
-                      {/* <button className="btn btn-primary">{ad.info.button}</button> */}
+                        >{ad.course_intro}</p>
+                      <HighlightText
+                        style={{fontSize: '1.5rem'}}
+                        onClick={() => {
+                          navigate(`/courseinfo?courseID=${ad.course_id}`);
+                        }
+                      }
+                      >Study Now</HighlightText>
                     </div>
                   </Col>
                   <Col xs={12} md={6} className="order-md-2 order-1 d-flex align-items-center justify-content-center">
                     <img
                       style={{width: '50%', height: '50%'}}
                       className="d-block"
-                      src={ad.src}
-                      alt={`Slide ${ad.id}`}
+                      src={ad.image}
+                      alt={`Slide ${ad.course_id}`}
                     />
                   </Col>
                 </Row>

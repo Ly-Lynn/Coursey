@@ -13,9 +13,8 @@ const Header = () => {
     const auth = useSelector((state) => state.auth);
     const user = useSelector((state) => state.auth.user);
     const isAuthenticated = auth.isAuthenticated;
-    console.log("USER", user);
-    // console.log("AUTHENTICATED", isAuthenticated);
     const navigate = useNavigate();
+    console.log('User:', auth);
     const handleTextChange = (text) => {
         console.log(text);
     }
@@ -25,7 +24,6 @@ const Header = () => {
     const navigateHome = () => {
         navigate('/');
     }
-
 
     return (
         <div className="header">

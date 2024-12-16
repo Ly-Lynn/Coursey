@@ -4,7 +4,7 @@ const serverSlice = createSlice({
     name: 'server',
     initialState: {
         courses: [],
-        ads: [],
+        // ads: [],
         coursesError: '',
         adsError: '',
         
@@ -12,7 +12,8 @@ const serverSlice = createSlice({
         currentStudyError: '',
 
         completedStudy: [],
-        completedStudyError: ''
+        completedStudyError: '',
+
     },
     reducers: {
         updateCoursesSuccess: (state, action) => {
@@ -25,21 +26,14 @@ const serverSlice = createSlice({
             state.coursesError = action.payload;
         },
 
-        // Ads reducers
-        updateAdsSuccess: (state, action) => {
-            console.log("Reducer: UPDATE_ADS_SUCCESS", action.payload);
-            state.ads = action.payload;
-            state.adsError = '';
-        },
-        updateAdsFailure: (state, action) => {
-            state.ads = [];
-            state.adsError = action.payload;
-        },
-
         // Current study courses
         updateCurrentStudySuccess: (state, action) => {
             console.log("Reducer: UPDATE_CURRENT_STUDY_SUCCESS", action.payload);
-            state.currentStudy = action.payload;
+            const arr = [];
+            action.payload.forEach((course) => {
+                arr.push(course.course_id);
+            });
+            state.currentStudy = arr;
             state.currentStudyError = '';
 
         },
@@ -51,7 +45,11 @@ const serverSlice = createSlice({
         // Completed study courses
         updateCompletedStudySuccess: (state, action) => {
             console.log("Reducer: UPDATE_COMPLETED_STUDY_SUCCESS", action.payload);
-            state.completedStudy = action.payload;
+            const arr = [];
+            action.payload.forEach((course) => {
+                arr.push(course.course_id);
+            });
+            state.completedStudy = arr;
             state.completedStudyError = '';
         },
         updateCompletedStudyFailure: (state, action) => {

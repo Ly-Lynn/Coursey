@@ -41,4 +41,6 @@ const ENV = {
     // }  
     GET_CURRENT_COURSES: 'course/getCurrentCourse.php',  // trả mảng course_id mà user đang học (hay dã mua)
     GET_FINISHED_COURSES: 'course/getFinishCourse.php', // trả mảng course_id mà user đã học xong (có thêm trường progress và trường certificate - link ảnh chứng chỉ) 
+
+    GET_LIST_VIDS: 'course/getUrlList.php', // trả mảng các video của course_id mà nguofi đó đang học
   };

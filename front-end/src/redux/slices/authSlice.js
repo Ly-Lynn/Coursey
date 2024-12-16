@@ -3,7 +3,11 @@ import axios from 'axios';
 import { hostName, API_ENDPOINTS } from '../../config/env';
 import { addCurrentCourse, addFinishedCourse } from './userSlice';
 import { useDispatch } from 'react-redux';
-
+import { updateCompletedStudySuccess, 
+        updateCompletedStudyFailure, 
+        updateCurrentStudySuccess, 
+        updateCurrentStudyFailure
+ } from './serverSlice';  
 // Utility function for handling user data and token storage
 const handleAuthStorage = (userData, token, isRemember) => {
   const authData = {
@@ -39,7 +43,7 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async ({ userData, isRemember }, { rejectWithValue }) => {
     try {
-      console.log(userData)
+      // console.log(userData)
       const data  = await axios.post(`${hostName}${API_ENDPOINTS.LOGIN}`, 
         userData,
         {
@@ -47,17 +51,28 @@ export const loginUser = createAsyncThunk(
             'Content-Type': 'application/json'
           }
         });
-      console.log("RESPONSE", data)
+      // console.log("RESPONSE", data)
+      const status = data.data.status;
+      if (status !== 200) {
+        clearAuthHeader();
+        return { status };
+      }
       const response = data.data.message;
-      const user = response.username;
+      const user = {
+        id: response.userID,
+        username: response.username,
+        gmail: response.gmail,
+        avatar: response.avatar,
+      };
       const token = response.accessToken;
       const userID = response.userID;
-
+      
+      // console.log("STATUS", status);
       handleAuthStorage(user, token, isRemember);
       // dispatch(addCurrentCourses(user));
       // dispatch(addFinishedCourses(user));
       
-      return { user, token, isRemember };
+      return { user, token, isRemember,  status};
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Login failed');
     }
@@ -67,21 +82,22 @@ export const addFinishedCourses = createAsyncThunk(
   'user/addUserCourses',
   async (userData, { dispatch, rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`,
-        {
+      const response = await fetch(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        body: JSON.stringify({
           id: userData.user_id,
           username: userData.username
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-          },
-        }
-      );
+        })
+      });
+
+      const data = await response.json();
       
       data.courses.forEach(course => {
-        dispatch(addCurrentCourse(course)); 
+        dispatch(updateCompletedStudySuccess(course.course_id)); 
       });
       return data.courses;
     } catch (error) {
@@ -94,21 +110,18 @@ export const addCurrentCourses = createAsyncThunk(
   async (userData, { dispatch, rejectWithValue }) => {
     try {
       const dispatch = useDispatch();
-      const { data } = await axios.get(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`,
-        {
-          id: userData.user_id,
-          username: userData.username
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-          },
+      const response = await fetch(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
-      );
-      
+      });
+
+      const data = await response.json();
+      console.log("DATA", data);
       data.courses.forEach(course => {
-        dispatch(addFinishedCourses(course)); 
+        dispatch(updateCurrentStudySuccess(course.course_id)); 
       });
       return data.courses;
     } catch (error) {
@@ -131,7 +144,7 @@ export const signupUser = createAsyncThunk(
         body: JSON.stringify(userData),
       });
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Signup failed');
       }
@@ -267,17 +280,19 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        const { status, user, token, isRemember } = action.payload;
+        if (status !== 200) {
+          state.loading = false;
+          state.isAuthenticated = false;
+          state.error = `Login failed with status: ${status}`;
+          return;
+        }
         state.loading = false;
-        state.user = action.payload.user;
-        state.accessToken = action.payload.token;
+        state.user = user;
+        state.accessToken = token;
         state.isAuthenticated = true;
-        state.isRemember = action.payload.isRemember;
+        state.isRemember = isRemember;
         state.error = null;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.error = action.payload;
       })
       
       // Signup cases

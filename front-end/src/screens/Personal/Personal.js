@@ -21,7 +21,7 @@ export default function Personal() {
     const completedStudy = useSelector((state) => state.server.completedStudy);
     const auth = useSelector((state) => state.auth);
     const user = auth.user
-    const userID = user.id;
+    // console.log("User: ", user);
     const token = auth.accessToken;
     
     const [loading, setLoading] = React.useState(true);
@@ -42,18 +42,20 @@ export default function Personal() {
     useEffect(() => {
         const fetchCurrentStudy = async () => {
             try {
-                // const currentStudy = await axios.post(`${hostName}${API_ENDPOINTS.GET_CURRENT_STUDY}`, {
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //         "Authorization": `Bearer ${token}`,
-                //     },
-                //     params: {
-                //         userID: userID,
-                //     },
-                // });
-                const currentStudy = await axios.get(`/dummy_data/currentStudy.json`);
-                // console.log("Current Study: ", currentStudy.data);
-                dispatch(updateCurrentStudySuccess(currentStudy.data));
+                const response = await fetch(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        username: user.username,
+                        userID: user.id,
+                    }),
+                });
+                const currentStudy = await response.json();
+                // console.log("Current Study: ", currentStudy.message);
+                dispatch(updateCurrentStudySuccess(currentStudy.message));
                 setLoading(false);
             } catch (error) {
                 dispatch(updateCurrentStudyFailure(error.message));
@@ -64,18 +66,19 @@ export default function Personal() {
 
         const fetchCompletedStudy = async () => {
             try {
-                // const completedStudy = await axios.post(`${hostName}${API_ENDPOINTS.GET_COMPLETED_STUDY}`, {
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //         "Authorization": `Bearer ${token}`,
-                //     },
-                //     params: {
-                //         userID: userID,
-                //     },
-                // });
-                const completedStudy = await axios.get(`/dummy_data/completedStudy.json`);
-                // console.log("Completed Study: ", completedStudy.data);
-                dispatch(updateCompletedStudySuccess(completedStudy.data));
+                const response = await fetch(`${hostName}${API_ENDPOINTS.GET_FINISHED_COURSES}`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        username: user.username,
+                        userID: user.id,
+                    }),
+                });
+                const completedStudy = await response.json();
+                dispatch(updateCompletedStudySuccess(completedStudy.message));
                 setLoading(false);
             } catch (error) {
                 dispatch(updateCompletedStudyFailure(error.message));

@@ -16,13 +16,16 @@ import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ShoppingCart from "./ShoppingCart";
 import { useNavigate } from "react-router-dom";
-
+import { logout } from "../../../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 const NavBarAuth = ({
     userAva="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb8ocX1uyxWlO0NGGjiwM4w00ooWe9e3DMoA&s", 
     userId=1,
     userName="Gojo Satoru"
 }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -30,6 +33,11 @@ const NavBarAuth = ({
     };
     const handleClickAccount = () => {
         navigate(`/account`);
+    }
+    const handleLogout = () => {
+        navigate('/');
+        dispatch(logout());
+        toast.success('Log out successfully');
     }
     const handleClose = () => {
         setAnchorEl(null);
@@ -111,9 +119,9 @@ const NavBarAuth = ({
                     <MenuItem onClick={handleClickAccount}>
                         <ListItemIcon>
                             <AutoAwesomeIcon fontSize="small" />
-                        </ListItemIcon> My Account
+                        </ListItemIcon> My Studying
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={handleLogout}>
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>Logout

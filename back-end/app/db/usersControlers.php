@@ -110,12 +110,11 @@
                 // ]);
 
 
-                $sql = "SELECT username, id FROM Users WHERE username = :username";
+                $sql = "SELECT username, id, gmail, avatar FROM Users WHERE username = :username";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':username', $inputUsername);
                 $stmt->execute();
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
 
 
                 # update the refresh token
@@ -285,6 +284,7 @@
         }    
 
         public function isValidToken($accessToken, $username) {
+            // echo $accessToken;
             $sql = "SELECT access_token FROM Users WHERE access_token = :access_token AND username = :username"; 
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':access_token', $accessToken);

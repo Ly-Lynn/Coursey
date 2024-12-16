@@ -10,7 +10,7 @@ import { colors } from '../../assests/colors';
 import './auth.modul.css';
 import CustomButton from '../custom_components/CustomButton';
 import CustomTextField from '../custom_components/CustomTextField';
-import { toast } from 'react-toastify';
+import { Toaster, toast} from 'react-hot-toast';
 import { loginUser, addCurrentCourses, addFinishedCourses } from '../../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -35,23 +35,28 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
       const userData = { username: userName, password: userPassword }; 
       const result = await dispatch(loginUser({ userData, isRemember })).unwrap();
       console.log('Login result:', result); 
-      if (result.meta.requestStatus === 'fulfilled') {
-        dispatch(addCurrentCourses(result.payload.user));
-        dispatch(addFinishedCourses(result.payload.user)); 
+      if (result.status === 401) {
+        toast.error('Please check your username and password');
+      }
+      else if (result.status === 200) {
+        // console.log('Login successfully');
+        dispatch(addCurrentCourses(result.user));
+        dispatch(addFinishedCourses(result.user)); 
         toast.success('Log in successfully');
-        window.location.reload();
+        
       } else {
-        toast.error('Failed to register');
+        toast.error('An unexpected error occurred. Please try again.');
       }
     } catch (error) {
-      console.error('Signup failed:', error);
-      toast.error(error.message || 'An error occurred while registering');
+      console.error('Sign in failed:', error);
+      toast.error('An error occurred while login');
     }
   }
 
   return (
     <Container fluid className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
       <Card className='text-black' style={{ borderRadius: '0', width: '40%', maxWidth: '40%' }}>
+        <Toaster />
         <div className='d-flex justify-content-end close-btn'>
           <Close  onClick={onClose} />
         </div>

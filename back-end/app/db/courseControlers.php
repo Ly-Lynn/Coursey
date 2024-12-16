@@ -202,7 +202,7 @@
         }
 
         public function getFinishCourse($data, $accessToken) {
-
+        // ;   echo $accessToken;
             if($this->userController->isValidToken($accessToken, $data['username'])) {
                 $sql = "SELECT course_id FROM UserCourses WHERE user_id = :userID AND is_completed = 1";
                 $stmt = $this->db->conn->prepare($sql);

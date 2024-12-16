@@ -71,20 +71,11 @@ function SignUp({ onClose, onSwitchToSignIn }) {
           icon: <ErrorIcon /> });
       return;
     }
-    // // If email is not verified, show warning
-    // if (!isEmailVerified) {
-    //   toast.error('Please verify your email first',
-    //     { duration: 3000, position: 'top-center', 
-    //       style: { width:'100%', height:'100%', fontSize:'25px' }, 
-    //       icon: <WarningIcon /> });
-    //   return;
-    // }
-    // If all fields are valid, register the user
     try {
       const userData = { username: userName, gmail: userEmail, password: userPassword }; 
-      console.log(userData);
+      // console.log(userData);
       const response = await dispatch(signupUser(userData)).unwrap(); 
-      console.log("RESPONSE", response);
+      // console.log("RESPONSE", response);
       if (response) {
         toast.success('Registered successfully');
         window.location.reload();
@@ -96,62 +87,6 @@ function SignUp({ onClose, onSwitchToSignIn }) {
       toast.error(error.message || 'An error occurred while registering');
     }
   };
-
-  // const handleSendOtp = async () => {
-  //   const loadingToast = toast.loading('Sending OTP...'); 
-  //   try {
-  //     const response = await axios.post(``, 
-  //       { 
-  //         email: userEmail, 
-  //       }
-  //     );
-  //     if (response.data.success) {
-  //       setOtpSent(true);
-  //       toast.update(loadingToast, {
-  //         render: 'OTP sent to your email', 
-  //         type: 'success',
-  //         autoClose: 3000,
-  //         isLoading: false,
-  //       });
-  //     } else {
-  //       toast.update(loadingToast, {
-  //         render: 'Failed to send OTP', 
-  //         type: 'error',
-  //         autoClose: 3000,
-  //         isLoading: false,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('Error sending OTP:', error);
-  //     toast.update(loadingToast, {
-  //       render: 'An error occurred while sending OTP',
-  //       type: 'error',
-  //       autoClose: 3000,
-  //       isLoading: false,
-  //     });
-  //   }
-  // };
-
-  // const handleOtpSubmit = async () => {
-  //   if (!otp) {
-  //     toast.error('Please enter the OTP');
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await axios.post('/api/verify-otp', { email: userEmail, otp });
-  //     if (response.data.success) {
-  //       setIsEmailVerified(true);
-  //       toast.success('Email verified successfully');
-  //     } else {
-  //       toast.error('Invalid OTP');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error verifying OTP:', error);
-  //     toast.error('An error occurred while verifying OTP');
-  //   }
-  // };
-
 
   return (
     <Container 
