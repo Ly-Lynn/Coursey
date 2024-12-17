@@ -314,6 +314,28 @@
         }
 
 
+        public function sendNotification($message, $email) {
+            try {
+                $this->mailer->clearAddresses();
+                $this->mailer->addAddress($email);
+                $this->mailer->isHTML(true);
+                $this->mailer->Subject = 'Bye Course Successfully';
+                $this->mailer->Body = $message;
+                $this->mailer->send();
+
+                if ($this->mailer->send()) {
+                    $this->response('Send Notification sucessfully', 200);
+                } else {
+                    $this->response('Gửi email thất bại', 500);
+                }
+            }    
+
+            catch (Exception $e) {
+                $this->response("Lỗi: {$this->mailer->ErrorInfo}", 500);
+            }
+
+        }
+
         public function sendMail($email) {
             try {
                 // Kiểm tra email tồn tại trong hệ thống

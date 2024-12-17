@@ -101,10 +101,10 @@
                 $stmt->bindParam(':CourseID', $CourseID);
                 $stmt->execute();
 
-                if ($stmt->rowCount() === 0) {
-                    $this->response("Delete Courses failed", 401);
-                    return;
-                }
+                // if ($stmt->rowCount() === 0) {
+                //     $this->response("Delete Courses failed", 401);
+                //     return;
+                // }
 
                 # delete Course
                 $sql = "DELETE FROM Courses WHERE course_id = :CourseID";

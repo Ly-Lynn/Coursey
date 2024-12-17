@@ -17,6 +17,7 @@
 
             if ($this->userController->isValidToken($accessToken, $username)) {
         
+                // Kiểm tra User và Course có tồn tại không
                 $sql = "SELECT COUNT(*) as count FROM UserCourses WHERE user_id = :userID AND course_id = :courseID";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
@@ -29,12 +30,14 @@
                     return;
                 }
         
-                $sql = "SELECT url FROM Videos WHERE course_id = :courseID ORDER BY video_id ASC";
+                // Lấy thông tin video (url, title, duration)
+                $sql = "SELECT url, title, duration FROM Videos WHERE course_id = :courseID ORDER BY video_id ASC";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
                 $stmt->execute();
-                $urls = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                $videos = $stmt->fetchAll(PDO::FETCH_ASSOC); // Trả về dạng mảng kết hợp
         
+                // Lấy trạng thái video (complete)
                 $sql = "SELECT video_status FROM UserCourses WHERE user_id = :userID AND course_id = :courseID";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
@@ -44,9 +47,15 @@
         
                 $videoStatusList = isset($status['video_status']) ? explode(",", $status['video_status']) : [];
         
+                // Gộp dữ liệu video và trạng thái hoàn thành
                 $finalResult = [];
-                foreach ($urls as $index => $url) {
-                    $finalResult[$url] = isset($videoStatusList[$index]) ? (int)$videoStatusList[$index] : 0;
+                foreach ($videos as $index => $video) {
+                    $finalResult[] = [
+                        'url' => $video['url'],
+                        'duration' => $video['duration'],
+                        'title' => $video['title'],
+                        'complete' => isset($videoStatusList[$index]) ? (int)$videoStatusList[$index] : 0
+                    ];
                 }
         
                 $this->response($finalResult, 200);
@@ -63,15 +72,23 @@
             }
         
             $videoListLink = $data['url_list'];
-            $videoLinks = $this->getVideoLink($videoListLink)["message"]['urls'];
+            $videoLinks = $this->getVideoLink($videoListLink)["message"];
+            $urls = $videoLinks['urls'];
+            $durations = $videoLinks['durations'];
+            $titles = $videoLinks['titles'];
+
             $courseID = $data['course_id'];
             
+
             $videoID = 0;
-            $sql = "INSERT INTO Videos (video_id, course_id, video_path, script, url, fps) 
-                    VALUES (:videoID, :courseID, :videoPath, :script, :url, :fps)";
+            $sql = "INSERT INTO Videos (video_id, course_id, video_path, script, url, fps, duration, title) 
+                    VALUES (:videoID, :courseID, :videoPath, :script, :url, :fps, :duration, :title)";
             $stmt = $this->db->conn->prepare($sql);
         
-            foreach ($videoLinks as $videoLink) {
+            foreach ($urls as $videoLink) {
+                $duration = $durations[$videoID];
+                $title = $titles[$videoID];
+
                 $videoID++;
                 $params = [
                     ':videoID' => $videoID,
@@ -80,6 +97,8 @@
                     ':script' => 'A',
                     ':url' => $videoLink,
                     ':fps' => 25,
+                    'duration' => $duration,
+                    'title' => $title,
                 ];
                 $stmt->execute($params);
             }

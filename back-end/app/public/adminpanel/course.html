@@ -102,18 +102,17 @@
                         body: JSON.stringify(body)
                     });
 
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
+                    // if (!response.ok) {
+                    //     throw new Error(`HTTP error! status: ${response.status}`);
+                    // }
+                    console.log(response);
 
-                    const data = await response.json();  // Parse the response as JSON
+                    // const data = await response;  // Parse the response as JSON
 
-                    if (data.message) {
-                        alert('Course deleted successfully!');
-                        window.location.reload();  // Reload the page to refresh the course list
-                    } else {
-                        alert(`Error deleting course: ${data.message}`);
-                    }
+                   
+                    alert('Course deleted successfully!');
+                    window.location.reload();  // Reload the page to refresh the course list
+                   
                 } catch (error) {
                     console.error('Error deleting course:', error);
                     alert('An error occurred while deleting the course');

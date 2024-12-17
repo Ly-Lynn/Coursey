@@ -84,17 +84,21 @@ class YoububeDownloader:
             json.dump(video_info_list, f, indent=4)
             
     @staticmethod
-    def getURLList(url: str, getPlaylist_opts = {"extract_flat": "in_playlist", "skip_download": True
-        }) -> List[str]:
+    def getURLList(url: str, getPlaylist_opts={"extract_flat": "in_playlist", "skip_download": True}) -> List[str]:
         with YoutubeDL(getPlaylist_opts) as ydl:
-            playlist_info = ydl.extract_info(url, download=False) # not download the info of playlist
+            playlist_info = ydl.extract_info(url, download=False)  # not download the info of playlist
         
         video_urls = [video["url"].split("?v=")[1] for video in playlist_info["entries"]]
-        total_times =  sum([video.get("duration", 0) for video in playlist_info["entries"]]) / 3600
+        durations = [video.get("duration", 0) / 3600 for video in playlist_info["entries"]]
+        total_times = sum(durations)
         view_count = max([video.get("view_count", 0) for video in playlist_info["entries"]])
+        titles = [video.get("title", "No title") for video in playlist_info["entries"]]
+                
         results = {
             "urls": video_urls,
             "total_times": total_times,
-            "view_count": view_count 
+            "view_count": view_count,
+            "durations": durations,
+            "titles": titles,
         }
-        return results   
+        return results
