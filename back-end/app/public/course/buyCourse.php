@@ -15,16 +15,9 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $headers = getallheaders();
         $data = json_decode(file_get_contents("php://input"), true); # username
-        $courseController->buyCourse($data["userID"], $data["courseID"]);
+        $courseController->buyCourse($data["userID"], $data["courseIDs"]);
 
-        $message = "
-        Kính chào {$data['username']},
-        Chúng tôi vui mừng thông báo rằng bạn đã mua khóa học '{$data['courseName']}' thành công.
-        Chúc bạn học tập hiệu quả và đạt được những mục tiêu của mình.
-        Trân trọng,
-        Đội ngũ Coursey chân thành cảm ơn.
-        ";
-        $userController->sendNotification($message, $data["email"]);
+       
     }
 
 

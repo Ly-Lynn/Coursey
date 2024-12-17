@@ -10,7 +10,6 @@
     // $mediaController = new MediaControllers();
 
 
-    # nếu user thuộc course đó thì mới trả về info
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $headers = getallheaders();
         $courseID = isset($_GET['courseID']) ? $_GET['courseID'] : null;        
