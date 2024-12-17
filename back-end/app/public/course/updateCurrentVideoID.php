@@ -1,5 +1,3 @@
-<!-- return {video_id: true or false} -->
-
 
 <?php
     // include 'cors.php'; 

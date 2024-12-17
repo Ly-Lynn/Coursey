@@ -11,20 +11,50 @@
                 $this->userController = new UserController();
         }
 
+        
 
-        public function getUrlCode($username, $accessToken, $courseID) {
+        public function getUrlCode($userID, $username, $accessToken, $courseID) {
 
-            if($this->userController->isValidToken($accessToken, $username)) {
-                $sql = "SELECT url FROM Videos WHERE course_id = $courseID";
+            if ($this->userController->isValidToken($accessToken, $username)) {
+        
+                $sql = "SELECT COUNT(*) as count FROM UserCourses WHERE user_id = :userID AND course_id = :courseID";
                 $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
                 $stmt->execute();
-                $url = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $this->response($url, 200);
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+                if ($result['count'] == 0) {
+                    $this->response("User or Course not found", 404);
+                    return;
+                }
+        
+                $sql = "SELECT url FROM Videos WHERE course_id = :courseID ORDER BY video_id ASC";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+                $stmt->execute();
+                $urls = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        
+                $sql = "SELECT video_status FROM UserCourses WHERE user_id = :userID AND course_id = :courseID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+                $stmt->execute();
+                $status = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+                $videoStatusList = isset($status['video_status']) ? explode(",", $status['video_status']) : [];
+        
+                $finalResult = [];
+                foreach ($urls as $index => $url) {
+                    $finalResult[$url] = isset($videoStatusList[$index]) ? (int)$videoStatusList[$index] : 0;
+                }
+        
+                $this->response($finalResult, 200);
                 return;
             }
+        
             $this->response("Access Fail", 400);
-
-        }   
+        }
 
 
         public function insertVideo($accessToken, $username, $data) {
@@ -88,6 +118,8 @@
             http_response_code($statusCode);
             echo json_encode(['message' => $message, 'status' => $statusCode]);
         }
+
+
 
     }
 

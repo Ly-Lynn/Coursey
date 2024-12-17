@@ -202,7 +202,7 @@
         }
 
         public function getFinishCourse($data, $accessToken) {
-        // ;   echo $accessToken;
+
             if($this->userController->isValidToken($accessToken, $data['username'])) {
                 $sql = "SELECT course_id FROM UserCourses WHERE user_id = :userID AND is_completed = 1";
                 $stmt = $this->db->conn->prepare($sql);
@@ -337,15 +337,92 @@
             $this->response("Success", 200);
         }
 
-        public function buyCourse($userID, $courseID) {
-            $sql = "INSERT INTO UserCourses (user_id, course_id, current_video_id, is_completed) VALUES (:userID, :courseID, 1, 0)";
+
+        public function updateDoneVideo($userID, $courseID, $videoCode) {
+            $sql = "SELECT video_status FROM UserCourses WHERE user_id = :userID AND course_id = :courseID";
             $stmt = $this->db->conn->prepare($sql);
             $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
             $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
             $stmt->execute();
-            $this->response("Success", 200);
+            $status = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            if (!$status) {
+                $this->response("User or Course not found", 404);
+                return;
+            }
+        
+            $videoStatusList = isset($status['video_status']) ? explode(",", $status['video_status']) : [];
 
+            $sql = "SELECT video_id FROM Videos WHERE course_id = :courseID AND url = :videoCode";
+            $stmt = $this->db->conn->prepare($sql);
+            $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+            $stmt->bindParam(':videoCode', $videoCode, PDO::PARAM_STR);
+            $stmt->execute();
+            $videoResult = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            if (!$videoResult) {
+                $this->response("Video not found", 404);
+                return;
+            }
+        
+            $videoID = (int)$videoResult['video_id'];
+        
+            if ($videoID > count($videoStatusList) || $videoID < 1) {
+                $this->response("Invalid video ID", 400);
+                return;
+            }
+        
+            $videoStatusList[$videoID - 1] = 1;
+        
+            $updatedStatus = implode(",", $videoStatusList);
+        
+            $sql = "UPDATE UserCourses SET video_status = :videoStatus WHERE user_id = :userID AND course_id = :courseID";
+            $stmt = $this->db->conn->prepare($sql);
+            $stmt->bindParam(':videoStatus', $updatedStatus, PDO::PARAM_STR);
+            $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+            $stmt->execute();
+        
+            $this->response("Video status updated successfully", 200);
         }
+
+        public function buyCourse($userID, $courseID) {
+            $this->db->conn->beginTransaction();
+        
+            try {
+                $sql = "INSERT INTO UserCourses (user_id, course_id, current_video_id, is_completed) 
+                        VALUES (:userID, :courseID, 1, 0)";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+                $stmt->execute();
+        
+                $sql = "SELECT COUNT(*) as video_count FROM Videos WHERE course_id = :courseID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                $videoCount = (int)$result['video_count'];
+        
+                $videoStatus = implode(",", array_fill(0, $videoCount, '0'));
+        
+                $sql = "UPDATE UserCourses SET video_status = :videoStatus 
+                        WHERE user_id = :userID AND course_id = :courseID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':videoStatus', $videoStatus, PDO::PARAM_STR);
+                $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+                $stmt->execute();
+        
+                $this->db->conn->commit();
+        
+                $this->response("Success", 200);
+            } catch (Exception $e) {
+                $this->db->conn->rollBack();
+                $this->response("Error: " . $e->getMessage(), 500);
+            }
+        }
+        
 
 
 
