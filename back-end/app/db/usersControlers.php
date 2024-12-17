@@ -361,7 +361,7 @@
                 $this->mailer->addAddress($email);
                 $this->mailer->isHTML(true);
                 $this->mailer->Subject = 'Thông Tin Mật Khẩu Mới';
-                $this->mailer->Body = "Mật khẩu mới của bạn là: <b>123</b><br>Vui lòng đổi mật khẩu sau khi đăng nhập.";
+                $this->mailer->Body = "Mật khẩu mới của bạn là: <b>12345</b><br>Vui lòng đổi mật khẩu sau khi đăng nhập.";
                 if ($this->mailer->send()) {
                     $this->response('Đã reset mật khẩu và gửi email thành công', 200);
                 } else {
