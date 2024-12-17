@@ -1,3 +1,6 @@
+<!-- return {video_id: true or false} -->
+
+
 <?php
     // include 'cors.php'; 
     require_once '/var/www/html/vendor/autoload.php';
