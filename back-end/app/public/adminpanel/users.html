@@ -71,7 +71,7 @@
                         <td>${user.username}</td>
                         <td>${user.gmail}</td>
                         <td>${user.is_admin ? 'Admin' : 'User'}</td>
-                        <td><button onclick="deleteUser('${user.user_id}')">Delete</button></td>
+                        <td><button onclick="deleteUser('${user.id}')">Delete</button></td>
                     `;
                     userTable.appendChild(row);
                 });
@@ -81,6 +81,7 @@
         });
 
         function deleteUser(deletedID) {
+            console.log(deletedID);
             const endpoint = 'http://localhost:8080/adminV2/usersService.php';
             const token = localStorage.getItem('accessToken');
             const username = localStorage.getItem('username');
@@ -107,24 +108,15 @@
                     },
                     body: JSON.stringify(bodyData)
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response;
-                })
+                .then(response => response.json()) // Parse response as JSON
                 .then(data => {
-                    if (data.message) {
-                        alert('User deleted successfully!');
-                        document.getElementById('user-table').innerHTML = '';
-                        window.location.reload(); 
-                    } else {
-                        alert(`Error deleting user: ${data.message}`);
-                    }
+                    alert('User deleted successfully!');
+                    document.getElementById('user-table').innerHTML = ''; // Clear the user table
+                    window.location.reload(); // Reload the page
                 })
                 .catch(error => {
                     console.error('Error deleting user:', error);
-                    alert('An error occurred while trying to delete the user.');
+                    alert('An error occurred while trying to delete the user.'); // Show error alert
                 });
             }
         }
