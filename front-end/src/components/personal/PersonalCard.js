@@ -14,6 +14,8 @@ import CustomTypography from "../custom_components/CustomTypography";
 import CardHeader from "@mui/material/CardHeader";
 import { toast } from "react-hot-toast"
 import { updateProfile } from "../../redux/slices/authSlice";
+import { CustomToast } from "../custom_components/CustomToast";
+
 const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -26,7 +28,7 @@ export default function PersonalCard() {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
     const userInfo = auth.user;
-
+    const [success, setSuccess] = useState(false);
     const [exists, setExists] = useState(false);
     const [editMode, setEditMode] = useState(false); 
     const [userData, setUserData] = useState({
@@ -53,12 +55,23 @@ export default function PersonalCard() {
             const maxSize = 5 * 1024 * 1024; // 5MB
 
             if (!validTypes.includes(file.type)) {
-                toast.error('Chỉ chấp nhận file JPEG và PNG');
+                toast.error('Only JPG and PNG', {
+                    style: {
+                      backgroundColor: "black",
+                      color: "#fff"
+                    }
+                  });
                 return;
             }
 
             if (file.size > maxSize) {
-                toast.error('Kích thước file phải nhỏ hơn 5MB');
+                toast.error('Size too large', {
+                    style: {
+                      backgroundColor: "black",
+                      color: "#fff"
+                    }
+                  }
+                );
                 return;
             }
 
@@ -71,7 +84,12 @@ export default function PersonalCard() {
                 }));
             } catch (error) {
                 console.error("Lỗi chuyển đổi hình ảnh:", error);
-                toast.error("Không thể tải hình ảnh. Vui lòng thử lại.");
+                toast.error("Error occurs while converting image", {
+                    style: {
+                      backgroundColor: "black",
+                      color: "#fff"
+                }
+                });
             }
         }
     };
@@ -93,7 +111,7 @@ export default function PersonalCard() {
             
             dispatch(updateProfile(userData)); 
             console.log("User data after update: ", auth.user);
-            
+            setSuccess(true);
             setEditMode(false);
             setBeforeUpdate({ 
                 ...userData,
@@ -108,21 +126,8 @@ export default function PersonalCard() {
 
     return (
         <div style={{margin:'1rem 8rem 1.5rem 8rem'}}>
-            <Snackbar
-                open={exists}
-                autoHideDuration={1200}
-                onClose={() => setExists(false)}
-                message="Nothing changed!"
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                sx={{
-                    '& .MuiSnackbarContent-root': {
-                        backgroundColor: '#000', 
-                        color: 'white', 
-                        fontSize: '16px', 
-                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-                    },
-                }}
-            />
+            <CustomToast onClose={() => setExists(false)} onOpen={exists} message={"Nothing changed!"} />
+            <CustomToast onClose={() => setSuccess(false)} onOpen={success} message={"Profile updated!"} />
             <Card sx={{ 
                 display: "flex", 
                 flexDirection: "row", 
@@ -186,15 +191,11 @@ export default function PersonalCard() {
                             {/* Username */}
                             <CustomTextField
                                 size="small"
-                                editmode={editMode.toString()}
                                 value={userData.username}
-                                onChange={handleChange}
                                 label="Username"
                                 name="username"
                                 variant={editMode ? "filled" : "outlined"}
-                                InputProps={{
-                                    readOnly: !editMode,
-                                }}
+                                
                             />
                             {/* gmail */}
                             <CustomTextField
@@ -215,12 +216,12 @@ export default function PersonalCard() {
                     <CardActions>
                         {!editMode ? (
                             <>
-                                <CustomButton variant="outlined" onClick={() => setEditMode(true)}>
+                                <CustomButton variant="contained" onClick={() => setEditMode(true)}>
                                     Edit Info
                                 </CustomButton>
-                                <CustomButton variant="contained" color="error">
+                                {/* <CustomButton variant="contained" color="error">
                                     Change Password
-                                </CustomButton>
+                                </CustomButton> */}
                             </>
                         ) : (
                             <CustomButton 

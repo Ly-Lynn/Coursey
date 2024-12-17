@@ -14,15 +14,32 @@ export default function MyLearning({ isCompleted=false }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user || {});
     const server = useSelector((state) => state.server || {});
-    const completedCoursesID = user.completedStudy;
+    const completedCoursesID = user.completedStudy; //an object with course_id and progress
     const currentCoursesID = user.currentStudy;
     const allCourses = server.courses;
+    const completedCoursesMap = new Map(
+        completedCoursesID.map(item => [item.course_id, item.progress])
+      );
+      
+    const currentCoursesMap = new Map(
+        currentCoursesID.map(item => [item.course_id, item.progress])
+      );
+    const completedCourses = allCourses
+        .filter(course => completedCoursesMap.has(course.course_id))
+        .map(course => ({
+            ...course,
+            progress: completedCoursesMap.get(course.course_id),
+    }));
 
-    const completedCourses = allCourses.filter((course) => completedCoursesID.includes(course.course_id));
-    const currentCourses = allCourses.filter((course) => currentCoursesID.includes(course.course_id));
-    // console.log("All courses: ", allCourses);
-    // console.log("Completed courses: ", completedCoursesID);
-    // console.log("Current courses: ", currentCoursesID);
+    const currentCourses = allCourses
+        .filter(course => currentCoursesMap.has(course.course_id))
+        .map(course => ({
+            ...course,
+            progress: currentCoursesMap.get(course.course_id),
+    }));
+    console.log("Completed Courses: ", completedCourses);
+    console.log("Current Courses: ", currentCourses);
+    
     return (
         <div style={{
             padding: "20px",

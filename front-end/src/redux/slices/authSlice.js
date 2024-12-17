@@ -345,7 +345,11 @@ const authSlice = createSlice({
           return;
         }
         state.loading = false;
-        state.user = { ...state.user, ...action.payload };
+        state.user = { 
+          ...state.user, 
+          gmail: message.gmail, 
+          avatar: message.avatar 
+        };
         console.log("USER", state.user)
         state.profileUpdateStatus = 'success';
         state.error = null;

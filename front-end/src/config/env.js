@@ -17,9 +17,7 @@ const ENV = {
   export const API_ENDPOINTS = {
     SIGNUP: 'auth/signup.php',
     LOGIN: 'auth/login.php',
-    CHANGE_PASS: 'auth/changePassword.php',
-    FORGOT_PASSWORD: 'auth/forgotPassword.php',
-    RESET_PASSWORD: 'auth/resetPassword.php',
+    RESET_PASSWORD: 'auth/sendPassword.php',
     LOGOUT: 'auth/logout.php',
 
     GET_USER:'users/getUsers.php',
@@ -32,17 +30,12 @@ const ENV = {
     CHECK_BOUGHT: 'course/checkCourseUser.php',
     GET_BEST_RATING: 'course/getBestRatingCourse.php',
     GET_BEST_VIEWING: 'course/getBestViewCourse.php' ,
-    
-  //   {
-  //     "userID": 8,
-  //     "courseID": 8
-  // } 
 
     BUY_COURSE: 'course/buyCourse.php',
     UPDATE_STATUS_VID: 'course/updateDoneVideo.php',
 
-    GET_CURRENT_COURSES: 'course/getCurrentCourse.php',  // trả mảng course_id mà user đang học (hay dã mua)
-    GET_FINISHED_COURSES: 'course/getFinishCourse.php', // trả mảng course_id mà user đã học xong (có thêm trường progress và trường certificate - link ảnh chứng chỉ) 
+    GET_CURRENT_COURSES: 'course/getCurrentCourse.php',  
+    GET_FINISHED_COURSES: 'course/getFinishCourse.php',  
 
-    GET_LIST_VIDS: 'course/getUrlList.php', // trả mảng các video của course_id mà nguofi đó đang học
+    GET_LIST_VIDS: 'course/getUrlList.php', 
   };
