@@ -348,7 +348,8 @@
                     return;
                 }
         
-                $newPassword = '12345';
+                // Generate a random password
+                $newPassword = $this->generateRandomPassword();
                 $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
         
                 $updateSql = "UPDATE Users SET password = :password WHERE gmail = :email";
@@ -357,11 +358,12 @@
                 $updateStmt->bindParam(':email', $email);
                 $updateStmt->execute();
         
+                // Send email with new password
                 $this->mailer->clearAddresses();
                 $this->mailer->addAddress($email);
                 $this->mailer->isHTML(true);
                 $this->mailer->Subject = 'Thông Tin Mật Khẩu Mới';
-                $this->mailer->Body = "Mật khẩu mới của bạn là: <b>12345</b><br>Vui lòng đổi mật khẩu sau khi đăng nhập.";
+                $this->mailer->Body = "Mật khẩu mới của bạn là: <b>{$newPassword}</b><br>Vui lòng đổi mật khẩu sau khi đăng nhập.";
                 if ($this->mailer->send()) {
                     $this->response('Đã reset mật khẩu và gửi email thành công', 200);
                 } else {
@@ -371,6 +373,15 @@
             catch (Exception $e) {
                 $this->response("Lỗi: {$this->mailer->ErrorInfo}", 500);
             }
+        }
+        
+        private function generateRandomPassword($length = 8) {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
+            $password = '';
+            for ($i = 0; $i < $length; $i++) {
+                $password .= $characters[random_int(0, strlen($characters) - 1)];
+            }
+            return $password;
         }
 
 
