@@ -414,20 +414,16 @@
                     $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
                     $stmt->execute();
 
-
-
-
                 }
         
                 $this->db->conn->commit();
                 
-
                 $message = "Bạn đã mua khóa học, Chúc bạn thành công trên con đường chinh phục học vấn.";
                 $sql = "SELECT gmail FROM Users WHERE id = :userID";
                 $stmt = $this->db->conn->prepare($sql);
                 $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
                 $stmt->execute();
-                $gmail = $stmt->fetch(PDO::FETCH_ASSOC);
+                $gmail = $stmt->fetch(PDO::FETCH_ASSOC)["gmail"];
                 $this->userController->sendNotification($message, $gmail);
 
                 $this->response("Success", 200);
