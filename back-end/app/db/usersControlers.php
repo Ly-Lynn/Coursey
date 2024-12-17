@@ -158,10 +158,11 @@
 
 
         private function generateToken($username, $expires) {
-            return base64_encode(json_encode([
+            $token = base64_encode(json_encode([
                 'username' => $username,
                 'expiry' => time() + $expires
             ]));
+            return 'Bearer ' . $token;
         }
 
 
