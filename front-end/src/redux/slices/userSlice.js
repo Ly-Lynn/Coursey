@@ -37,8 +37,11 @@ const userSlice = createSlice({
         },
         updateStatusVid: (state, action) => {
             const index = state.currentVids.findIndex(vid => vid.video_id === action.payload);
-            state.currentVids[index].finished = true;
-        }
+            state.currentVids[index].is_completed = true;
+        },
+        buyCourse: (state, action) => {
+            state.currentCourses.push(action.payload);
+        },
     },
 });
 

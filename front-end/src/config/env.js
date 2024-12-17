@@ -33,12 +33,14 @@ const ENV = {
     CHECK_BOUGHT: 'course/checkCourseUser.php',
     GET_BEST_RATING: 'course/getBestRatingCourse.php',
     GET_BEST_VIEWING: 'course/getBestViewCourse.php' ,
-    GET_URL_VID: 'python/getUrllist',
+    
+  //   {
+  //     "userID": 8,
+  //     "courseID": 8
+  // } 
 
-    //{
-    //   "username": "lynn",
-    //    "userID": "1"
-    // }  
+    BUY_COURSE: 'course/buyCourse.php',
+
     GET_CURRENT_COURSES: 'course/getCurrentCourse.php',  // trả mảng course_id mà user đang học (hay dã mua)
     GET_FINISHED_COURSES: 'course/getFinishCourse.php', // trả mảng course_id mà user đã học xong (có thêm trường progress và trường certificate - link ảnh chứng chỉ) 
 

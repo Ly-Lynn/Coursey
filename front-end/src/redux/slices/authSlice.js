@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { hostName, API_ENDPOINTS } from '../../config/env';
 import { addCurrentCourse, addFinishedCourse } from './userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateCompletedStudySuccess, 
         updateCompletedStudyFailure, 
         updateCurrentStudySuccess, 
@@ -75,57 +75,6 @@ export const loginUser = createAsyncThunk(
       return { user, token, isRemember,  status};
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Login failed');
-    }
-  }
-);
-export const addFinishedCourses = createAsyncThunk(
-  'user/addUserCourses',
-  async (userData, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await fetch(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        },
-        body: JSON.stringify({
-          id: userData.user_id,
-          username: userData.username
-        })
-      });
-
-      const data = await response.json();
-      
-      data.courses.forEach(course => {
-        dispatch(updateCompletedStudySuccess(course.course_id)); 
-      });
-      return data.courses;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to fetch courses');
-    }
-  }
-);
-export const addCurrentCourses = createAsyncThunk(
-  'user/addUserCourses',
-  async (userData, { dispatch, rejectWithValue }) => {
-    try {
-      const dispatch = useDispatch();
-      const response = await fetch(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        }
-      });
-
-      const data = await response.json();
-      console.log("DATA", data);
-      data.courses.forEach(course => {
-        dispatch(updateCurrentStudySuccess(course.course_id)); 
-      });
-      return data.courses;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to fetch courses');
     }
   }
 );

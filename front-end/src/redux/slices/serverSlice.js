@@ -28,12 +28,16 @@ const serverSlice = createSlice({
 
         // Current study courses
         updateCurrentStudySuccess: (state, action) => {
-            console.log("Reducer: UPDATE_CURRENT_STUDY_SUCCESS", action.payload);
-            const arr = [];
-            action.payload.forEach((course) => {
-                arr.push(course.course_id);
-            });
-            state.currentStudy = arr;
+            
+            const courses = Array.isArray(action.payload) 
+                ? action.payload 
+                : [action.payload];
+            
+            const courseIds = courses.map(course => 
+                typeof course === 'object' ? course.course_id : course
+            );
+            state.currentStudy = courseIds || [];
+            console.log("Reducer: UPDATE_CURRENT_STUDY_SUCCESS", state.currentStudy);
             state.currentStudyError = '';
 
         },
@@ -44,12 +48,16 @@ const serverSlice = createSlice({
 
         // Completed study courses
         updateCompletedStudySuccess: (state, action) => {
-            console.log("Reducer: UPDATE_COMPLETED_STUDY_SUCCESS", action.payload);
-            const arr = [];
-            action.payload.forEach((course) => {
-                arr.push(course.course_id);
-            });
-            state.completedStudy = arr;
+            
+            const courses = Array.isArray(action.payload) 
+                ? action.payload 
+                : [action.payload];
+            
+            const courseIds = courses.map(course => 
+                typeof course === 'object' ? course.course_id : course
+            );
+            state.completedStudy = courseIds || [];
+            console.log("Reducer: UPDATE_COMPLETED_STUDY_SUCCESS", state.completedStudy);
             state.completedStudyError = '';
         },
         updateCompletedStudyFailure: (state, action) => {

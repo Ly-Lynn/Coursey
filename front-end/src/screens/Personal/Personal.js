@@ -39,61 +39,6 @@ export default function Personal() {
         setCompleted(true);
     }
 
-    useEffect(() => {
-        const fetchCurrentStudy = async () => {
-            try {
-                const response = await fetch(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`, {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        username: user.username,
-                        userID: user.id,
-                    }),
-                });
-                const currentStudy = await response.json();
-                // console.log("Current Study: ", currentStudy.message);
-                dispatch(updateCurrentStudySuccess(currentStudy.message));
-                setLoading(false);
-            } catch (error) {
-                dispatch(updateCurrentStudyFailure(error.message));
-                setError(error.message);
-                setLoading(false);
-            }
-        };
-
-        const fetchCompletedStudy = async () => {
-            try {
-                const response = await fetch(`${hostName}${API_ENDPOINTS.GET_FINISHED_COURSES}`, {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        username: user.username,
-                        userID: user.id,
-                    }),
-                });
-                const completedStudy = await response.json();
-                dispatch(updateCompletedStudySuccess(completedStudy.message));
-                setLoading(false);
-            } catch (error) {
-                dispatch(updateCompletedStudyFailure(error.message));
-                setError(error.message);
-                setLoading(false);
-            }
-        };
-        fetchCompletedStudy();
-        fetchCurrentStudy();
-    }, [dispatch]);
-
-    if (loading) {
-        return <LoadingFallback />;
-    }
-
 
     return (
         <div>

@@ -13,6 +13,8 @@ import CustomTextField from '../custom_components/CustomTextField';
 import { Toaster, toast} from 'react-hot-toast';
 import { loginUser, addCurrentCourses, addFinishedCourses } from '../../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { updateCurrentStudySuccess, updateCompletedStudySuccess } from '../../redux/slices/serverSlice';
+import { hostName, API_ENDPOINTS } from '../../config/env';
 
 function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
   const dispatch = useDispatch();
@@ -39,9 +41,43 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
         toast.error('Please check your username and password');
       }
       else if (result.status === 200) {
-        // console.log('Login successfully');
-        dispatch(addCurrentCourses(result.user));
-        dispatch(addFinishedCourses(result.user)); 
+        try {
+          console.log('body', result.token, result.user.id, result.user.username);
+          const currentCoursesRes = await fetch(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `${result.token}`
+            },
+            body: JSON.stringify({
+              userID: result.user.id,
+              username: result.user.username
+            })
+          });
+          const finishedCoursesRes = await fetch(`${hostName}${API_ENDPOINTS.GET_FINISHED_COURSES}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `${result.token}`
+            },
+            body: JSON.stringify({
+              id: result.user.id,
+              username: result.user.username
+            })
+          });
+          
+          const currentCourses = await currentCoursesRes.json();
+          const finishedCourses = await finishedCoursesRes.json();
+          console.log('Current courses:', currentCourses);
+          console.log('Finished courses:', finishedCourses);
+          dispatch(updateCurrentStudySuccess(currentCourses.message));
+          dispatch(updateCompletedStudySuccess(finishedCourses.message)); 
+
+        } catch (apiError) {
+          console.error('Error fetching courses:', apiError);
+          toast.error('Failed to fetch courses');
+        }
+
         toast.success('Log in successfully');
         
       } else {

@@ -20,7 +20,8 @@ export default function MyLearning({ isCompleted=false }) {
 
     const completedCourses = allCourses.filter((course) => completedCoursesID.includes(course.course_id));
     const currentCourses = allCourses.filter((course) => currentCoursesID.includes(course.course_id));
-    // console.log("Completed Courses: ", completedCourses);
+    
+
     return (
         <div style={{
             padding: "20px",
