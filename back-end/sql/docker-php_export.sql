@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Dec 16, 2024 at 03:10 PM
+-- Generation Time: Dec 17, 2024 at 05:16 AM
 -- Server version: 8.0.40
 -- PHP Version: 8.2.8
 
@@ -130,18 +130,22 @@ CREATE TABLE `UserCourses` (
   `user_id` int NOT NULL,
   `course_id` int NOT NULL,
   `current_video_id` int DEFAULT NULL,
-  `is_completed` tinyint(1) DEFAULT NULL
+  `is_completed` tinyint(1) DEFAULT NULL,
+  `video_status` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `UserCourses`
 --
 
-INSERT INTO `UserCourses` (`user_id`, `course_id`, `current_video_id`, `is_completed`) VALUES
-(1, 1, 8, 0),
-(1, 2, 1, 0),
-(1, 3, 1, 0),
-(1, 4, 12, 0);
+INSERT INTO `UserCourses` (`user_id`, `course_id`, `current_video_id`, `is_completed`, `video_status`) VALUES
+(1, 1, 8, 0, '1,0,1,1'),
+(1, 2, 1, 0, '1,1,1,1'),
+(1, 3, 1, 0, '0,1,0,0'),
+(1, 4, 12, 0, '0,1,1'),
+(1, 7, 1, 0, '0,0,0,0,0,1,0,0,0,0,0,0,0'),
+(1, 8, 1, 0, '0,0,0,0,0,0,0,0'),
+(1, 9, 1, 0, '0,0,0,0,0,1,0,0,0,1,0,0');
 
 -- --------------------------------------------------------
 
@@ -169,7 +173,7 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`id`, `username`, `gmail`, `password`, `reset_token`, `avatar`, `quote`, `university_id`, `is_verified`, `is_admin`, `access_token`, `refresh_token`) VALUES
-(1, 'lynn', '22520766@gm.uit.edu.vn', '$2y$10$cWqMg5d4z/F8n2J19xjj2.uBnHV009Y7u1ddYZEEMfiBx6XjsJK/G', NULL, NULL, NULL, NULL, 0, 1, 'eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzQzNDM4Nzl9', 'eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzQ0MjY2Nzl9');
+(1, 'lynn', '22520766@gm.uit.edu.vn', '$2y$10$cWqMg5d4z/F8n2J19xjj2.uBnHV009Y7u1ddYZEEMfiBx6XjsJK/G', NULL, NULL, NULL, NULL, 0, 1, 'Bearer eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzQ0MTMxMjR9', 'Bearer eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzQ0OTU5MjR9');
 
 -- --------------------------------------------------------
 
@@ -376,7 +380,7 @@ ALTER TABLE `Videos`
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
