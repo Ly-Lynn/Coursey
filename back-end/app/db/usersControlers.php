@@ -314,7 +314,7 @@
         }
 
 
-        public function sendNotification($message, $email) {
+        public function sendNotification($message, $email, $returnResponse=True) {
             try {
                 $this->mailer->clearAddresses();
                 $this->mailer->addAddress($email);
@@ -324,14 +324,12 @@
                 $this->mailer->send();
 
                 if ($this->mailer->send()) {
-                    $this->response('Send Notification sucessfully', 200);
-                } else {
-                    $this->response('Gửi email thất bại', 500);
+                    return True;
                 }
-            }    
-
+                return False;
+            }
             catch (Exception $e) {
-                $this->response("Lỗi: {$this->mailer->ErrorInfo}", 500);
+                return False;
             }
 
         }
