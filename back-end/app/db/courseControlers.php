@@ -383,7 +383,7 @@
             $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
             $stmt->execute();
         
-            $this->response("Video status updated successfully", 200);
+            $this->response('Video status updated successfully', 200);
         }
 
         public function buyCourse($userID, $courseID) {
