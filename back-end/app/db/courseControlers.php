@@ -187,16 +187,37 @@
             
 
         public function getCurrentCourse($data, $accessToken) {
-
-            if($this->userController->isValidToken($accessToken, $data['username'])) {
-                $sql = "SELECT course_id FROM UserCourses WHERE user_id = :userID";
-                $stmt = $this->db->conn->prepare($sql);
-                $stmt->bindParam(':userID', $data['userID']);
-                $stmt->execute();
-                $course = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $this->response($course, 200);
-                return; 
+            if ($this->userController->isValidToken($accessToken, $data['username'])) {
+                try {
+                    $sql = "SELECT course_id, video_status FROM UserCourses WHERE user_id = :userID";
+                    $stmt = $this->db->conn->prepare($sql);
+                    $stmt->bindParam(':userID', $data['userID']);
+                    $stmt->execute();
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+                    $finalResult = [];
+                    foreach ($result as $row) {
+                        $courseID = $row['course_id'];
+                        $videoStatus = isset($row['video_status']) ? explode(",", $row['video_status']) : [];
+        
+                        $completedVideos = count(array_filter($videoStatus, fn($status) => $status == '1'));
+                        $totalVideos = count($videoStatus);
+                        $progress = $totalVideos > 0 ? ($completedVideos / $totalVideos) * 100 : 0;
+        
+                        $finalResult[] = [
+                            'course_id' => $courseID,
+                            'progress' => $progress 
+                        ];
+                    }
+        
+                    $this->response($finalResult, 200);
+                    return;
+                } catch (PDOException $e) {
+                    $this->response("Database error: " . $e->getMessage(), 500);
+                    return;
+                }
             }
+        
             $this->response("Access fail", 401);
         }
 
