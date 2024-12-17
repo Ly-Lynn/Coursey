@@ -27,38 +27,14 @@ const CourseScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [ads, setAds] = useState([]);
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const response = await fetch(`${hostName}${API_ENDPOINTS.GET_ALL_COURSE}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-
-                if (response.status !== 200) {
-                    toast.error('Something went wrong. Please try again later.');
-                }
-
-                const courses = await response.json();
-                dispatch(updateCoursesSuccess(courses.message));
-                setLoading(false);
-            } catch (error) {
-                dispatch(updateCoursesFailure(error.message));
-                setError(error.message);
-                setLoading(false);
-            }
-        };
-        fetchCourses();
-    }, [dispatch]);
-
+    
     useEffect(() => {
         if (courses.length > 0) {
             const [bestView, bestRating] = getBestCourses(courses);
             setBestView(bestView);
             setBestRating(bestRating);
             setAds(bestRating.slice(0, 3));
+            setLoading(false);
         }
     }
     , [courses]);

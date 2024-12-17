@@ -5,7 +5,6 @@ import { Button,
         Paper,
         ButtonGroup } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { hostName, API_ENDPOINTS } from "../../config/env";
 
 import CompletedCard from "./CompletedCard";
@@ -13,15 +12,17 @@ import InProgressCard from "./InProgressCard";
 
 export default function MyLearning({ isCompleted=false }) {
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user || {});
     const server = useSelector((state) => state.server || {});
-    const completedCoursesID = server.completedStudy;
-    const currentCoursesID = server.currentStudy;
+    const completedCoursesID = user.completedStudy;
+    const currentCoursesID = user.currentStudy;
     const allCourses = server.courses;
 
     const completedCourses = allCourses.filter((course) => completedCoursesID.includes(course.course_id));
     const currentCourses = allCourses.filter((course) => currentCoursesID.includes(course.course_id));
-    
-
+    // console.log("All courses: ", allCourses);
+    // console.log("Completed courses: ", completedCoursesID);
+    // console.log("Current courses: ", currentCoursesID);
     return (
         <div style={{
             padding: "20px",

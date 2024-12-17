@@ -92,22 +92,14 @@ const StyledMenuItem = styled(MenuItem)({
 export default function CheckoutUserForm() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
+    const auth = useSelector((state) => state.auth);
     const userId = user.user;
-    
+    const email = auth.user.gmail;
+
     const countryArray = ["United States", "Canada", "Germany", "France", "Japan", "Australia", "Brazil", "India", "South Korea", "Italy"]
     const [country, setCountry] = useState(null)
     
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const userInfo = await axios.get(``);
-                console.log(userInfo.data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchUserInfo();
-    })
+    
     
     const changeCountry = (event) => {
         setCountry(event.target.value)
@@ -140,6 +132,7 @@ export default function CheckoutUserForm() {
                     fullWidth
                     variant="outlined"
                     type="email"
+                  
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>

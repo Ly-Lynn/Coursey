@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CourseCard from "./courseCard";
 import { Pagination } from "@mui/material";
-import axios from "axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';

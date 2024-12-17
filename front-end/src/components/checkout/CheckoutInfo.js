@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { 
     Box,
     Paper,
@@ -21,8 +20,11 @@ import { styled } from "@mui/material/styles";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
-
-// Styled components remain unchanged...
+import { useNavigate } from "react-router-dom";
+import { hostName, API_ENDPOINTS } from "../../config/env";
+import { toast } from "react-hot-toast";
+import { buyCourse } from "../../redux/slices/userSlice";
+import { CustomModal } from "../custom_components/CustomModal";
 const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(3),
     backgroundColor: "#fff",
@@ -96,24 +98,21 @@ export default function CheckoutInfo({ buynow=null }) {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.user.orders);
     const [ordersLocal, setOrdersLocal] = useState([]);
-
+    const [successBuy, setSuccessBuy] = useState(false);
+    const allCourses = useSelector((state) => state.server.courses);
+    const navigate = useNavigate();
+    const auth = useSelector((state) => state.auth);
+    
     useEffect(() => {
         if (buynow) {
-            // Fetch buy now course information
-            const fetchBuyNow = async () => {
-                try {
-                    const order = await axios.get(``);
-                    console.log(order.data);
-                    setOrdersLocal([order.data]);
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-            fetchBuyNow();
+            const course = allCourses.find(course => course.course_id === parseInt(buynow));
+            if (course) {
+                setOrdersLocal([course]);
+            }
         } else {
             setOrdersLocal(orders);
         }
-    }, [buynow, orders]); // Add dependencies
+    }, [buynow, orders, allCourses]);
 
     const totalPrice = ordersLocal.reduce((sum, order) => sum + (order.cost), 0);
 
@@ -122,11 +121,52 @@ export default function CheckoutInfo({ buynow=null }) {
     };
 
     const handleItemClick = (courseID) => {
-        window.location.href = `/courseinfo?courseID=${courseID}`;
+        navigate(`/courseinfo?courseID=${courseID}`);
     };
+    const onCloseNoti = () => {
+        setSuccessBuy(false);
+        navigate('/');
+    }
+
+    const handleCheckout = async () => {
+        const courseIDs = ordersLocal.map(order => order.course_id);
+        const userID = auth.user.id;
+        const email = auth.user.gmail;
+
+        try {
+            const response = await fetch(`${hostName}${API_ENDPOINTS.BUY_COURSE}`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userID: userID,
+                    courseIDs: courseIDs
+                }),
+            });
+            if (response.status !== 200) {
+                const errorData = await response.json();
+                toast.error(errorData.message);
+                console.error(errorData.message);
+            }
+            const res = await response.json();
+            dispatch(buyCourse(res));
+            setSuccessBuy(true);
+                
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <Container maxWidth="xs">
+            <CustomModal
+                onOpen={successBuy}
+                onClose={onCloseNoti}
+                title="Thank you! 💖"
+                subtitle="You have successfully purchased the course(s)."
+            />
           <Box sx={{ width: '100%', mt: 4 }}>
             <StyledPaper elevation={3}>
               <Typography sx={{fontWeight:"bold"}} variant="h6" gutterBottom>
@@ -216,7 +256,7 @@ export default function CheckoutInfo({ buynow=null }) {
                     <strong>Total:</strong>
                     <strong>${totalPrice.toFixed(2)}</strong>
                 </div>
-                <Button variant="contained" color="" style={{borderRadius:0, marginTop:"1rem", width:'100%', backgroundColor:"black", color:'white'}}>Confirm Checkout</Button>
+                <Button onClick={handleCheckout} variant="contained" color="" style={{borderRadius:0, marginTop:"1rem", width:'100%', backgroundColor:"black", color:'white'}}>Confirm Checkout</Button>
               </Grid>
             </StyledPaper>
           </Box>

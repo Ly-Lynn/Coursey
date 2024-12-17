@@ -26,7 +26,6 @@ const ENV = {
     GET_ALL_USER: 'users/getAllUsers.php',
     UPDATE_USER: 'users/updateUsers.php',
     DELETE_USER: 'users/deleteUsers.php',
-    UPDATE_PROFILE: 'auth/updateProfile.php',
 
     GET_ALL_COURSE: 'course/getAllCourse.php',
     GET_COURSE_INFO: 'adminv2/courseService.php',
@@ -40,6 +39,7 @@ const ENV = {
   // } 
 
     BUY_COURSE: 'course/buyCourse.php',
+    UPDATE_STATUS_VID: 'course/updateDoneVideo.php',
 
     GET_CURRENT_COURSES: 'course/getCurrentCourse.php',  // trả mảng course_id mà user đang học (hay dã mua)
     GET_FINISHED_COURSES: 'course/getFinishCourse.php', // trả mảng course_id mà user đã học xong (có thêm trường progress và trường certificate - link ảnh chứng chỉ) 

@@ -11,9 +11,10 @@ import './auth.modul.css';
 import CustomButton from '../custom_components/CustomButton';
 import CustomTextField from '../custom_components/CustomTextField';
 import { Toaster, toast} from 'react-hot-toast';
-import { loginUser, addCurrentCourses, addFinishedCourses } from '../../redux/slices/authSlice';
+import { loginUser } from '../../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCurrentStudySuccess, updateCompletedStudySuccess } from '../../redux/slices/serverSlice';
+import { updateCurrentStudySuccess, updateCompletedStudySuccess } from '../../redux/slices/userSlice';
+import { updateCoursesSuccess } from '../../redux/slices/serverSlice';
 import { hostName, API_ENDPOINTS } from '../../config/env';
 
 function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
@@ -43,6 +44,12 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
       else if (result.status === 200) {
         try {
           console.log('body', result.token, result.user.id, result.user.username);
+          const allCourses = await fetch(`${hostName}${API_ENDPOINTS.GET_ALL_COURSE}`, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+              }
+          });
           const currentCoursesRes = await fetch(`${hostName}${API_ENDPOINTS.GET_CURRENT_COURSES}`, {
             method: 'POST',
             headers: {
@@ -68,10 +75,12 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
           
           const currentCourses = await currentCoursesRes.json();
           const finishedCourses = await finishedCoursesRes.json();
+          const courses = await allCourses.json();
           console.log('Current courses:', currentCourses);
           console.log('Finished courses:', finishedCourses);
           dispatch(updateCurrentStudySuccess(currentCourses.message));
           dispatch(updateCompletedStudySuccess(finishedCourses.message)); 
+          dispatch(updateCoursesSuccess(courses.message));
 
         } catch (apiError) {
           console.error('Error fetching courses:', apiError);

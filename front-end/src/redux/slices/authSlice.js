@@ -8,6 +8,7 @@ import { updateCompletedStudySuccess,
         updateCurrentStudySuccess, 
         updateCurrentStudyFailure
  } from './serverSlice';  
+
 // Utility function for handling user data and token storage
 const handleAuthStorage = (userData, token, isRemember) => {
   const authData = {
@@ -22,6 +23,7 @@ const handleAuthStorage = (userData, token, isRemember) => {
   }
   
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
 
 const clearAuthHeader = () => {
@@ -84,7 +86,7 @@ export const signupUser = createAsyncThunk(
   'auth/signupUser',
   async (userData, { rejectWithValue }) => {
     try {
-      console.log(`${hostName}${API_ENDPOINTS.SIGNUP}`)
+      // console.log(`${hostName}${API_ENDPOINTS.SIGNUP}`)
       const response = await fetch(`${hostName}${API_ENDPOINTS.SIGNUP}`, {
         method: 'POST',
         headers: {
@@ -174,8 +176,26 @@ export const updateProfile = createAsyncThunk(
   'auth/updateProfile',
   async (profileData, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.post(`${hostName}${API_ENDPOINTS.UPDATE_PROFILE}`, profileData);
-      return data.data;
+      console.log("PROFILE DATA", profileData, profileData.token)  
+      const response = await fetch(`${hostName}${API_ENDPOINTS.UPDATE_USER}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': profileData.token
+        },
+        body: JSON.stringify({
+          username: profileData.username,
+          gmail: profileData.gmail,
+          avatar: profileData.avatar,
+          // avatar: 'aaaa',
+        })
+      });
+      const data = await response.json();
+      console.log("RESPONSE", data)
+      return {
+        "message": profileData,
+        "status": data.status
+      };
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Profile update failed');
     }
@@ -219,6 +239,9 @@ const authSlice = createSlice({
     clearStatus: (state) => {
       state.passwordResetStatus = null;
       state.profileUpdateStatus = null;
+    },
+    updateInfo: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
     }
   },
   extraReducers: (builder) => {
@@ -312,16 +335,21 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
+        const status = action.payload.status;
+        const message = action.payload.message;
+        console.log("STATUS", status, message)
+        if (status !== 200) {
+          state.loading = false;
+          state.profileUpdateStatus = 'failed';
+          state.error = message;
+          return;
+        }
         state.loading = false;
         state.user = { ...state.user, ...action.payload };
+        console.log("USER", state.user)
         state.profileUpdateStatus = 'success';
         state.error = null;
       })
-      .addCase(updateProfile.rejected, (state, action) => {
-        state.loading = false;
-        state.profileUpdateStatus = 'failed';
-        state.error = action.payload;
-      });
   }
 });
 

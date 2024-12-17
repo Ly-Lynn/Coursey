@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Grid2 } from "@mui/material";
+import { Grid } from "@mui/material";
 import MainStudy from "../../components/studyscreen/MainStudy";
 import Header from "../../components/header/header/header_";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { hostName, API_ENDPOINTS } from "../../config/env";
-import { updateCourseSuccess, updateCourseFailure } from "../../redux/slices/serverSlice";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import { initialCurrentVids } from "../../redux/slices/userSlice";
 
 export default function StudyScreen() {
     const queryParams = new URLSearchParams(window.location.search);
@@ -13,7 +15,6 @@ export default function StudyScreen() {
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
     const token = auth.accessToken;
-    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [vids, setVids] = useState([]);
@@ -27,7 +28,7 @@ export default function StudyScreen() {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
+                        "Authorization": `${token}`,
                     },
                     body: JSON.stringify({
                         username: auth.user.username,
@@ -36,13 +37,13 @@ export default function StudyScreen() {
                     }),
                 });
 
-                if (!response.ok) {
+                if (response.status !== 200) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
-                console.log("Course: ", data);
-                setVids(data); 
+                console.log("Course: ", data.message);
+                dispatch(initialCurrentVids(data.message)); 
                 setLoading(false);
             } catch (error) {
                 console.error("Error updating course:", error);
@@ -55,7 +56,11 @@ export default function StudyScreen() {
     }, [auth.user.username, auth.user.id, courseID, token]);
 
     if (loading) {
-        return <div>Loading...</div>; 
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress color="inherit" />
+            </Box>
+        );
     }
 
     if (error) {
@@ -63,13 +68,13 @@ export default function StudyScreen() {
     }
 
     return (
-        <Grid2 container>
-            <Grid2 item xs={12}>
+        <Grid container>
+            <Grid item xs={12}>
                 <Header />
-            </Grid2>
-            <Grid2 item xs={12}>
-                <MainStudy videos={vids} /> {/* Truyền dữ liệu videos vào component */}
-            </Grid2>
-        </Grid2>
+            </Grid>
+            <Grid item xs={12}>
+                <MainStudy courseID={courseID} /> 
+            </Grid>
+        </Grid>
     );
 }

@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import { Card, CardContent } from "@mui/material";
+import { Card, CardContent, Tooltip } from "@mui/material";
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
+const CARD_WIDTH = 300; 
+const CARD_HEIGHT = 80; 
+
 const CardFinished = styled(Card)(({ theme }) => ({
-    height: "5rem",
-    // width: "200px",
-    backgroundColor: "#000",
+    width: `${CARD_WIDTH}px`,
+    height: `${CARD_HEIGHT}px`,
+    backgroundColor: "green",
     display: "flex",
     color:'white',
     flexDirection: "row",
@@ -25,8 +28,8 @@ const CardFinished = styled(Card)(({ theme }) => ({
 }));
 
 const CardNotFinished = styled(Card)(({ theme }) => ({
-    height: "5rem",
-    // width: "200px",
+    width: `${CARD_WIDTH}px`,
+    height: `${CARD_HEIGHT}px`,
     display: "flex",
     flexDirection: "row",
     paddingLeft: '1rem',
@@ -46,35 +49,61 @@ export default function LessonCard ({
     video_id = 101,
     video_title = "Introduction to Django",
     video_duration = "10:00",
-    finished = true 
+    complete = true,
+    onClick,
 }) {
     const [isHovered, setIsHovered] = useState(false);
-    
+
+    const truncateTitle = (title, maxLength = 25) => {
+        return title.length > maxLength 
+            ? title.substring(0, maxLength) + '...' 
+            : title;
+    };
+
+    const CardComponent = complete ? CardFinished : CardNotFinished;
+
     return (
-        <div style={{width:'500px'}}>
-            {finished ? (
-                <CardFinished 
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >
-                    <PlayCircleOutlineIcon sx={{ fontSize: 40, color: isHovered ? "#000" : "#fff" }} />
-                    <CardContent>
-                        <h6 style={{margin:0, marginBottom:'0.5rem'}}>{video_title}</h6>
-                        <p style={{margin:0}}><AccessTimeFilledIcon sx={{ fontSize: 15 }} /> {video_duration}</p>
-                    </CardContent>
-                </CardFinished>
-            ) : (
-                <CardNotFinished 
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >
-                    <PlayCircleOutlineIcon sx={{ fontSize: 40, color: isHovered ? "#fff" : "#000" }} />
-                    <CardContent>
-                        <h6 style={{margin:0, marginBottom:'0.5rem'}}>{video_title}</h6>
-                        <p style={{margin:0}}><AccessTimeFilledIcon sx={{ fontSize: 15 }} /> {video_duration}</p>
-                    </CardContent>
-                </CardNotFinished>
-            )}
+        <div onClick={onClick} style={{width: `${CARD_WIDTH}px`}}>
+            <CardComponent 
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                <PlayCircleOutlineIcon sx={{ 
+                    fontSize: 40, 
+                    color: isHovered 
+                        ? (complete ? "#000" : "#fff") 
+                        : (complete ? "#fff" : "#000") 
+                }} />
+                <CardContent sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    padding: '0 !important',
+                    marginLeft: '1rem',
+                }}>
+                    <Tooltip title={video_title} placement="top">
+                        <h6 style={{
+                            margin: 0, 
+                            marginBottom: '0.1rem', 
+                            width: `${CARD_WIDTH - 120}px`, // Adjust based on icon and padding
+                            overflow: 'hidden', 
+                            textOverflow: 'ellipsis', 
+                            whiteSpace: 'nowrap'
+                        }}>
+                            {truncateTitle(video_title)}
+                        </h6>
+                    </Tooltip>
+                    <p style={{
+                        margin: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.25rem'
+                    }}>
+                        <AccessTimeFilledIcon sx={{ fontSize: 15 }} /> 
+                        {video_duration} m
+                    </p>
+                </CardContent>
+            </CardComponent>
         </div>
     );
 }
