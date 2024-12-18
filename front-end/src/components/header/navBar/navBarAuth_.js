@@ -37,14 +37,19 @@ const NavBarAuth = ({
     const handleLogout = () => {
         navigate('/');
         dispatch(logout());
-        toast.success('Log out successfully');
+        toast.success('Log out successfully',{
+            style: {
+              backgroundColor: "black",
+              color: "#fff"
+            }
+          });
     }
     const handleClose = () => {
         setAnchorEl(null);
     };  
     return (
         <div className="navbar" style={{padding:0}}>
-            <Link to="/courses" className="btn_nav">Courses</Link>
+            <Link to="/courses" style={{fontWeight:"bold"}} className="btn_nav">Courses</Link>
             <ShoppingCart />
             <Box sx={{ 
                 display: 'flex', 
@@ -90,7 +95,7 @@ const NavBarAuth = ({
                                     display: 'block',
                                     position: 'absolute',
                                     top: 0,
-                                    right: 'calc(50% - 5px)',  // Căn giữa mũi tên
+                                    right: 'calc(50% - 5px)',  
                                     width: 10,
                                     height: 10,
                                     bgcolor: 'background.paper',

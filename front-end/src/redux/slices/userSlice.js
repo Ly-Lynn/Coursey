@@ -20,18 +20,20 @@ const userSlice = createSlice({
         removeOrder: (state, action) => {
             state.orders = state.orders.filter(order => order.course_id !== action.payload);
         },
-        
+        resetOrder: (state) => {
+            state.orders = [];
+        },
         // Current study courses
         updateCurrentStudySuccess: (state, action) => {
+            console.log("Reducer: UPDATE_CURRENT_STUDY_SUCCESS", action.payload);
+            // const courses = Array.isArray(action.payload) 
+            //     ? action.payload 
+            //     : [action.payload];
             
-            const courses = Array.isArray(action.payload) 
-                ? action.payload 
-                : [action.payload];
-            
-            const courseIds = courses.map(course => 
-                typeof course === 'object' ? course.course_id : course
-            );
-            state.currentStudy = courseIds || [];
+            // const courseIds = courses.map(course => 
+            //     typeof course === 'object' ? course.course_id : course
+            // );
+            state.currentStudy = action.payload || [];
             console.log("Reducer: UPDATE_CURRENT_STUDY_SUCCESS", state.currentStudy);
             state.currentStudyError = '';
 
@@ -47,15 +49,7 @@ const userSlice = createSlice({
 
         // Completed study courses
         updateCompletedStudySuccess: (state, action) => {
-            
-            const courses = Array.isArray(action.payload) 
-                ? action.payload 
-                : [action.payload];
-            
-            const courseIds = courses.map(course => 
-                typeof course === 'object' ? course.course_id : course
-            );
-            state.completedStudy = courseIds || [];
+            state.completedStudy = action.payload || [];
             console.log("Reducer: UPDATE_COMPLETED_STUDY_SUCCESS", state.completedStudy);
             state.completedStudyError = '';
         },
@@ -82,6 +76,7 @@ const userSlice = createSlice({
             state.currentVids[index].complete = 1;
         },
         buyCourse: (state, action) => {
+            console.log("Reducer: BUY_COURSE", action.payload);
             for (let i = 0; i < action.payload.length; i++) {
                 state.currentStudy.push(action.payload[i]);
             }
@@ -98,6 +93,7 @@ export const { addOrder,
             updateCompletedStudySuccess,
             updateCompletedStudyFailure,
             addCompletedStudy,
+            resetOrder,
             // addCurrentCourse, 
             // addFinishedCourse 
             buyCourse

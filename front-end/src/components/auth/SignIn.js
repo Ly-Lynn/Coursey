@@ -39,7 +39,12 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
       const result = await dispatch(loginUser({ userData, isRemember })).unwrap();
       console.log('Login result:', result); 
       if (result.status === 401) {
-        toast.error('Please check your username and password');
+        toast.error('Please check your username and password', {
+          style: {
+            backgroundColor: "black",
+            color: "#fff"
+          }
+        });
       }
       else if (result.status === 200) {
         try {
@@ -84,17 +89,37 @@ function SignIn({onClose, onSwitchToSignUp, onSwitchToForgotPass }) {
 
         } catch (apiError) {
           console.error('Error fetching courses:', apiError);
-          toast.error('Failed to fetch courses');
+          toast.error('Failed to fetch courses', {
+            style: {
+              backgroundColor: "black",
+              color: "#fff"
+            }
+          });
         }
 
-        toast.success('Log in successfully');
+        toast.success('Log in successfully', {
+          style: {
+            backgroundColor: "black",
+            color: "#fff"
+          }
+        });
         
       } else {
-        toast.error('An unexpected error occurred. Please try again.');
+        toast.error('An unexpected error occurred. Please try again.', {
+          style: {
+            backgroundColor: "black",
+            color: "#fff"
+          }
+        });
       }
     } catch (error) {
       console.error('Sign in failed:', error);
-      toast.error('An error occurred while login');
+      toast.error('An error occurred while login', {
+        style: {
+          backgroundColor: "black",
+          color: "#fff"
+        }
+      });
     }
   }
 

@@ -205,15 +205,7 @@ export const updateProfile = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    user: 
-    {
-        // id: 1,
-        // username: "lynn",
-        // email: "lynn@gmail.com",
-        // quote:"no pain no gain", 
-        // ava: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb8ocX1uyxWlO0NGGjiwM4w00ooWe9e3DMoA&s"
-    },
-    // accessToken: "eyJ1c2VybmFtZSI6Imx5bm4iLCJleHBpcnkiOjE3MzI4ODkzMTR9",
+    user: {},
     accessToken: null,
     isAuthenticated: false,
     loading: false,
@@ -345,7 +337,11 @@ const authSlice = createSlice({
           return;
         }
         state.loading = false;
-        state.user = { ...state.user, ...action.payload };
+        state.user = { 
+          ...state.user, 
+          gmail: message.gmail, 
+          avatar: message.avatar 
+        };
         console.log("USER", state.user)
         state.profileUpdateStatus = 'success';
         state.error = null;

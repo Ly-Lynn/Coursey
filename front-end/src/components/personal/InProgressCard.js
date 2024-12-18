@@ -71,7 +71,6 @@ export default function InProgressCard({ courseID=101,
                     <Box sx={{ display:"flex", width:'12rem', justifyContent:'center', alignItems:'center'}}>
                         <CustomButton onClick={onStudyClick} style={{ height: "3rem", borderRadius:0}} endIcon={<KeyboardDoubleArrowRightIcon/>} color='#000' variant="contained">Study</CustomButton>
                     </Box>
-                    {/* </Link> */}
                 </Box>
             </Card>
         </div>

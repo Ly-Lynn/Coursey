@@ -23,8 +23,10 @@ import IconButton from '@mui/material/IconButton';
 import { useNavigate } from "react-router-dom";
 import { hostName, API_ENDPOINTS } from "../../config/env";
 import { toast } from "react-hot-toast";
-import { buyCourse } from "../../redux/slices/userSlice";
+import { buyCourse, resetOrder } from "../../redux/slices/userSlice";
 import { CustomModal } from "../custom_components/CustomModal";
+import CircularProgress from '@mui/material/CircularProgress';
+
 const StyledPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(3),
     backgroundColor: "#fff",
@@ -98,10 +100,12 @@ export default function CheckoutInfo({ buynow=null }) {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.user.orders);
     const [ordersLocal, setOrdersLocal] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [successBuy, setSuccessBuy] = useState(false);
     const allCourses = useSelector((state) => state.server.courses);
     const navigate = useNavigate();
     const auth = useSelector((state) => state.auth);
+    const user = useSelector((state) => state.user);
     
     useEffect(() => {
         if (buynow) {
@@ -127,9 +131,29 @@ export default function CheckoutInfo({ buynow=null }) {
         setSuccessBuy(false);
         navigate('/');
     }
+    if (loading) {
+        return (
+            <div style={{
+                position: 'fixed', // Để Overlay phủ toàn màn hình
+                top: 0, 
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)', // Màu nền mờ
+                display: 'flex',
+                justifyContent: 'center', // Canh giữa theo chiều ngang
+                alignItems: 'center', // Canh giữa theo chiều dọc
+                zIndex: 9999, // Đảm bảo overlay phủ lên các thành phần khác
+              }}>
+                <CircularProgress color="inherit" />
+              </div>
+        ) ;
+    }
 
     const handleCheckout = async () => {
+        setLoading(true);
         const courseIDs = ordersLocal.map(order => order.course_id);
+        console.log("Course IDs: ", courseIDs);
         const userID = auth.user.id;
         const email = auth.user.gmail;
 
@@ -150,9 +174,12 @@ export default function CheckoutInfo({ buynow=null }) {
                 console.error(errorData.message);
             }
             const res = await response.json();
-            dispatch(buyCourse(res));
+            dispatch(buyCourse(courseIDs));
+            dispatch(resetOrder());
+            setLoading(false);
             setSuccessBuy(true);
-                
+            console.log("Current study", user.currentStudy);
+            
         }
         catch (error) {
             console.error(error);

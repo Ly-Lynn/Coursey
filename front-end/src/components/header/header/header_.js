@@ -14,7 +14,7 @@ const Header = () => {
     const user = useSelector((state) => state.auth.user);
     const isAuthenticated = auth.isAuthenticated;
     const navigate = useNavigate();
-    console.log('User:', auth);
+    // console.log('User:', auth);
     const handleTextChange = (text) => {
         console.log(text);
     }
@@ -32,7 +32,7 @@ const Header = () => {
                 onFocus={handleFocus}
                 onChangeText={handleTextChange} />
             {!isAuthenticated && <NavBar/>}
-            {isAuthenticated && <NavBarAuth userId={user.id} userName={user.username}/>}     
+            {isAuthenticated && <NavBarAuth userAva={user.avatar} userId={user.id} userName={user.username}/>}     
         </div>
     )
 }
