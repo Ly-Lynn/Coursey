@@ -403,6 +403,14 @@
             $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
             $stmt->execute();
         
+            if (array_sum($videoStatusList) === count($videoStatusList)) {
+                $sql = "UPDATE UserCourses SET is_completed = 1 WHERE user_id = :userID AND course_id = :courseID";
+                $stmt = $this->db->conn->prepare($sql);
+                $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+                $stmt->bindParam(':courseID', $courseID, PDO::PARAM_INT);
+                $stmt->execute();
+            }
+        
             $this->response('Video status updated successfully', 200);
         }
 
