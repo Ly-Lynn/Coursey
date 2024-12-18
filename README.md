@@ -40,3 +40,19 @@ Your SQL admin is accessible at http://localhost:8081.
 
 Navigate to ```back-end\sql\docker-php_export.sql``` and import it into the SQL admin server using the SQL command interface.
 
+### Accounts
+- Admin Account:
+```sh
+username: lynn
+password: 12345
+```
+- User Account:
+```sh
+username: lynn_nekk
+password: Linh040202@
+```
+- Database Account:
+```sh
+username: khoatn
+password: khoa
+```
