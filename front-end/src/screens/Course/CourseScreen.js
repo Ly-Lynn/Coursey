@@ -97,7 +97,7 @@ const CourseScreen = () => {
                                 <Suspense fallback={<LoadingFallback />}>
                                     {courses && <CourseShow courses={courses}
                                                             title="Discovery"
-                                                            layout="4x8"/>}
+                                                            layout="4x4"/>}
                                 </Suspense>
                             </Box>
                         </Box>

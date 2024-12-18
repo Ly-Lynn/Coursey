@@ -26,8 +26,8 @@ const CourseShow = ({
             coursesPerPage: 4,
             columnClass: "col-md-3"
         },
-        "4x8": {
-            coursesPerPage: 32,  // 4 courses * 8 rows
+        "4x4": {
+            coursesPerPage: 16,  // 4 courses * 8 rows
             columnClass: "col-md-3"
         }
     };
