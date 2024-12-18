@@ -84,6 +84,7 @@
                     $this->response('Failed to change password', 500);
                 }
             }
+            $this->response('No permissions', 403);
         }
 
         # login
