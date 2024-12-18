@@ -200,6 +200,11 @@
                         $courseID = $row['course_id'];
                         $videoStatus = isset($row['video_status']) ? explode(",", $row['video_status']) : [];
         
+                        // Kiểm tra nếu tất cả video đã hoàn thành
+                        if (count($videoStatus) > 0 && array_sum($videoStatus) == count($videoStatus)) {
+                            continue; // Bỏ qua khóa học này
+                        }
+        
                         $completedVideos = count(array_filter($videoStatus, fn($status) => $status == '1'));
                         $totalVideos = count($videoStatus);
                         $progress = $totalVideos > 0 ? ($completedVideos / $totalVideos) * 100 : 0;
