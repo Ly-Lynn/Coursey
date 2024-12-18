@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Dec 18, 2024 at 05:31 PM
+-- Generation Time: Dec 18, 2024 at 06:54 PM
 -- Server version: 8.0.40
 -- PHP Version: 8.2.8
 
@@ -836,8 +836,7 @@ ALTER TABLE `Courses`
 --
 ALTER TABLE `UserCourses`
   ADD CONSTRAINT `UserCourses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`),
-  ADD CONSTRAINT `UserCourses_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `Courses` (`course_id`),
-  ADD CONSTRAINT `UserCourses_ibfk_3` FOREIGN KEY (`current_video_id`) REFERENCES `Videos` (`video_id`);
+  ADD CONSTRAINT `UserCourses_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `Courses` (`course_id`);
 
 --
 -- Constraints for table `Users`
