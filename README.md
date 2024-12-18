@@ -1,9 +1,4 @@
 # Coursey
-================
-
-**Real-Time Learning Platform**
------------------------------
-
 **Coursey** is a web platform designed for real-time learning, where users can access courses and materials instantly and interactively.
 
 ![System Overview](img/main_page.png)
