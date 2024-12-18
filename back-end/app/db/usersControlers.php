@@ -79,10 +79,12 @@
                 $stmt->execute();
                 if ($stmt->rowCount() > 0) {
                     $this->response('Password changed successfully', 200);
+                    
                 } 
                 else {
                     $this->response('Failed to change password', 500);
                 }
+                return;
             }
             $this->response('No permissions', 403);
         }
