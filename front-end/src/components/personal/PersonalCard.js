@@ -16,8 +16,11 @@ import CustomTextField from "../custom_components/CustomTextField";
 import CustomTypography from "../custom_components/CustomTypography";
 import CardHeader from "@mui/material/CardHeader";
 import { toast } from "react-hot-toast"
-import { updateProfile } from "../../redux/slices/authSlice";
+import { updateProfile, changePassword, logout } from "../../redux/slices/authSlice";
 import { CustomToast } from "../custom_components/CustomToast";
+import { useNavigate } from "react-router-dom";
+import { Error } from "@mui/icons-material";
+
 
 const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -29,6 +32,7 @@ const convertToBase64 = (file) => {
 };
 
 export default function PersonalCard() {
+    const WarningIcon = () => <Error style={{ fontSize: '20px', color: 'red' }} />;
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
     const userInfo = auth.user;
@@ -43,10 +47,9 @@ export default function PersonalCard() {
         username: userInfo.username,
         gmail: userInfo.gmail,
         avatar: userInfo.avatar,
-        oldpass: '',
         newpass: ''
     });
-    
+    const navigate = useNavigate();
     const [beforeUpdate, setBeforeUpdate] = useState({ ...userInfo });
     const [loading, setLoading] = useState(false); 
 
@@ -69,7 +72,7 @@ export default function PersonalCard() {
         const file = e.target.files[0];
         if (file) {
             const validTypes = ['image/jpeg', 'image/png'];
-            const maxSize = 1 * 1024 * 1024; // 5MB
+            const maxSize = 0.1 * 1024 * 1024; // 5MB
 
             if (!validTypes.includes(file.type)) {
                 toast.error('Only JPG and PNG', {
@@ -122,7 +125,6 @@ export default function PersonalCard() {
     const handleSaveChanges = async () => {
         setLoading(true);
         try {
-            // Check if any changes were made to user info
             if (
                 userData.username === beforeUpdate.username && 
                 userData.gmail === beforeUpdate.gmail && 
@@ -134,9 +136,71 @@ export default function PersonalCard() {
                 setPasswordChangeMode(false);
                 return;
             }
-            
-            dispatch(updateProfile(userData)); 
-            console.log("User data after update: ", auth.user);
+            if (editMode){
+                dispatch(updateProfile(userData)); 
+                if (auth.profileUpdateStatus === 'failed') {
+                    toast.error('Update failed!', {
+                        style: {
+                          backgroundColor: "black",
+                          color: "#fff"
+                        }
+                      });
+                    return;
+                }
+                else {
+                    toast.success('Profile updated!', {
+                        style: {
+                          backgroundColor: "black",
+                          color: "#fff"
+                        }
+                      });
+                }
+            }
+            else if (passwordChangeMode) {
+                const userPassword = userData.newpass;
+                // If password is less than 8 characters and does not contain atleast 1 capital, 1 special character, show warning
+                if (userPassword.length < 8 || !/[A-Z]/.test(userPassword) || !/[!@#$%^&*]/.test(userPassword)) {
+                    toast.error('Password must be at least 8 characters long and contain atleast 1 capital letter and 1 special character',
+                    { duration: 3000, position: 'top-center',
+                        style: { maxWidth:'200%', height:'100%', fontSize:'13px', backgroundColor: "black", color: "#fff" }, 
+                        icon: <WarningIcon /> });
+                    return;
+                }
+                dispatch(changePassword({
+                    "username":userData.username,
+                    "newPassword":userData.newpass,
+                    "token":userData.token
+                }));
+                if (auth.passwordChangeStatus === 'failed') {
+                    console.log("FAILED", auth.error, auth.passwordChangeStatus)
+                    toast.error('Password change failed', {
+                        style: {
+                          backgroundColor: "black",
+                          color: "#fff"
+                        }
+                      });
+                    return;
+                }
+                else {
+                    toast.success('Password changed successfully', {
+                        style: {
+                          backgroundColor: "black",
+                          color: "#fff"
+                        }
+                      });
+                      setTimeout(() => {
+                        navigate('/')
+                        dispatch(logout());
+                        toast.success('Log in again with new password!',{
+                            style: {
+                              backgroundColor: "black",
+                              color: "#fff"
+                            }
+                          });
+                      }, 3000);
+                      return;
+                }
+            }
             setSuccess(true);
             setEditMode(false);
             setPasswordChangeMode(false);
@@ -154,7 +218,7 @@ export default function PersonalCard() {
     return (
         <div style={{margin:'1rem 8rem 1.5rem 8rem'}}>
             <CustomToast onClose={() => setExists(false)} onOpen={exists} message={"Nothing changed!"} />
-            <CustomToast onClose={() => setSuccess(false)} onOpen={success} message={"Profile updated!"} />
+            {/* <CustomToast onClose={() => setSuccess(false)} onOpen={success} message={"Profile updated!"} /> */}
             <Card sx={{ 
                 display: "flex", 
                 flexDirection: "row", 
@@ -244,29 +308,6 @@ export default function PersonalCard() {
 
                         {passwordChangeMode && (
                             <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                                {/* Old password */}
-                                <CustomTextField
-                                    size="small"
-                                    label="Old password"
-                                    name="oldpass"
-                                    editmode={passwordChangeMode.toString()}
-                                    type={showOldPassword ? "text" : "password"}
-                                    onChange={handleChange}
-                                    variant="filled"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle old password visibility"
-                                                    onClick={handleToggleOldPasswordVisibility}
-                                                    edge="end"
-                                                >
-                                                    {showOldPassword ? <VisibilityOff style={{color:'white'}} /> : <Visibility style={{color:'white'}}/>}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                />
                                 {/* New Password */}
                                 <CustomTextField
                                     size="small"
@@ -305,14 +346,21 @@ export default function PersonalCard() {
                                 </CustomButton>
                             </>
                         ) : passwordChangeMode ? (
-                            <CustomButton 
-                                variant="contained" 
-                                color="success" 
-                                onClick={handleSaveChanges}
-                                disabled={loading}
-                            >
-                                {loading ? "Saving..." : "Save Password"}
-                            </CustomButton>
+                            <div>
+                                <CustomButton 
+                                    variant="contained" 
+                                    color="success" 
+                                    onClick={handleSaveChanges}
+                                    disabled={loading}
+                                >
+                                    {loading ? "Saving..." : "Save Password"}
+                                </CustomButton>
+                                <CustomButton 
+                                    style={{marginLeft: "1rem"}}
+                                    variant="outlined" 
+                                    onClick={() => setPasswordChangeMode(false)}
+                                >Cancel</CustomButton>
+                            </div>
                         ) : (
                             <CustomButton 
                                 variant="contained" 

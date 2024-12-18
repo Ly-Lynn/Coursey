@@ -44,6 +44,7 @@ const BannerCard = styled(Card)({
     borderRadius: 0,
 });
 const InfoBanner = ({
+    isDisabled = false,
     course_id = 101,
     title="Course Title", 
     lecturer_name = "John Doe",
@@ -106,10 +107,11 @@ const InfoBanner = ({
                     <BannerInfoButton 
                         variant="contained" 
                         color="primary"
+                        disabled={isDisabled}
                         onClick={handleBuyNow}>
                         Buy Now
                     </BannerInfoButton>
-                    <BannerInfoIcon onClick={handleAddItem} color="primary" aria-label="add to shopping cart">
+                    <BannerInfoIcon disabled={isDisabled} onClick={handleAddItem} color="primary" aria-label="add to shopping cart">
                         <AddShoppingCartIcon />
                     </BannerInfoIcon>
                 </div>

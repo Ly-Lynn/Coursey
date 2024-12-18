@@ -32,14 +32,14 @@ body {
 }
 
 .main-content input:focus {
-    border-color: #00aaff;
+    border-color: #000000;
     box-shadow: 0 4px 8px rgba(0, 170, 255, 0.3);
     background-color: #f9f9f9;
     color: #000;
 }
 
 .main-content input:hover {
-    border-color: #00aaff;
+    border-color: #000000;
     box-shadow: 0 4px 8px rgba(0, 170, 255, 0.2);
 }
   

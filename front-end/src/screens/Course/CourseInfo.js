@@ -76,9 +76,10 @@ const CreateListRequired = ({ list }) => (
 
 const CourseInfoPage = () => {
   const dispatch = useDispatch();
-  // const auth = useSelector((state) => state.auth);
-  // const isAuthenticated = auth.isAuthenticated;
-  // console.log(isAuthenticated)
+  const user = useSelector((state) => state.user);
+  const currentCourses = user.currentStudy;
+  const completedCourses = user.completedStudy;
+  console.log("INFO PAGE", currentCourses, completedCourses)
   const location = useLocation();
   const [courseData, setCourseData] = useState(null);
     console.log(location.search)
@@ -87,8 +88,8 @@ const CourseInfoPage = () => {
   const courseID = searchParams.get('courseID');
 
   const course_datas = useSelector((state) => state.server.courses);
-  const this_course = course_datas.find((course) => course.course_id === parseInt(courseID));
-  
+  const isCompleted = completedCourses.find((course) => course.course_id === parseInt(courseID));
+  const isCurrent = currentCourses.find((course) => course.course_id === parseInt(courseID));
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -167,6 +168,7 @@ const CourseInfoPage = () => {
       </div>
       <div className='banner-container'>
         { courseData && <InfoBanner course_id={courseData.course_id} 
+                                    isDisabled={isCompleted || isCurrent}
                                     title={courseData.course_name}
                                     lecturer_name={courseData.lecturer_name} 
                                     image={courseData.image} 

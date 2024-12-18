@@ -18,6 +18,7 @@ const ENV = {
     SIGNUP: 'auth/signup.php',
     LOGIN: 'auth/login.php',
     RESET_PASSWORD: 'auth/sendPassword.php',
+    CHANGE_PASSWORD: 'auth/changePassword.php',
     LOGOUT: 'auth/logout.php',
 
     GET_USER:'users/getUsers.php',

@@ -174,11 +174,12 @@ export default function CheckoutInfo({ buynow=null }) {
                 console.error(errorData.message);
             }
             const res = await response.json();
+            console.log("Buy course response: ", res);
             dispatch(buyCourse(courseIDs));
             dispatch(resetOrder());
             setLoading(false);
             setSuccessBuy(true);
-            console.log("Current study", user.currentStudy);
+            // console.log("Current study", user.currentStudy);
             
         }
         catch (error) {

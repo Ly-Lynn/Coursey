@@ -28,7 +28,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const ErrorIcon = () => <Error style={{ fontSize: '37px', color: 'red' }} />;
-  const WarningIcon = () => <Error style={{ fontSize: '37px', color: 'yellow' }} />;
+  const WarningIcon = () => <Error style={{ fontSize: '37px', color: 'red' }} />;
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -43,7 +43,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
     if (!userName || !userEmail || !userPassword || !userRepeatPassword) {
       toast.error('Please fill all fields',
         { duration: 3000, position: 'top-center', 
-          style: { width:'100%', height:'100%', fontSize:'25px' }, 
+          style: { width:'100%', height:'100%', fontSize:'20px', backgroundColor: 'black', color:'white' }, 
           icon: <WarningIcon /> });
       return;
     }
@@ -51,7 +51,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
     if (!userEmail.includes('@') || !userEmail.includes('.')) {
       toast.error('Please enter a valid email',
         { duration: 3000, position: 'top-center', 
-          style: { maxWidth:'200%', height:'100%', fontSize:'25px' }, 
+          style: { maxWidth:'200%', height:'100%', fontSize:'20px', backgroundColor: 'black', color:'white' }, 
           icon: <WarningIcon /> });
         return;
     }
@@ -59,7 +59,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
     if (userPassword.length < 8 || !/[A-Z]/.test(userPassword) || !/[!@#$%^&*]/.test(userPassword)) {
       toast.error('Password must be at least 8 characters long and contain atleast 1 capital letter and 1 special character',
         { duration: 3000, position: 'top-center',
-          style: { maxWidth:'200%', height:'100%', fontSize:'20px' }, 
+          style: { maxWidth:'200%', height:'100%', fontSize:'20px', backgroundColor: 'black', color:'white' }, 
           icon: <WarningIcon /> });
       return;
     }
@@ -67,7 +67,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
     if (userPassword !== userRepeatPassword) {
       toast.error('Passwords do not match',
         { duration: 3000, position: 'top-center', 
-          style: { width:'100%', height:'100%', fontSize:'25px' }, 
+          style: { width:'100%', height:'100%', fontSize:'25px', backgroundColor: 'black', color:'white' }, 
           icon: <ErrorIcon /> });
       return;
     }
@@ -77,16 +77,19 @@ function SignUp({ onClose, onSwitchToSignIn }) {
       const response = await dispatch(signupUser(userData)).unwrap(); 
       // console.log("RESPONSE", response);
       if (response) {
-        toast.success('Registered successfully');
+        toast.success('Registered successfully', 
+          { duration: 3000, position: 'top-center', style: { width:'100%', height:'100%', fontSize:'20px', backgroundColor: 'black', color:'white' } }
+        );
         window.location.reload();
       } else {
-        toast.error('Failed to register');
+        toast.error('Failed to register', { duration: 3000, position: 'top-center',style: { width:'100%', height:'100%', fontSize:'20px', backgroundColor: 'black', color:'white' }, icon: <ErrorIcon /> });
       }
     } catch (error) {
       console.error('Signup failed:', error);
-      toast.error(error.message || 'An error occurred while registering');
+      toast.error(error.message || 'An error occurred while registering', 
+        { duration: 3000, position: 'top-center', style: { width:'100%', height:'100%', fontSize:'20px', backgroundColor: 'black', color:'white' }, icon: <ErrorIcon /> });
     }
-  };
+  }
 
   return (
     <Container 

@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 export default function Checkout () {
-    const dispatch = useDispatch();
     const queryParams = new URLSearchParams(window.location.search);
     const courseID = queryParams.get('buynow');
 
