@@ -86,6 +86,23 @@ const CourseScreen = () => {
                             </Box>
                         </Box>
                     </Grid>
+                    
+                    <Grid item>
+                        <Box sx={{ 
+                            width: '100%', 
+                            display: 'flex', 
+                            justifyContent: 'center'
+                        }}>
+                            <Box sx={{ width: '100%', maxWidth: 'lg' }}>
+                                <Suspense fallback={<LoadingFallback />}>
+                                    {courses && <CourseShow courses={courses}
+                                                            title="Discovery"
+                                                            layout="4x8"/>}
+                                </Suspense>
+                            </Box>
+                        </Box>
+                    </Grid>
+
                 </Grid>
             </Container>
         </div>

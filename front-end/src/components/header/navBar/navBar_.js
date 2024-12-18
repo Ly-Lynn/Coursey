@@ -16,7 +16,7 @@ const NavBar = () => {
     return (
         <>
             <div className="navbar">
-                <Link to="/courses" className="btn_nav" style={{color:'black'}}>Courses</Link>
+                <Link to="/courses" className="btn_nav" style={{color:'black', fontWeight:"bold"}}>Courses</Link>
                 <CustomButton variant='outlined' 
                             style={{ fontWeight: 'bold'}}
                             onClick={openLogin}>

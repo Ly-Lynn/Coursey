@@ -1,7 +1,7 @@
 import styled from '@mui/material/styles/styled';
 import TextField from '@mui/material/TextField';
 
-const CustomTextField = styled(TextField)(({ theme, editmode }) => ({
+const CustomTextField = styled(TextField)(({ theme, editmode=true }) => ({
     width: '60%',
         
     '& .MuiOutlinedInput-root': {

@@ -26,6 +26,12 @@ const OrderButton = styled(Button)({
     // fontWeight: "bold",
 });
 
+const CustomBadge = styled(Badge)({
+    "& .MuiBadge-badge": {
+        backgroundColor:"black"
+    }
+});
+
 const ShoppingCart = () => {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.user.orders);
@@ -71,9 +77,9 @@ const ShoppingCart = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Badge badgeContent={orders.length} color="primary">
+                        <CustomBadge badgeContent={orders.length} color="primary">
                             <ShoppingCartIcon />
-                        </Badge>
+                        </CustomBadge>
                     </IconButton>
                 </Tooltip>    
                 <Menu
