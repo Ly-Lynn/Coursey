@@ -61,7 +61,7 @@ export default function MyLearning({ isCompleted=false }) {
                         Authorization: `${auth.accessToken}`
                     },
                     body: JSON.stringify({
-                        id: auth.user.id,
+                        userID: auth.user.id,
                         username: auth.user.username
                     })
                 });

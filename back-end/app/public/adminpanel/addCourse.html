@@ -1,200 +1,291 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Admin Panel - Add Course</title>
-   <link rel="stylesheet" href="admin-panel.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Add Course</title>
+    <link rel="stylesheet" href="admin-panel.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
-   <div class="sidebar">
-       <ul>
-        <li><a href="users.html">Users</a></li>
-        <li><a href="course.html">Courses</a></li>
-        <li><a href="addCourse.html">Add Course</a></li>
-        <li><a href="addLecturer.html">Add Lecturer</a></li>
-        <li><a href="addHost.html">Add Host</a></li>
-       </ul>
-   </div>
-   <div class="main-content">
-       <h1>Add Course</h1>
-       <form id="add-course-form" enctype="multipart/form-data">
-           <div class="form-group">
-               <label for="course-id">Course ID:</label>
-               <input type="number" id="course-id" name="course_id" required>
-           </div>
-           <div class="form-group">
-               <label for="course-name">Course Name:</label>
-               <input type="text" id="course-name" name="course_name" required>
-           </div>
-           <div class="form-group">
-               <label for="course-intro">Course Introduction:</label>
-               <input type="text" id="course-intro" name="course_intro" required>
-           </div>
-           <div class="form-group">
-               <label for="lecturer-id">Lecturer:</label>
-               <select id="lecturer-id" name="lecturer_id" required>
-                   <!-- Lecturer options will be populated here -->
-               </select>
-           </div>
-           <div class="form-group">
-               <label for="host-id">Host:</label>
-               <select id="host-id" name="host_id" required>
-                   <!-- Host options will be populated here -->
-               </select>
-           </div>
-           <div class="form-group">
-               <label for="course-image">Course Image:</label>
-               <input type="file" id="course-image" name="image" accept="image/*" required>
-           </div>
-           <div class="form-group">
-               <label for="url-list">Course URL:</label>
-               <input type="url" id="url-list" name="url_list" required>
-           </div>
-           <div class="form-group">
-               <label for="rate">Course Rating:</label>
-               <input type="number" id="rate" name="rate" step="0.1" required>
-           </div>
-           <div class="form-group">
-               <label for="cost">Course Cost:</label>
-               <input type="number" id="cost" name="cost" step="0.01" required>
-           </div>
-           <div class="form-group">
-               <label for="field">Field:</label>
-               <input type="text" id="field" name="field" required>
-           </div>
-           <div class="form-group">
-               <label for="gained">What Students Will Gain:</label>
-               <input type="text" id="gained" name="gained" required>
-           </div>
-           <div class="form-group">
-               <label for="required">Prerequisites:</label>
-               <input type="text" id="required" name="required" required>
-           </div>
-           <div class="form-group">
-               <label for="rating-count">Rating Count:</label>
-               <input type="number" id="rating-count" name="rating_count" required>
-           </div>
-           <button type="submit">Add Course</button>
-       </form>
-   </div>
-   <script>
-document.addEventListener("DOMContentLoaded", async function() {
-    const lecturerSelect = document.getElementById("lecturer-id");
-    const hostSelect = document.getElementById("host-id");
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-2 d-md-block sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="users.html">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="course.html">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="addCourse.html">Add Course</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addLecturer.html">Add Lecturer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addHost.html">Add Host</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
-    // Fetch lecturers
-    const lecturerResponse = await fetch('http://localhost:8080/adminV2/lecturerService.php');
-    const lecturerData = await lecturerResponse.json();
-    if (lecturerData.message) {
-        lecturerData.message.forEach(lecturer => {
-            const option = document.createElement("option");
-            option.value = lecturer.lecturer_id;
-            option.textContent = `${lecturer.lecturer_id} - ${lecturer.name}`;
-            lecturerSelect.appendChild(option);
-        });
-    }
+            <!-- Main Content -->
+            <main class="col-md-10 ms-sm-auto px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Add Course</h1>
+                </div>
 
-    // Fetch hosts
-    const hostResponse = await fetch('http://localhost:8080/adminV2/hostService.php');
-    const hostData = await hostResponse.json();
-    if (hostData.message) {
-        hostData.message.forEach(host => {
-            const option = document.createElement("option");
-            option.value = host.host_id;
-            option.textContent = `${host.host_id} - ${host.host_name}`;
-            hostSelect.appendChild(option);
-        });
-    }
-});
+                <!-- Add Course Form -->
+                <form id="add-course-form" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="course-id" class="form-label">Course ID</label>
+                            <input type="number" class="form-control" id="course-id" name="course_id" required>
+                            <div class="invalid-feedback">Please provide a course ID.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="course-name" class="form-label">Course Name</label>
+                            <input type="text" class="form-control" id="course-name" name="course_name" required>
+                            <div class="invalid-feedback">Please provide a course name.</div>
+                        </div>
+                    </div>
 
-document.getElementById("add-course-form").addEventListener("submit", async function (e) {
-    e.preventDefault();
+                    <div class="mb-3">
+                        <label for="course-intro" class="form-label">Course Introduction</label>
+                        <input type="text" class="form-control" id="course-intro" name="course_intro" required>
+                        <div class="invalid-feedback">Please provide a course introduction.</div>
+                    </div>
 
-    const endpoint = 'http://localhost:8080/adminV2/courseService.php';
-    const username = localStorage.getItem("username");
-    const token = localStorage.getItem('accessToken');
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="lecturer-id" class="form-label">Lecturer</label>
+                            <select class="form-select" id="lecturer-id" name="lecturer_id" required>
+                                <option value="">Choose a lecturer</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a lecturer.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="host-id" class="form-label">Host</label>
+                            <select class="form-select" id="host-id" name="host_id" required>
+                                <option value="">Choose a host</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a host.</div>
+                        </div>
+                    </div>
 
-    // Validate login
-    if (!token) {
-        alert('Please login first');
-        window.location.href = 'login.html';
-        return;
-    }
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="course-image" class="form-label">Course Image</label>
+                            <input class="form-control" type="file" id="course-image" name="image" accept="image/*" required>
+                            <div class="invalid-feedback">Please upload a course image.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="url-list" class="form-label">Course URL</label>
+                            <input type="url" class="form-control" id="url-list" name="url_list" required>
+                            <div class="invalid-feedback">Please provide a valid course URL.</div>
+                        </div>
+                    </div>
 
-    if (!username) {
-        alert("Username not found in local storage. Please log in again.");
-        return;
-    }
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="rate" class="form-label">Course Rating</label>
+                            <input type="number" class="form-control" id="rate" name="rate" step="0.1" required>
+                            <div class="invalid-feedback">Please provide a course rating.</div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cost" class="form-label">Course Cost</label>
+                            <input type="number" class="form-control" id="cost" name="cost" step="0.01" required>
+                            <div class="invalid-feedback">Please provide a course cost.</div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="rating-count" class="form-label">Rating Count</label>
+                            <input type="number" class="form-control" id="rating-count" name="rating_count" required>
+                            <div class="invalid-feedback">Please provide a rating count.</div>
+                        </div>
+                    </div>
 
-    // Get form data
-    const formData = new FormData(this);
-    formData.append("username", username);
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="field" class="form-label">Field</label>
+                            <input type="text" class="form-control" id="field" name="field" required>
+                            <div class="invalid-feedback">Please provide a field.</div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="gained" class="form-label">What Students Will Gain</label>
+                            <input type="text" class="form-control" id="gained" name="gained" required>
+                            <div class="invalid-feedback">Please describe what students will gain.</div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="required" class="form-label">Prerequisites</label>
+                            <input type="text" class="form-control" id="required" name="required" required>
+                            <div class="invalid-feedback">Please provide prerequisites.</div>
+                        </div>
+                    </div>
 
-    // Convert form data to object
-    const formObject = {};
-    formData.forEach((value, key) => {
-        formObject[key] = value;
-    });
+                    <button type="submit" class="btn btn-primary">Add Course</button>
+                </form>
+            </main>
+        </div>
+    </div>
 
-    const imageFile = formData.get('image');
-    
-    // Handle image processing
-    try {
-        if (imageFile && imageFile instanceof File && imageFile.size > 0) {
-            const base64Image = await convertImageToBase64(imageFile);
-            formObject.image = base64Image;
-            console.log(base64Image);
-        } else {
-            formObject.image = '';
-        }
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-        console.log('Sending data:', formObject); 
-
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${token}`,
-            },
-            body: JSON.stringify(formObject),
-        });
-
-        console.log('Response status:', response.status);
-        // Parse JSON safely
-        let result;
-        const textResponse = await response.text();
-        console.log('Raw response:', textResponse); 
-        
+    <script>
+    $(document).ready(async function() {
+        // Fetch lecturers
         try {
-            result = JSON.parse(textResponse);
-        } catch (e) {
-            console.error('JSON parse error:', e);
-            alert('Server response was not in JSON format');
-            return;
+            const lecturerResponse = await fetch('http://localhost:8080/adminV2/lecturerService.php');
+            const lecturerData = await lecturerResponse.json();
+            if (lecturerData.message) {
+                lecturerData.message.forEach(lecturer => {
+                    $('#lecturer-id').append(
+                        `<option value="${lecturer.lecturer_id}">${lecturer.lecturer_id} - ${lecturer.name}</option>`
+                    );
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching lecturers:', error);
         }
 
-        if (response.ok) {
-            alert("Course added successfully!");
-            this.reset();
-        } else {
-            alert(`Failed to add course: ${result.message || "Unknown error"}`);
+        // Fetch hosts
+        try {
+            const hostResponse = await fetch('http://localhost:8080/adminV2/hostService.php');
+            const hostData = await hostResponse.json();
+            if (hostData.message) {
+                hostData.message.forEach(host => {
+                    $('#host-id').append(
+                        `<option value="${host.host_id}">${host.host_id} - ${host.host_name}</option>`
+                    );
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching hosts:', error);
         }
-    } catch (error) {
-        console.error("Error:", error);
-        alert("An error occurred while processing your request.");
-    }
-});
 
-// Helper function to convert image to base64
-function convertImageToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
+        // Form submission
+        $('#add-course-form').on('submit', async function(e) {
+            e.preventDefault();
+
+            // Bootstrap form validation
+            if (this.checkValidity() === false) {
+                e.stopPropagation();
+                $(this).addClass('was-validated');
+                return;
+            }
+
+            const endpoint = 'http://localhost:8080/adminV2/courseService.php';
+            const username = localStorage.getItem("username");
+            const token = localStorage.getItem('accessToken');
+
+            // Validate login
+            if (!token) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (!username) {
+                alert("Username not found in local storage. Please log in again.");
+                return;
+            }
+
+            // Get form data
+            const formData = new FormData(this);
+            formData.append("username", username);
+
+            // Convert form data to object
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            const imageFile = formData.get('image');
+            
+            // Handle image processing
+            try {
+                if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+                    const base64Image = await convertImageToBase64(imageFile);
+                    formObject.image = base64Image;
+                    console.log(base64Image);
+                } else {
+                    formObject.image = '';
+                }
+
+                console.log('Sending data:', formObject); 
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${token}`,
+                    },
+                    body: JSON.stringify(formObject),
+                });
+
+                console.log('Response status:', response.status);
+                // Parse JSON safely
+                let result;
+                const textResponse = await response.text();
+                console.log('Raw response:', textResponse); 
+                
+                try {
+                    result = JSON.parse(textResponse);
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    alert('Server response was not in JSON format');
+                    return;
+                }
+
+                if (response.ok) {
+                    alert("Course added successfully!");
+                    this.reset();
+                    $(this).removeClass('was-validated');
+                } else {
+                    alert(`Failed to add course: ${result.message || "Unknown error"}`);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while processing your request.");
+            }
+        });
+
+        // Helper function to convert image to base64
+        function convertImageToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
     });
-}
-   </script>
+    </script>
 </body>
 </html>

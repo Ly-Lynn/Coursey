@@ -5,126 +5,216 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Admin Panel - Add Lecturer</title>
    <link rel="stylesheet" href="admin-panel.css">
+    <link rel="stylesheet" href="sidebar.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-   <div class="sidebar">
-       <ul>
-            <li><a href="users.html">Users</a></li>
-            <li><a href="course.html">Courses</a></li>
-            <li><a href="addCourse.html">Add Course</a></li>
-            <li><a href="addLecturer.html">Add Lecturer</a></li>
-            <li><a href="addHost.html">Add Host</a></li>
-       </ul>
-   </div>
-   <div class="main-content">
-       <h1>Add Lecturer</h1>
-       <form id="add-lecturer-form" enctype="multipart/form-data">
-           <div class="form-group">
-               <label for="lecturer-id">Lecturer ID:</label>
-               <input type="number" id="lecturer-id" name="lecturerID" required>
-           </div>
-           <div class="form-group">
-               <label for="name">Name:</label>
-               <input type="text" id="name" name="name" required>
-           </div>
-           <div class="form-group">
-               <label for="bio">Bio:</label>
-               <textarea id="bio" name="bio" placeholder="An experienced lecturer in..."></textarea>
-           </div>
-           <div class="form-group">
-               <label for="avatar">Avatar:</label>
-               <input type="file" id="avatar" name="avatar" accept="image/*">
-           </div>
-           <button type="submit">Add Lecturer</button>
-       </form>
-   </div>
-   <script>
-document.getElementById("add-lecturer-form").addEventListener("submit", async function (e) {
-    e.preventDefault();
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-2 d-md-block sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="users.html">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="course.html">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addCourse.html">Add Course</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="addLecturer.html">Add Lecturer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="addHost.html">Add Host</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
-    const endpoint = 'http://localhost:8080/adminV2/lecturerService.php';
-    const username = localStorage.getItem("username");
-    const token = localStorage.getItem('accessToken');
+            <!-- Main Content -->
+            <main class="col-md-10 ms-sm-auto main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Add Lecturer</h1>
+                </div>
 
-    // Validate login
-    if (!token) {
-        alert('Please login first');
-        window.location.href = 'login.html';
-        return;
-    }
+                <!-- Lecturer Form -->
+                <form id="add-lecturer-form" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="lecturer-id" class="form-label">Lecturer ID</label>
+                                <input type="number" class="form-control" id="lecturer-id" name="lecturerID" required>
+                                <div class="invalid-feedback">
+                                    Please provide a lecturer ID.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                                <div class="invalid-feedback">
+                                    Please enter the lecturer's name.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-    if (!username) {
-        alert("Username not found in local storage. Please log in again.");
-        return;
-    }
+                    <div class="mb-3">
+                        <label for="bio" class="form-label">Bio</label>
+                        <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="An experienced lecturer in..."></textarea>
+                    </div>
 
-    // Get form data
-    const formData = new FormData(this);
-    formData.append("username", username);
+                    <div class="mb-3">
+                        <label for="avatar" class="form-label">Avatar</label>
+                        <input class="form-control" type="file" id="avatar" name="avatar" accept="image/*">
+                    </div>
 
-    // Convert form data to object
-    const formObject = {};
-    formData.forEach((value, key) => {
-        formObject[key] = value;
-    });
+                    <button type="submit" class="btn btn-primary">Add Lecturer</button>
+                </form>
+            </main>
+        </div>
+    </div>
 
-    const avatarFile = formData.get('avatar');
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    // Handle avatar processing
-    try {
-        if (avatarFile && avatarFile instanceof File && avatarFile.size > 0) {
-            const base64Avatar = await convertImageToBase64(avatarFile);
-            formObject.avatar = base64Avatar;
-            console.log(base64Avatar);
-        } else {
-            formObject.avatar = ''; // Allow submission without avatar
-        }
+    <script>
+    $(document).ready(function() {
+        // Form validation
+        $('#add-lecturer-form').on('submit', async function(e) {
+            e.preventDefault();
 
-        console.log('Sending data:', formObject); // Debug
+            // Bootstrap form validation
+            if (this.checkValidity() === false) {
+                e.stopPropagation();
+                $(this).addClass('was-validated');
+                return;
+            }
 
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${token}`,
-            },
-            body: JSON.stringify(formObject),
+            const endpoint = 'http://localhost:8080/adminV2/lecturerService.php';
+            const username = localStorage.getItem("username");
+            const token = localStorage.getItem('accessToken');
+
+            // Validate login
+            if (!token) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (!username) {
+                alert("Username not found in local storage. Please log in again.");
+                return;
+            }
+
+            // Get form data
+            const formData = new FormData(this);
+            formData.append("username", username);
+
+            // Convert form data to object
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            const avatarFile = formData.get('avatar');
+
+            // Handle avatar processing
+            try {
+                if (avatarFile && avatarFile instanceof File && avatarFile.size > 0) {
+                    const base64Avatar = await convertImageToBase64(avatarFile);
+                    formObject.avatar = base64Avatar;
+                    console.log(base64Avatar);
+                } else {
+                    formObject.avatar = ''; // Allow submission without avatar
+                }
+
+                console.log('Sending data:', formObject); // Debug
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${token}`,
+                    },
+                    body: JSON.stringify(formObject),
+                });
+
+                console.log('Response status:', response.status); // Debug
+                let result;
+                const textResponse = await response.text();
+                console.log('Raw response:', textResponse); // Debug
+                
+                try {
+                    result = JSON.parse(textResponse);
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    alert('Server response was not in JSON format');
+                    return;
+                }
+
+                if (response.ok) {
+                    // Use Bootstrap toast or alert
+                    const toastHTML = `
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header">
+                                    <strong class="me-auto">Success</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body">
+                                    Lecturer added successfully!
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    $('body').append(toastHTML);
+                    var toast = new bootstrap.Toast($('.toast'));
+                    toast.show();
+
+                    // Reset form
+                    this.reset();
+                    $(this).removeClass('was-validated');
+                } else {
+                    alert(`Failed to add lecturer: ${result.message || "Unknown error"}`);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while processing your request.");
+            }
         });
 
-        console.log('Response status:', response.status); // Debug
-        let result;
-        const textResponse = await response.text();
-        console.log('Raw response:', textResponse); // Debug
-        
-        try {
-            result = JSON.parse(textResponse);
-        } catch (e) {
-            console.error('JSON parse error:', e);
-            alert('Server response was not in JSON format');
-            return;
-        }
-
-        if (response.ok) {
-            alert("Lecturer added successfully!");
-            this.reset();
-        } else {
-            alert(`Failed to add lecturer: ${result.message || "Unknown error"}`);
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        alert("An error occurred while processing your request.");
-    }
-});
-
-// Helper function to convert image to base64
-function convertImageToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
+        // Prevent form submission without validation
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
     });
-}
-   </script>
+
+    // Helper function to convert image to base64
+    function convertImageToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+    </script>
 </body>
 </html>

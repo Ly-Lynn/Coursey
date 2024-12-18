@@ -26,7 +26,7 @@
   
   /* Heading */
   .container h2 {
-    color: #0eb2c1;
+    color: #000000;
     text-align: center;
     margin-bottom: 20px;
   }
@@ -55,7 +55,7 @@
     display: block;
     width: 100%;
     padding: 12px 0;
-    background-color: #0eb2c1;
+    background-color: #000000;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -65,7 +65,8 @@
   }
   
   button[type="submit"]:hover {
-    background-color: #09919d;
+    background-color: #ffffff;
+    color: #000000;
   }
   
   /* Error Message */

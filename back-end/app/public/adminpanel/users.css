@@ -7,7 +7,7 @@
   
 body {
     font-family: Arial, sans-serif;
-    background-color: #f1f1f1;
+    background-color: #fff;
 }
 
 /* Search Input */
@@ -43,37 +43,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 170, 255, 0.2);
 }
   
-/* Sidebar */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 100%;
-    background-color: #05ffe629;
-    padding: 20px;
-    color: #fff;
-    text-align: center;
-}
-  
-.sidebar ul {
-    list-style-type: none;
-}
-  
-.sidebar a {
-    text-decoration: none;
-}  
-  
-.sidebar li {
-    padding: 10px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-  
-.sidebar li:hover {
-    background-color: #00ffff;
-}
-  
+
 /* Main Content */
 .main-content {
     margin-left: 220px;
