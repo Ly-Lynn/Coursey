@@ -18,7 +18,7 @@
     left: 0;
     width: 200px;
     height: 100%;
-    background-color: #05ffe629;
+    background-color: #000;
     padding: 20px;
     color: #fff;
     text-align: center;
@@ -38,7 +38,7 @@
   }
   
   .sidebar li:hover {
-    background-color: #00ffff;
+    background-color: #000000;
   }
   
   /* Main Content */
@@ -117,14 +117,14 @@ input[type="number"] {
 
 input[type="text"]:focus,
 input[type="number"]:focus {
-    border-color: #007bff;
+    border-color: #000000;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
 button[type="submit"] {
     width: 100%;
-    background-color: #007bff;
+    background-color: #000000;
     color: #fff;
     padding: 12px;
     border: none;
@@ -135,5 +135,5 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #000000;
 }

@@ -12,6 +12,7 @@ import './auth.modul.css';
 import CustomButton from '../custom_components/CustomButton';
 import CustomTextField from '../custom_components/CustomTextField';
 import { hostName, API_ENDPOINTS } from '../../config/env';
+import { useNavigate } from 'react-router-dom';
 
 function ForgotPass ({onClose,  onSwitchToSignIn }) {
 
@@ -20,6 +21,7 @@ function ForgotPass ({onClose,  onSwitchToSignIn }) {
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
+  const navigate = useNavigate();
   const handleResetPass = async () => {
     try {
       const response = await fetch(`${hostName}${API_ENDPOINTS.RESET_PASSWORD}`, {
@@ -50,6 +52,7 @@ function ForgotPass ({onClose,  onSwitchToSignIn }) {
             }
           }
         );
+        navigate('/')
       }
     } catch (error) {
       console.log('Error:', error);

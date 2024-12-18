@@ -149,11 +149,23 @@ export const checkAuthStatus = createAsyncThunk(
 export const changePassword = createAsyncThunk(
   'auth/changePassword',
   async (passwordData, { rejectWithValue }) => {
+    console.log("data", passwordData)
     try {
-      const { data } = await axiosInstance.post(`${hostName}${API_ENDPOINTS.CHANGE_PASS}`, passwordData);
-      return data.data;
+      const response = await fetch(`${hostName}${API_ENDPOINTS.CHANGE_PASSWORD}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': passwordData.token
+        },
+        body: JSON.stringify({
+          username: passwordData.username,
+          newPassword: passwordData.newPassword
+        })
+      });
+      console.log("RESPONSE", response)
+      return response.json();
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Password change failed');
+      return rejectWithValue(error.response?.message || 'Password change failed');
     }
   }
 );
@@ -212,6 +224,7 @@ const authSlice = createSlice({
     error: null,
     isRemember: null,
     passwordResetStatus: null,
+    passwordChangeStatus: null,
     profileUpdateStatus: null
   },
   reducers: {
@@ -220,7 +233,7 @@ const authSlice = createSlice({
       sessionStorage.removeItem('authData');
       clearAuthHeader();
       state.isAuthenticated = false;
-      state.user = null;
+      state.user = {};
       state.accessToken = null;
       state.error = null;
       state.isRemember = false;
@@ -296,13 +309,17 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(changePassword.fulfilled, (state) => {
+      .addCase(changePassword.fulfilled, (state, action) => {
+        const { message, status } = action.payload;
+        if (status !== 200) {
+          state.loading = false;
+          state.passwordChangeStatus = 'failed';
+          state.error = message;
+          return;
+        }
+        state.passwordChangeStatus = 'success';
         state.loading = false;
         state.error = null;
-      })
-      .addCase(changePassword.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
       })
 
       // Forgot password cases
@@ -329,7 +346,6 @@ const authSlice = createSlice({
       .addCase(updateProfile.fulfilled, (state, action) => {
         const status = action.payload.status;
         const message = action.payload.message;
-        console.log("STATUS", status, message)
         if (status !== 200) {
           state.loading = false;
           state.profileUpdateStatus = 'failed';

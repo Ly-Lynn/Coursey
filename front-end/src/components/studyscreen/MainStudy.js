@@ -72,7 +72,12 @@ export default function StudyScreen({ courseID }) {
             }
             const res = await response.json();
             console.log("Response: ", res);
-            toast.success("Congrats! You've completed the video.");
+            toast.success("Congrats! You've completed the video.", {
+                style: {
+                    backgroundColor: "black",
+                    color: "#fff"
+                }
+            });
             setLoading(false);
         }
         catch (error) {
