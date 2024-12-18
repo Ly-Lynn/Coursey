@@ -70,6 +70,10 @@
         }
 
         public function changePassword($accessToken, $username, $newPassword) {
+            // $this->response("CHó", 200);
+            // $this->response($username, 200);
+
+            // return;
             if ($this->isValidToken($accessToken, $username)) {
                 $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
                 $sql = "UPDATE Users SET password = :password WHERE username = :username";
