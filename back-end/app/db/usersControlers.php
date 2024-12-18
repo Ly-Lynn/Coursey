@@ -166,7 +166,6 @@
         }
 
 
-        # get user add specific username
         public function getUsers($accessToken, $username) {
             if ($this->isValidToken($accessToken, $username)) {
                 $sql = "SELECT * FROM Users WHERE username = :username";
@@ -182,7 +181,6 @@
             $this->response("Access fail", 401);
         }
 
-        # get all users for admin
         public function getAllUsers($accessToken, $username) {
             if ($this->isValidToken($accessToken, $username) && $this->isAdmin($username)) {
                 $sql = "SELECT id, username, gmail, is_admin FROM Users";
@@ -198,7 +196,6 @@
             
         }
 
-        # update user
         public function updateUser($accessToken, $username, $data) {
             if ($this->isValidToken($accessToken, $username)) {
                 $updateField = [];
@@ -251,7 +248,6 @@
 
             }
         }
-        # delete user for admin
         public function deleteUser($accessToken, $username, $deletedID){
             if ($this->isValidToken($accessToken, $username)) {
                 if($this->isAdmin($username)) {
@@ -319,7 +315,7 @@
                 $this->mailer->clearAddresses();
                 $this->mailer->addAddress($email);
                 $this->mailer->isHTML(true);
-                $this->mailer->Subject = 'Bye Course Successfully';
+                $this->mailer->Subject = 'Buy Course Successfully';
                 $this->mailer->Body = $message;
                 $this->mailer->send();
 
@@ -362,7 +358,7 @@
                 $this->mailer->clearAddresses();
                 $this->mailer->addAddress($email);
                 $this->mailer->isHTML(true);
-                $this->mailer->Subject = 'Thông Tin Mật Khẩu Mới';
+                $this->mailer->Subject = 'Coursey - Reset Password';
                 $this->mailer->Body = "Mật khẩu mới của bạn là: <b>{$newPassword}</b><br>Vui lòng đổi mật khẩu sau khi đăng nhập.";
                 if ($this->mailer->send()) {
                     $this->response('Đã reset mật khẩu và gửi email thành công', 200);
