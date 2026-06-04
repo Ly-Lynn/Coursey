@@ -1,18 +1,18 @@
 // src/config/env.js
+const environment = process.env.NODE_ENV || 'development';
+
 const ENV = {
-    development: {
-      hostName: 'http://localhost:8080/',
-    },
-    production: {
-      hostName: 'https://6b90-203-205-32-65.ngrok-free.app',
-    }
-  };
-  
-  const environment = 'development';
-  
-  export const config = ENV[environment];
-  
-  export const { hostName } = config;
+  development: {
+    hostName: process.env.REACT_APP_API_URL,
+  },
+  production: {
+    hostName: process.env.REACT_APP_API_URL,
+  }
+};
+
+export const config = ENV[environment];
+export const { hostName } = config;
+
   
   export const API_ENDPOINTS = {
     SIGNUP: 'auth/signup.php',
@@ -27,7 +27,7 @@ const ENV = {
     DELETE_USER: 'users/deleteUsers.php',
 
     GET_ALL_COURSE: 'course/getAllCourse.php',
-    GET_COURSE_INFO: 'adminv2/courseService.php',
+    GET_COURSE_INFO: 'adminV2/courseService.php',
     CHECK_BOUGHT: 'course/checkCourseUser.php',
     GET_BEST_RATING: 'course/getBestRatingCourse.php',
     GET_BEST_VIEWING: 'course/getBestViewCourse.php' ,

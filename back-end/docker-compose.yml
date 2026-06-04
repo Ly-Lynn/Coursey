@@ -1,0 +1,41 @@
+services:
+  # nginx
+  web:
+    image: gryffin0109/courseyproject:nginx
+    ports:
+      - "8080:80"
+      - "8082:8082"
+    depends_on:
+      - app
+
+  app:
+    image: gryffin0109/courseyproject:php
+    depends_on:
+      - db
+
+  db:
+    image: gryffin0109/courseyproject:mysql
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    env_file:
+      - ./.env/.env
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    env_file:
+      - ./.env/.env
+    depends_on:
+      - db
+
+  python:
+    image: gryffin0109/courseyproject:python
+    ports:
+      - "8002:8002"
+
+volumes:
+  mysqldata:

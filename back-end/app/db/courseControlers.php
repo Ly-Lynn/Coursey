@@ -49,7 +49,34 @@
                     $params[":$key"] = $value;
                 }
                 
-                $videoLinks = $this->videoController->getVideoLink($data['url_list'])["message"];
+                $videoResponse = $this->videoController->getVideoLink($data['url_list']);
+                
+                // Check if the response is valid and contains the expected data
+                if (!isset($videoResponse['message']) || !is_array($videoResponse['message'])) {
+                    $errorMsg = "Failed to fetch video information: ";
+                    if (is_string($videoResponse['message'])) {
+                        $errorMsg .= $videoResponse['message'];
+                        // Add detailed error info if available
+                        if (isset($videoResponse['details'])) {
+                            $errorMsg .= " - Details: " . $videoResponse['details'];
+                        }
+                    } else {
+                        $errorMsg .= 'Invalid response';
+                    }
+                    $response['error'] = $errorMsg;
+                    $this->response($response, 400);
+                    return;
+                }
+                
+                $videoLinks = $videoResponse['message'];
+                
+                // Validate required fields exist
+                if (!isset($videoLinks['view_count']) || !isset($videoLinks['total_times'])) {
+                    $response['error'] = "Invalid video data structure";
+                    $this->response($response, 400);
+                    return;
+                }
+                
                 $views = $videoLinks['view_count'];
                 $hours = $videoLinks['total_times'];
                 $fields[] = 'views'; 

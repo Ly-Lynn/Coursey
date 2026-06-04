@@ -1,26 +1,34 @@
+# Multi-stage build for PHP application
+FROM composer:2.4 AS composer
+
+# Copy composer files
+COPY php/composer.json php/composer.lock* ./
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Production stage
 FROM php:8.1-fpm-alpine
 
+# Install PHP extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions pdo pdo_mysql
 
-RUN set -eux; \
-    install-php-extensions pdo pdo_mysql;
+# Copy PHP configuration
+COPY php/conf.d/xdebug.ini /usr/local/etc/php/
 
-ENV COMPOSER_ALLOW_SUPERUSER=1
+# Copy vendor dependencies from composer stage
+COPY --from=composer /app/vendor /var/www/html/vendor
 
-COPY --from=composer:2.4 /usr/bin/composer /usr/bin/composer
+# Copy application source code
+COPY app /app
 
-COPY ./conf.d/xdebug.ini /usr/local/etc/php/
+# Create .env directory and copy .env file
+RUN mkdir -p /app/.env
+RUN docker-php-ext-install mysqli
+COPY .env/.env /app/.env/.env
 
-COPY ./composer.json ./
+WORKDIR /var/www/html
 
-RUN composer require symfony/dotenv \
-    && composer require phpmailer/phpmailer \
-    && composer install \
-    && composer dump-autoload \
-    && ls -la /var/www/html/vendor/phpmailer/phpmailer
-
-
-COPY . .
-
-# RUN ls  /var/www/html/vendor
-# RUN ls
+# Expose port
+EXPOSE 9000

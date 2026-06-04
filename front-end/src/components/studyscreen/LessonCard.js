@@ -54,11 +54,11 @@ export default function LessonCard ({
 }) {
     const [isHovered, setIsHovered] = useState(false);
 
-    const truncateTitle = (title, maxLength = 25) => {
-        return title.length > maxLength 
-            ? title.substring(0, maxLength) + '...' 
-            : title;
-    };
+    const truncateTitle = (title) => {
+  if (!title) return "Untitled"; // fallback
+  return title.length > 30 ? title.substring(0, 30) + "..." : title;
+};
+
 
     const CardComponent = complete ? CardFinished : CardNotFinished;
 

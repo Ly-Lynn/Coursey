@@ -85,14 +85,49 @@ class YoububeDownloader:
             
     @staticmethod
     def getURLList(url: str, getPlaylist_opts={"extract_flat": "in_playlist", "skip_download": True}) -> List[str]:
+        # Check if cookies file exists and add it to options
+        cookies_path = os.environ.get('YOUTUBE_COOKIES_PATH', '/app/cookies/youtube_cookies.txt')
+        if os.path.exists(cookies_path):
+            getPlaylist_opts = dict(getPlaylist_opts)  # Create a copy
+            getPlaylist_opts['cookiefile'] = cookies_path
+            print(f"Using cookies from: {cookies_path}")
+        else:
+            print(f"Warning: Cookies file not found at {cookies_path}, proceeding without authentication")
+            # Add extractor args as fallback
+            getPlaylist_opts = dict(getPlaylist_opts)
+            getPlaylist_opts['extractor_args'] = {
+                'youtube': {
+                    'player_client': ['android', 'web']
+                }
+            }
+        
         with YoutubeDL(getPlaylist_opts) as ydl:
             playlist_info = ydl.extract_info(url, download=False)  # not download the info of playlist
         
-        video_urls = [video["url"].split("?v=")[1] for video in playlist_info["entries"]]
-        durations = [video.get("duration", 0) / 3600 for video in playlist_info["entries"]]
+        # Handle both single videos and playlists
+        if "entries" in playlist_info:
+            # It's a playlist
+            videos = playlist_info["entries"]
+        else:
+            # It's a single video, wrap it in a list
+            videos = [playlist_info]
+        
+        # Extract video information
+        video_urls = []
+        for video in videos:
+            if video is None:
+                continue
+            # Handle different URL formats
+            if "url" in video:
+                video_id = video["url"].split("?v=")[-1] if "?v=" in video["url"] else video.get("id", "")
+            else:
+                video_id = video.get("id", "")
+            video_urls.append(video_id)
+        
+        durations = [(video.get("duration") or 0) / 3600 for video in videos if video is not None]
         total_times = sum(durations)
-        view_count = max([video.get("view_count", 0) for video in playlist_info["entries"]])
-        titles = [video.get("title", "No title") for video in playlist_info["entries"]]
+        view_count = max([video.get("view_count") or 0 for video in videos if video is not None], default=0)
+        titles = [video.get("title", "No title") for video in videos if video is not None]
                 
         results = {
             "urls": video_urls,

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,10 @@
     <link rel="stylesheet" href="sidebar.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="api-config.js"></script>
 
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -38,7 +41,8 @@
 
             <!-- Main Content -->
             <main class="col-md-10 ms-sm-auto px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Add Course</h1>
                 </div>
 
@@ -83,7 +87,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="course-image" class="form-label">Course Image</label>
-                            <input class="form-control" type="file" id="course-image" name="image" accept="image/*" required>
+                            <input class="form-control" type="file" id="course-image" name="image" accept="image/*"
+                                required>
                             <div class="invalid-feedback">Please upload a course image.</div>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -141,151 +146,152 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    $(document).ready(async function() {
-        // Fetch lecturers
-        try {
-            const lecturerResponse = await fetch('http://localhost:8080/adminV2/lecturerService.php');
-            const lecturerData = await lecturerResponse.json();
-            if (lecturerData.message) {
-                lecturerData.message.forEach(lecturer => {
-                    $('#lecturer-id').append(
-                        `<option value="${lecturer.lecturer_id}">${lecturer.lecturer_id} - ${lecturer.name}</option>`
-                    );
-                });
-            }
-        } catch (error) {
-            console.error('Error fetching lecturers:', error);
-        }
-
-        // Fetch hosts
-        try {
-            const hostResponse = await fetch('http://localhost:8080/adminV2/hostService.php');
-            const hostData = await hostResponse.json();
-            if (hostData.message) {
-                hostData.message.forEach(host => {
-                    $('#host-id').append(
-                        `<option value="${host.host_id}">${host.host_id} - ${host.host_name}</option>`
-                    );
-                });
-            }
-        } catch (error) {
-            console.error('Error fetching hosts:', error);
-        }
-
-        // Form submission
-        $('#add-course-form').on('submit', async function(e) {
-            e.preventDefault();
-
-            // Bootstrap form validation
-            if (this.checkValidity() === false) {
-                e.stopPropagation();
-                $(this).addClass('was-validated');
-                return;
-            }
-
-            const endpoint = 'http://localhost:8080/adminV2/courseService.php';
-            const username = localStorage.getItem("username");
-            const token = localStorage.getItem('accessToken');
-
-            // Validate login
-            if (!token) {
-                alert('Please login first');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            if (!username) {
-                alert("Username not found in local storage. Please log in again.");
-                return;
-            }
-
-            // Get form data
-            const formData = new FormData(this);
-            formData.append("username", username);
-
-            // Convert form data to object
-            const formObject = {};
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
-
-            const imageFile = formData.get('image');
-            
-            // Handle image processing
+        $(document).ready(async function () {
+            // Fetch lecturers
             try {
-                if (imageFile && imageFile instanceof File && imageFile.size > 0) {
-                    const base64Image = await convertImageToBase64(imageFile);
-                    formObject.image = base64Image;
-                    console.log(base64Image);
-                } else {
-                    formObject.image = '';
+                const lecturerResponse = await fetch(`${API_BASE_URL}/adminV2/lecturerService.php`);
+                const lecturerData = await lecturerResponse.json();
+                if (lecturerData.message) {
+                    lecturerData.message.forEach(lecturer => {
+                        $('#lecturer-id').append(
+                            `<option value="${lecturer.lecturer_id}">${lecturer.lecturer_id} - ${lecturer.name}</option>`
+                        );
+                    });
                 }
+            } catch (error) {
+                console.error('Error fetching lecturers:', error);
+            }
 
-                console.log('Sending data:', formObject); 
+            // Fetch hosts
+            try {
+                const hostResponse = await fetch(`${API_BASE_URL}/adminV2/hostService.php`);
+                const hostData = await hostResponse.json();
+                if (hostData.message) {
+                    hostData.message.forEach(host => {
+                        $('#host-id').append(
+                            `<option value="${host.host_id}">${host.host_id} - ${host.host_name}</option>`
+                        );
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching hosts:', error);
+            }
 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `${token}`,
-                    },
-                    body: JSON.stringify(formObject),
-                });
+            // Form submission
+            $('#add-course-form').on('submit', async function (e) {
+                e.preventDefault();
 
-                console.log('Response status:', response.status);
-                // Parse JSON safely
-                let result;
-                const textResponse = await response.text();
-                console.log('Raw response:', textResponse); 
-                
-                try {
-                    result = JSON.parse(textResponse);
-                } catch (e) {
-                    console.error('JSON parse error:', e);
-                    alert('Server response was not in JSON format');
+                // Bootstrap form validation
+                if (this.checkValidity() === false) {
+                    e.stopPropagation();
+                    $(this).addClass('was-validated');
                     return;
                 }
 
-                if (response.ok) {
-                    alert("Course added successfully!");
-                    this.reset();
-                    $(this).removeClass('was-validated');
-                } else {
-                    alert(`Failed to add course: ${result.message || "Unknown error"}`);
+                const endpoint = `${API_BASE_URL}/adminV2/courseService.php`;
+                const username = localStorage.getItem("username");
+                const token = localStorage.getItem('accessToken');
+
+                // Validate login
+                if (!token) {
+                    alert('Please login first');
+                    window.location.href = 'login.html';
+                    return;
                 }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("An error occurred while processing your request.");
-            }
-        });
 
-        // Helper function to convert image to base64
-        function convertImageToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
+                if (!username) {
+                    alert("Username not found in local storage. Please log in again.");
+                    return;
+                }
 
-        // Form validation
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
+                // Get form data
+                const formData = new FormData(this);
+                formData.append("username", username);
+
+                // Convert form data to object
+                const formObject = {};
+                formData.forEach((value, key) => {
+                    formObject[key] = value;
                 });
-            }, false);
-        })();
-    });
+
+                const imageFile = formData.get('image');
+
+                // Handle image processing
+                try {
+                    if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+                        const base64Image = await convertImageToBase64(imageFile);
+                        formObject.image = base64Image;
+                        console.log(base64Image);
+                    } else {
+                        formObject.image = '';
+                    }
+
+                    console.log('Sending data:', formObject);
+
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `${token}`,
+                        },
+                        body: JSON.stringify(formObject),
+                    });
+
+                    console.log('Response status:', response.status);
+                    // Parse JSON safely
+                    let result;
+                    const textResponse = await response.text();
+                    console.log('Raw response:', textResponse);
+
+                    try {
+                        result = JSON.parse(textResponse);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        alert('Server response was not in JSON format');
+                        return;
+                    }
+
+                    if (response.ok) {
+                        alert("Course added successfully!");
+                        this.reset();
+                        $(this).removeClass('was-validated');
+                    } else {
+                        alert(`Failed to add course: ${result.message || "Unknown error"}`);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("An error occurred while processing your request.");
+                }
+            });
+
+            // Helper function to convert image to base64
+            function convertImageToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Form validation
+            (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    var forms = document.getElementsByClassName('needs-validation');
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        });
     </script>
 </body>
+
 </html>

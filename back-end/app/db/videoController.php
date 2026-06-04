@@ -108,7 +108,7 @@
 
 
         public function getVideoLink($youtubeurl) {
-            $url = "http://python:8002/getUrllist";
+            $url = "http://python-service:8002/getUrllist";
             
             $data = [
                 "url" => $youtubeurl
@@ -137,9 +137,6 @@
             http_response_code($statusCode);
             echo json_encode(['message' => $message, 'status' => $statusCode]);
         }
-
-
-
     }
 
 ?>

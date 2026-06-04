@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-service
+  labels:
+    app: coursey-python
+spec:
+  selector:
+    app: coursey-python
+  ports:
+  - port: {{ .Values.python.service.port }}       
+    targetPort: {{ .Values.python.service.port }} 
+    protocol: TCP
+    name: python-http
+  type: ClusterIP

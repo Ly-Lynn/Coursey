@@ -22,6 +22,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
     </style>
+    <script src="api-config.js"></script>   
 </head>
 <body>
     <div class="container d-flex justify-content-center align-items-center">
@@ -61,7 +62,7 @@
             };
 
             $.ajax({
-                url: 'http://localhost:8080/auth/login.php',
+                url: `${API_BASE_URL}/auth/login.php`,
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(loginData),

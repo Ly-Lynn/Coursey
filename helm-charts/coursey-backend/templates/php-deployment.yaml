@@ -1,0 +1,68 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coursey-php
+  labels:
+    app: coursey-php
+spec:
+  replicas: {{ .Values.php.replicaCount }}
+  selector:
+    matchLabels:
+      app: coursey-php
+  template:
+    metadata:
+      labels:
+        app: coursey-php
+    spec:
+      containers:
+      - name: php-fpm
+        image: "{{ .Values.php.image.repository }}:{{ .Values.php.image.tag }}"  
+        ports:
+        - containerPort: {{ .Values.php.service.port }}
+          name: php-fpm
+        env:
+        # Database connection environment variables from secrets
+        - name: MYSQL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_HOST
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_DATABASE
+        # Email configuration for PHPMailer
+        - name: MAIL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MAIL_USERNAME
+        - name: PASS_APP
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: PASS_APP
+        - name: HOST_NAME
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: HOST_NAME
+        resources:
+          {{- toYaml .Values.php.resources | nindent 10 }}
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.php.service.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 5

@@ -1,1 +1,0 @@
-export const hostName = 'http://localhost:5000/api';

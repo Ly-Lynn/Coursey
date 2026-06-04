@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: coursey-nginx
+  ports:
+    {{- range .Values.nginx.service.ports }}
+    - name: {{ .name }}
+      port: {{ .servicePort }}        
+      targetPort: {{ .containerPort }} 
+      protocol: TCP
+    {{- end }}
+  type: ClusterIP

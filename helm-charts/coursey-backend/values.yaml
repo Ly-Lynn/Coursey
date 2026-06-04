@@ -1,0 +1,110 @@
+secrets:
+  mysqlHost: "coursey-database-service"
+  mysqlRootPassword: "gryffin0811" # NÊN ĐỔI
+  mysqlUser: "gryffin0811"
+  mysqlDatabase: "docker-php"
+  mysqlPassword: "gryffin0811"
+  pmaHost: "db"
+  hostName: "gryffin-uit.site"
+  mailUsername: "khoatn@tensoract.io"
+  passApp: "uobo eiam ijmi clzy"
+
+python:
+  replicaCount: 1
+  image:
+    repository: 243826067721.dkr.ecr.us-east-1.amazonaws.com/coursey/python
+    tag: "latest"
+  service:
+    port: 8002
+  resources:
+    requests:
+      memory: "80Mi" # Dư ra một chút so với thực tế
+      cpu: "50m"
+    limits:
+      memory: "256Mi" # Cho phép tăng gấp 3 khi xử lý nặng
+      cpu: "500m"
+
+php:
+  replicaCount: 2
+  image:
+    repository: 243826067721.dkr.ecr.us-east-1.amazonaws.com/coursey/php
+    tag: "latest"
+  service:
+    port: 9000
+  resources:
+    requests:
+      memory: "64Mi" # Đặt mức sàn cao hơn thực tế idle để an toàn
+      cpu: "50m"
+    limits:
+      memory: "256Mi" # Giới hạn an toàn
+      cpu: "500m"
+
+nginx:
+  replicaCount: 1
+  image:
+    repository: 243826067721.dkr.ecr.us-east-1.amazonaws.com/coursey/nginx
+    tag: "latest"
+  service:
+    # ALB target-type: ip yêu cầu service có thể reach được, ClusterIP là chuẩn.
+    type: ClusterIP
+    ports:
+      - name: http
+        containerPort: 80
+        servicePort: 80
+      - name: admin
+        containerPort: 8082
+        servicePort: 8082
+  resources:
+    requests:
+      memory: "20Mi"
+      cpu: "20m"
+    limits:
+      memory: "64Mi"
+      cpu: "200m"
+
+mysql:
+  replicaCount: 1
+  image:
+    repository: 243826067721.dkr.ecr.us-east-1.amazonaws.com/coursey/mysql
+    tag: "latest"
+  service:
+    port: 3306
+  persistence:
+    enabled: true
+    size: 3Gi
+    storageClass: "gp3"
+  resources:
+    requests:
+      memory: "450Mi" # Cam kết cho DB 450MB
+      cpu: "100m" # 0.1 Core
+    limits:
+      memory: "768Mi" # Tối đa 768MB (Tránh MySQL ăn hết RAM của Node)
+      cpu: "1000m" # Tối đa 1 Core
+
+appConfig:
+  apiBaseUrl: "https://api.gryffin-uit.site"
+
+ingress:
+  enabled: true
+  className: "alb"
+  alb:
+    groupName: "coursey-group"
+    scheme: "internet-facing"
+    targetType: "ip"
+    certificateArn: "arn:aws:acm:us-east-1:243826067721:certificate/214cc77d-7dbf-4c98-904e-637477611aad"
+
+  hosts:
+    - name: "api"
+      host: "api.gryffin-uit.site"
+      serviceName: "nginx-service"
+      port: 80
+
+    - name: "admin"
+      host: "admin.gryffin-uit.site"
+      serviceName: "nginx-service"
+      port: 8082
+
+storageClass:
+  create: true
+  name: gp3
+  provisioner: ebs.csi.aws.com

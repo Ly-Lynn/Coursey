@@ -30,5 +30,4 @@
         $userController->updateRole($accessToken, $data['username'], $data["updateUser"], $data["role"]);
     }
 
-
 ?>

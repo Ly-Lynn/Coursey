@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  labels:
+    app: coursey-nginx
+data:
+  default.conf: |
+    # Server Block cho API/Frontend (Port 80)
+    server {
+        listen 80;
+        server_name _;
+        root /app/public; # Đảm bảo path này đúng với image PHP code của bạn
+        index index.php;
+
+        # Health Check cho ALB
+        location /healthz {
+            access_log off;
+            return 200 "OK";
+        }
+
+        # Cấu hình CORS (Vì ALB không hỗ trợ annotation)
+        location / {
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+                add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization';
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE' always;
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        # Chuyển xử lý PHP sang container PHP (qua Service)
+        location ~ \.php$ {
+            fastcgi_pass php-service:9000;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+    }
+
+    # Server Block cho Admin (Port 8082)
+    server {
+        listen 8082;
+        server_name _;
+        root /app/adminpanel;
+        index login.html;
+
+        location /healthz {
+            access_log off;
+            return 200 "OK";
+        }
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+    }

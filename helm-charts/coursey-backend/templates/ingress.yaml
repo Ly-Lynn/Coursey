@@ -1,0 +1,41 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: coursey-alb-ingress
+  labels:
+    app: coursey-backend
+  annotations:
+    # Kích hoạt ALB
+    kubernetes.io/ingress.class: alb
+    
+    # Cấu hình ALB
+    alb.ingress.kubernetes.io/scheme: {{ .Values.ingress.alb.scheme }}
+    alb.ingress.kubernetes.io/target-type: {{ .Values.ingress.alb.targetType }}
+    alb.ingress.kubernetes.io/group.name: {{ .Values.ingress.alb.groupName }}
+
+    # SSL & Redirect
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.alb.certificateArn }}
+
+    # Health Check (QUAN TRỌNG: Trỏ vào /healthz mà ta sẽ tạo ở configmap)
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    alb.ingress.kubernetes.io/success-codes: '200-399'
+
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+  {{- range .Values.ingress.hosts }}
+  - host: {{ .host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .serviceName }}
+            port:
+              number: {{ .port }}
+  {{- end }}
+{{- end }}

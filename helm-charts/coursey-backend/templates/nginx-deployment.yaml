@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coursey-nginx
+  labels:
+    app: coursey-nginx
+spec:
+  replicas: {{ .Values.nginx.replicaCount }}
+  selector:
+    matchLabels:
+      app: coursey-nginx
+  template:
+    metadata:
+      labels:
+        app: coursey-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        {{- range .Values.nginx.service.ports }}
+        - name: {{ .name }}
+          containerPort: {{ .containerPort }}
+        {{- end }}
+        
+        # --- HEALTH PROBES (Bắt buộc để ALB biết Pod sống) ---
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        
+        # --- MOUNT CONFIG MAP ---
+        volumeMounts:
+        - name: nginx-config-vol
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf # Ghi đè file default.conf
+        resources:
+          {{- toYaml .Values.nginx.resources | nindent 10 }}
+      volumes:
+      - name: nginx-config-vol
+        configMap:
+          name: nginx-config

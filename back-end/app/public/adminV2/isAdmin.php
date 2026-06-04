@@ -9,7 +9,7 @@
         $headers = getallheaders();
         $accessToken = $headers["Authorization"];
         $data = json_decode(file_get_contents("php://input"), true);
-        if (isValidToken($accessToken, $data['username']) && $userController->isAdmin($data['username']) {
+        if (isValidToken($accessToken, $data['username']) && $userController->isAdmin($data['username'])) {
             echo json_encode(array("isAdmin" => true));
         }
     }

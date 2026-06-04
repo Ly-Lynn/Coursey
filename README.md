@@ -13,16 +13,18 @@
 
 ### Prerequisites
 
-* Clone the repository: `git clone https://github.com/Ly-Lynn/Coursey`
+* Clone the repository: `git clone https://github.com/Ly-Lynn/Coursey` i created fork from this repository
+* The newest version is in my repository, you can clone it here: `git clone https://github.com/gryffin-uit-alpha/Coursey`
 
 ### Frontend
 
 #### Setup and Launch
 
 1. Navigate to the frontend directory: `cd front-end`
-2. Run the command to start the frontend: `npm start --build`
-3. Access the User Interface at: `http://localhost:3000`
-4. Access the Admin Panel at: `http://localhost:8082`
+2. Run the command to install dependencies: `npm install`
+3. Run the command to start the frontend: `npm start `
+4. Access the User Interface at: `http://localhost:3000`
+5. Access the Admin Panel at: `http://localhost:8082`
 
 **Important:** The Admin password is located in `back-end/.env/.env`. Please ensure to keep this information secure.
 
@@ -31,14 +33,16 @@
 #### Setup and Launch
 
 1. Navigate to the backend directory: `cd back-end`
-2. Run the command to start the backend: `docker-compose up --build`
+2. Run the command to start the backend: `docker compose up --build`
 
 ### Database
 
 #### Access and Configuration
 
-1. Access the SQL admin at: `http://localhost:8081`
-2. Import the database schema from `back-end/sql/docker-php_export.sql` using the SQL command interface.
+1. Import the database schema from `back-end/sql/docker-php_export.sql` using the SQL command interface. Make sure you are in root folder of the project.
+```sh
+docker exec -i back-end-db-1 mysql -u root -pgryffin0811 docker-php < back-end/sql/docker-php_export.sql
+```
 
 ## Contributing
 ------------
@@ -63,14 +67,10 @@ Navigate to ```back-end\sql\docker-php_export.sql``` and import it into the SQL 
 ```sh
 username: lynn
 password: 12345
-```
-- User Account:
-```sh
-username: lynn_nekk
-password: Linh040202@
+
 ```
 - Database Account:
 ```sh
-username: khoatn
-password: khoa
+username: gryffin0811
+password: gryffin0811
 ```

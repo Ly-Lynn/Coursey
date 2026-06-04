@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coursey-database
+  labels:
+    app: coursey-database
+spec:
+  replicas: {{ .Values.mysql.replicaCount }}
+  selector:
+    matchLabels:
+      app: coursey-database
+  template:
+    metadata:
+      labels:
+        app: coursey-database
+    spec:
+      containers:
+      - name: mysql
+        image: "{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - name: mysql-port
+          containerPort: 3306
+        
+
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_PASSWORD
+        
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+        
+        resources:
+          {{- toYaml .Values.mysql.resources | nindent 10 }}
+      
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc 
+      
+      initContainers:
+      - name: busy-box
+        image: busybox:latest
+        args: ["rm", "-rf", "var/lib/mysql/lost+found"]
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
